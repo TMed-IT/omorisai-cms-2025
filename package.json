@@ -1,7 +1,7 @@
 {
-  "name": "",
+  "name": "oomorisai-cms",
   "version": "1.0.0",
-  "description": "Website template for Payload",
+  "description": "Oomorisai website CMS",
   "license": "MIT",
   "type": "module",
   "scripts": {
