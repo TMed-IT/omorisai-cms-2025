@@ -10,63 +10,61 @@ const BeforeDashboard: React.FC = () => {
   return (
     <div className={baseClass}>
       <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
+        <h4>ダッシュボードへようこそ</h4>
       </Banner>
-      Here&apos;s what to do next:
+      次に行うべきこと：
       <ul className={`${baseClass}__instructions`}>
         <li>
           <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
+          {' で新しいサイトを始めるためのページ、投稿、プロジェクトを追加し、その後 '}
           <a href="/" target="_blank">
-            visit your website
+            ウェブサイトを閲覧
           </a>
-          {' to see the results.'}
+          {' して結果を確認してください'}
         </li>
         <li>
-          If you created this repo using Payload Cloud, head over to GitHub and clone it to your
-          local machine. It will be under the <i>GitHub Scope</i> that you selected when creating
-          this project.
+          Payload Cloudを使用してこのリポジトリを作成した場合は、GitHubに移動してローカルマシンにクローンしてください。プロジェクト作成時に選択した <i>GitHub Scope</i> の下にあります。
         </li>
         <li>
-          {'Modify your '}
+          {'必要に応じて '}
           <a
             href="https://payloadcms.com/docs/configuration/collections"
             rel="noopener noreferrer"
             target="_blank"
           >
-            collections
+            コレクション
           </a>
-          {' and add more '}
+          {' を修正し、より多くの '}
           <a
             href="https://payloadcms.com/docs/fields/overview"
             rel="noopener noreferrer"
             target="_blank"
           >
-            fields
+            フィールド
           </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
+          {' を追加してください。Payloadが初めての場合は、'}
           <a
             href="https://payloadcms.com/docs/getting-started/what-is-payload"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Getting Started
+            はじめに
           </a>
-          {' docs.'}
+          {' のドキュメントも確認することをお勧めします。'}
         </li>
         <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
+          リポジトリに変更をコミットしてプッシュし、プロジェクトの再デプロイをトリガーしてください。
         </li>
       </ul>
-      {'Pro Tip: This block is a '}
+      {'プロのヒント：このブロックは '}
       <a
         href="https://payloadcms.com/docs/admin/custom-components/overview#base-component-overrides"
         rel="noopener noreferrer"
         target="_blank"
       >
-        custom component
+        カスタムコンポーネント
       </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
+      {' です。<strong>payload.config</strong> を更新することでいつでも削除できます。'}
     </div>
   )
 }

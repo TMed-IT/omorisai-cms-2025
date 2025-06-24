@@ -48,24 +48,24 @@ const PaginationPrevious = ({
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label="Go to previous page"
+    aria-label="前のページへ"
     className={cn('gap-1 pl-2.5', className)}
     size="default"
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
+    <span>前へ</span>
   </PaginationLink>
 )
 
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label="Go to next page"
+    aria-label="次のページへ"
     className={cn('gap-1 pr-2.5', className)}
     size="default"
     {...props}
   >
-    <span>Next</span>
+    <span>次へ</span>
     <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 )

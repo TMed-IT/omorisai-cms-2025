@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap');
+
+// Adminページ全体にフォントを適用
+body {
+  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+}
+
+// Payload CMSのコンポーネントにもフォントを適用
+.payload-admin {
+  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+}
+
+// フォーム要素にもフォントを適用
+input, textarea, select, button {
+  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+}

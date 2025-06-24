@@ -24,7 +24,7 @@ export const Archive: Block = {
           ]
         },
       }),
-      label: 'Intro Content',
+      label: 'イントロコンテンツ',
     },
     {
       name: 'populateBy',
@@ -32,11 +32,11 @@ export const Archive: Block = {
       defaultValue: 'collection',
       options: [
         {
-          label: 'Collection',
+          label: 'コレクション',
           value: 'collection',
         },
         {
-          label: 'Individual Selection',
+          label: '個別選択',
           value: 'selection',
         },
       ],
@@ -48,10 +48,10 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       defaultValue: 'posts',
-      label: 'Collections To Show',
+      label: '表示するコレクション',
       options: [
         {
-          label: 'Posts',
+          label: '投稿',
           value: 'posts',
         },
       ],
@@ -63,7 +63,7 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       hasMany: true,
-      label: 'Categories To Show',
+      label: '表示するカテゴリー',
       relationTo: 'categories',
     },
     {
@@ -74,7 +74,7 @@ export const Archive: Block = {
         step: 1,
       },
       defaultValue: 10,
-      label: 'Limit',
+      label: '制限',
     },
     {
       name: 'selectedDocs',
@@ -83,12 +83,12 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'selection',
       },
       hasMany: true,
-      label: 'Selection',
+      label: '選択',
       relationTo: ['posts'],
     },
   ],
   labels: {
-    plural: 'Archives',
-    singular: 'Archive',
+    plural: 'アーカイブ',
+    singular: 'アーカイブ',
   },
 }

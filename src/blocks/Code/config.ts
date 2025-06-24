@@ -10,11 +10,11 @@ export const Code: Block = {
       defaultValue: 'typescript',
       options: [
         {
-          label: 'Typescript',
+          label: 'TypeScript',
           value: 'typescript',
         },
         {
-          label: 'Javascript',
+          label: 'JavaScript',
           value: 'javascript',
         },
         {

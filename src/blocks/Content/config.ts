@@ -16,19 +16,19 @@ const columnFields: Field[] = [
     defaultValue: 'oneThird',
     options: [
       {
-        label: 'One Third',
+        label: '3分の1',
         value: 'oneThird',
       },
       {
-        label: 'Half',
+        label: '半分',
         value: 'half',
       },
       {
-        label: 'Two Thirds',
+        label: '3分の2',
         value: 'twoThirds',
       },
       {
-        label: 'Full',
+        label: '全体',
         value: 'full',
       },
     ],

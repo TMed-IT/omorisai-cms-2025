@@ -103,7 +103,7 @@ export const Posts: CollectionConfig<'posts'> = {
               required: true,
             },
           ],
-          label: 'Content',
+          label: 'コンテンツ',
         },
         {
           fields: [
@@ -133,7 +133,7 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'categories',
             },
           ],
-          label: 'Meta',
+          label: 'メタ',
         },
         {
           name: 'meta',

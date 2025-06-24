@@ -7,10 +7,11 @@ import './index.scss'
 
 const SuccessMessage: React.FC = () => (
   <div>
-    Database seeded! You can now{' '}
+    データベースを初期化しました！今すぐ{' '}
     <a target="_blank" href="/">
-      visit your website
+      ウェブサイトを閲覧
     </a>
+    できます
   </div>
 )
 
@@ -24,15 +25,15 @@ export const SeedButton: React.FC = () => {
       e.preventDefault()
 
       if (seeded) {
-        toast.info('Database already seeded.')
+        toast.info('データベースは既に初期化されています。')
         return
       }
       if (loading) {
-        toast.info('Seeding already in progress.')
+        toast.info('初期化処理が既に進行中です。')
         return
       }
       if (error) {
-        toast.error(`An error occurred, please refresh and try again.`)
+        toast.error(`エラーが発生しました。ページを更新して再試行してください。`)
         return
       }
 
@@ -48,7 +49,7 @@ export const SeedButton: React.FC = () => {
                     resolve(true)
                     setSeeded(true)
                   } else {
-                    reject('An error occurred while seeding.')
+                    reject('初期化処理中にエラーが発生しました。')
                   }
                 })
                 .catch((error) => {
@@ -59,9 +60,9 @@ export const SeedButton: React.FC = () => {
             }
           }),
           {
-            loading: 'Seeding with data....',
+            loading: 'データを初期化中....',
             success: <SuccessMessage />,
-            error: 'An error occurred while seeding.',
+            error: '初期化処理中にエラーが発生しました。',
           },
         )
       } catch (err) {
@@ -73,14 +74,14 @@ export const SeedButton: React.FC = () => {
   )
 
   let message = ''
-  if (loading) message = ' (seeding...)'
-  if (seeded) message = ' (done!)'
-  if (error) message = ` (error: ${error})`
+  if (loading) message = ' (初期化中...)'
+  if (seeded) message = ' (完了)'
+  if (error) message = ` (エラー: ${error})`
 
   return (
     <Fragment>
       <button className="seedButton" onClick={handleClick}>
-        Seed your database
+        データベースを初期化
       </button>
       {message}
     </Fragment>

@@ -68,7 +68,7 @@ export const Pages: CollectionConfig<'pages'> = {
       tabs: [
         {
           fields: [hero],
-          label: 'Hero',
+          label: 'ヒーロー',
         },
         {
           fields: [
@@ -82,7 +82,7 @@ export const Pages: CollectionConfig<'pages'> = {
               },
             },
           ],
-          label: 'Content',
+          label: 'コンテンツ',
         },
         {
           name: 'meta',

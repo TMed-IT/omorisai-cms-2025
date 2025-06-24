@@ -9,6 +9,16 @@ import React from 'react'
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
 
+// Google Fontsのインポート
+import { Zen_Kaku_Gothic_New } from 'next/font/google'
+
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+  variable: '--font-zen-kaku-gothic-new',
+})
+
 type Args = {
   children: React.ReactNode
 }
@@ -23,7 +33,14 @@ const serverFunction: ServerFunctionClient = async function (args) {
 }
 
 const Layout = ({ children }: Args) => (
-  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+  <RootLayout 
+    config={config} 
+    importMap={importMap} 
+    serverFunction={serverFunction}
+    htmlProps={{
+      className: zenKakuGothicNew.className
+    }}
+  >
     {children}
   </RootLayout>
 )

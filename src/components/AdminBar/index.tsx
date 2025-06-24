@@ -16,20 +16,20 @@ const baseClass = 'admin-bar'
 
 const collectionLabels = {
   pages: {
-    plural: 'Pages',
-    singular: 'Page',
+    plural: 'ページ',
+    singular: 'ページ',
   },
   posts: {
-    plural: 'Posts',
-    singular: 'Post',
+    plural: '投稿',
+    singular: '投稿',
   },
   projects: {
-    plural: 'Projects',
-    singular: 'Project',
+    plural: 'プロジェクト',
+    singular: 'プロジェクト',
   },
 }
 
-const Title: React.FC = () => <span>Dashboard</span>
+const Title: React.FC = () => <span>ダッシュボード</span>
 
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps
