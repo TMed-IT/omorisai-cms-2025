@@ -94,8 +94,8 @@ const config = {
         warning: 'hsl(var(--warning))',
       },
       fontFamily: {
-        mono: ['var(--font-geist-mono)'],
-        sans: ['Zen Kaku Gothic New', 'var(--font-geist-sans)', 'sans-serif'],
+        mono: ['M PLUS 1 Code', 'monospace'],
+        sans: ['Zen Kaku Gothic New', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

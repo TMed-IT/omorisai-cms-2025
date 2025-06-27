@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&family=Zen+Kaku+Gothic+New&display=swap');
 
 // Adminページ全体にフォントを適用
 body {
@@ -13,4 +13,9 @@ body {
 // フォーム要素にもフォントを適用
 input, textarea, select, button {
   font-family: 'Zen Kaku Gothic New', sans-serif !important;
+}
+
+// コード要素にはM PLUS 1 Codeフォントを適用
+code, pre, .code-block {
+  font-family: 'M PLUS 1 Code', monospace !important;
 }

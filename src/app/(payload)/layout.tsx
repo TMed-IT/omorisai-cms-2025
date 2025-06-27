@@ -10,13 +10,20 @@ import { importMap } from './admin/importMap.js'
 import './custom.scss'
 
 // Google Fontsのインポート
-import { Zen_Kaku_Gothic_New } from 'next/font/google'
+import { Zen_Kaku_Gothic_New, M_PLUS_1_Code } from 'next/font/google'
 
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
   display: 'swap',
   variable: '--font-zen-kaku-gothic-new',
+})
+
+const mPlus1Code = M_PLUS_1_Code({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-m-plus-1-code',
 })
 
 type Args = {
@@ -38,7 +45,7 @@ const Layout = ({ children }: Args) => (
     importMap={importMap} 
     serverFunction={serverFunction}
     htmlProps={{
-      className: zenKakuGothicNew.className
+      className: `${zenKakuGothicNew.className} ${mPlus1Code.className}`
     }}
   >
     {children}
