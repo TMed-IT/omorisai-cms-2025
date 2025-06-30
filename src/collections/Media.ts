@@ -16,17 +16,24 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'メディア',
+    plural: 'メディア',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
     read: anyone,
     update: authenticated,
   },
+  admin: {
+    group: 'メディア管理',
+  },
   fields: [
     {
       name: 'alt',
       type: 'text',
-      //required: true,
+      label: '代替テキスト',
     },
     {
       name: 'caption',
@@ -36,6 +43,7 @@ export const Media: CollectionConfig = {
           return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
         },
       }),
+      label: 'キャプション',
     },
   ],
   upload: {

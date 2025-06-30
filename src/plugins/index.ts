@@ -45,6 +45,13 @@ export const plugins: Plugin[] = [
       hooks: {
         afterChange: [revalidateRedirects],
       },
+      labels: {
+        singular: 'リダイレクト',
+        plural: 'リダイレクト',
+      },
+      admin: {
+        group: 'サイト設定',
+      },
     },
   }),
   nestedDocsPlugin({
@@ -79,6 +86,22 @@ export const plugins: Plugin[] = [
           return field
         })
       },
+      labels: {
+        singular: '質問',
+        plural: '質問',
+      },
+      admin: {
+        group: 'フォーム管理',
+      },
+    },
+    formSubmissionOverrides: {
+      labels: {
+        singular: '回答',
+        plural: '回答',
+      },
+      admin: {
+        group: 'フォーム管理',
+      },
     },
   }),
   searchPlugin({
@@ -87,6 +110,13 @@ export const plugins: Plugin[] = [
     searchOverrides: {
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
+      },
+      labels: {
+        singular: '検索結果',
+        plural: '検索結果',
+      },
+      admin: {
+        group: 'サイト設定',
       },
     },
   }),

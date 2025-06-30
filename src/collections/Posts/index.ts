@@ -29,6 +29,10 @@ import { slugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: '投稿',
+    plural: '投稿',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -67,12 +71,14 @@ export const Posts: CollectionConfig<'posts'> = {
         req,
       }),
     useAsTitle: 'title',
+    group: 'コンテンツ管理',
   },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
+      label: 'タイトル',
     },
     {
       type: 'tabs',
@@ -83,6 +89,7 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              label: 'ヒーロー画像',
             },
             {
               name: 'content',
@@ -122,6 +129,7 @@ export const Posts: CollectionConfig<'posts'> = {
               },
               hasMany: true,
               relationTo: 'posts',
+              label: '関連投稿',
             },
             {
               name: 'categories',
@@ -131,6 +139,7 @@ export const Posts: CollectionConfig<'posts'> = {
               },
               hasMany: true,
               relationTo: 'categories',
+              label: 'カテゴリー',
             },
           ],
           label: 'メタ',
@@ -153,10 +162,7 @@ export const Posts: CollectionConfig<'posts'> = {
 
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
               hasGenerateFn: true,
-
-              // field paths to match the target field for data
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
@@ -183,6 +189,7 @@ export const Posts: CollectionConfig<'posts'> = {
           },
         ],
       },
+      label: '公開日時',
     },
     {
       name: 'authors',
@@ -192,6 +199,7 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hasMany: true,
       relationTo: 'users',
+      label: '著者',
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy

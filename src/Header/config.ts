@@ -5,8 +5,12 @@ import { revalidateHeader } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
   slug: 'header',
+  label: 'ヘッダー',
   access: {
     read: () => true,
+  },
+  admin: {
+    group: 'サイト設定',
   },
   fields: [
     {
@@ -24,6 +28,7 @@ export const Header: GlobalConfig = {
           RowLabel: '@/Header/RowLabel#RowLabel',
         },
       },
+      label: 'ナビゲーション項目',
     },
   ],
   hooks: {

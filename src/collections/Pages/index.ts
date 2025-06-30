@@ -23,6 +23,10 @@ import {
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: 'ページ',
+    plural: 'ページ',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -56,12 +60,14 @@ export const Pages: CollectionConfig<'pages'> = {
         req,
       }),
     useAsTitle: 'title',
+    group: 'コンテンツ管理',
   },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
+      label: 'タイトル',
     },
     {
       type: 'tabs',
@@ -80,6 +86,7 @@ export const Pages: CollectionConfig<'pages'> = {
               admin: {
                 initCollapsed: true,
               },
+              label: 'レイアウト',
             },
           ],
           label: 'コンテンツ',
@@ -119,6 +126,7 @@ export const Pages: CollectionConfig<'pages'> = {
       admin: {
         position: 'sidebar',
       },
+      label: '公開日時',
     },
     ...slugField(),
   ],

@@ -5,8 +5,12 @@ import { revalidateFooter } from './hooks/revalidateFooter'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  label: 'フッター',
   access: {
     read: () => true,
+  },
+  admin: {
+    group: 'サイト設定',
   },
   fields: [
     {
@@ -24,6 +28,7 @@ export const Footer: GlobalConfig = {
           RowLabel: '@/Footer/RowLabel#RowLabel',
         },
       },
+      label: 'ナビゲーション項目',
     },
   ],
   hooks: {
