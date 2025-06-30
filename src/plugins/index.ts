@@ -117,6 +117,7 @@ export const plugins: Plugin[] = [
       },
       admin: {
         group: 'サイト設定',
+        description: 'これは自動生成される検索結果のコレクションです。コンテンツが作成・更新されると自動的に反映されます。',
       },
     },
   }),
