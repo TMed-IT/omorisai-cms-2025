@@ -96,6 +96,9 @@ export default buildConfig({
     fallbackLanguage: 'ja',
     translations: {
       ja: {
+        authentication: {
+          beginCreateFirstUser: 'はじめに、最初のユーザーを作成してください。',
+        },
         operators: {
           contains: '次を含む',
           equals: '次と等しい',
@@ -132,6 +135,7 @@ export default buildConfig({
           changesNotSaved: '未保存の変更があります。このままページを離れると内容が失われます。',
           stayOnThisPage: 'このページに留まる',
           leaveAnyway: '変更を破棄して離れる',
+          submitting: '送信中...',
         },
         version:{
           draft: '下書き',
@@ -143,6 +147,9 @@ export default buildConfig({
           reverting: '取消中...',
           unpublish: '取り下げ',
           unpublishing: '取り下げ中...',
+        },
+        validation: {
+          required: 'この項目は必須です',
         },
         fields: {
           chooseFromExisting: 'メディアから選択',

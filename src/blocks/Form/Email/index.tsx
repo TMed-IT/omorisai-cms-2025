@@ -7,6 +7,7 @@ import React from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
+import { validateEmail } from '../../../utilities/validateEmail'
 
 export const Email: React.FC<
   EmailField & {
@@ -14,6 +15,11 @@ export const Email: React.FC<
     register: UseFormRegister<FieldValues>
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
+  const validateEmailField = (value: string) => {
+    if (!value) return required ? 'メールアドレスは必須です' : true
+    return validateEmail(value)
+  }
+
   return (
     <Width width={width}>
       <Label htmlFor={name}>
@@ -29,7 +35,10 @@ export const Email: React.FC<
         defaultValue={defaultValue}
         id={name}
         type="text"
-        {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
+        {...register(name, { 
+          validate: validateEmailField,
+          required: required 
+        })}
       />
 
       {errors[name] && <Error name={name} />}

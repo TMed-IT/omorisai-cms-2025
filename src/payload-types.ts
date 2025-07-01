@@ -108,7 +108,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: 'ja';
+  locale: null;
   user: User & {
     collection: 'users';
   };
@@ -771,7 +771,7 @@ export interface FormSubmission {
   createdAt: string;
 }
 /**
- * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ * これは自動生成される検索結果のコレクションです。コンテンツが作成・更新されると自動的に反映されます。
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "search".

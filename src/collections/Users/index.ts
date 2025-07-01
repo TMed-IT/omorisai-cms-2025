@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
+import { validateEmail } from '../../utilities/validateEmail'
+import { EmailValidationError } from '../../utilities/errors'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -28,5 +30,20 @@ export const Users: CollectionConfig = {
       label: '名前',
     },
   ],
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (data?.email) {
+          const email = data.email as string
+          const validationResult = validateEmail(email)
+          
+          if (validationResult !== true) {
+            throw new EmailValidationError(validationResult)
+          }
+        }
+        return data
+      },
+    ],
+  },
   timestamps: true,
 }

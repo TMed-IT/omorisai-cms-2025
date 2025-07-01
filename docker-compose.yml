@@ -24,7 +24,10 @@ services:
     volumes:
       - data:/data/db
     logging:
-      driver: none
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   data:
