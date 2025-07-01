@@ -17,7 +17,7 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { ja } from '@payloadcms/translations/languages/ja'
-import { en } from '@payloadcms/translations/languages/en'
+import Database from '@/Database/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -66,7 +66,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, Database],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
@@ -149,10 +149,17 @@ export default buildConfig({
           unpublishing: '取り下げ中...',
         },
         validation: {
+          emailAddress: '有効なメールアドレスを入力してください',
+          enterNumber: '有効な数値を入力してください',
           required: 'この項目は必須です',
         },
         fields: {
           chooseFromExisting: 'メディアから選択',
+        },
+        errors: {
+          emailOrPasswordIncorrect: 'メールアドレスまたはパスワードが間違っています',
+          correctInvalidFields: '無効なフィールドを修正してください',
+
         },
       },
     },
