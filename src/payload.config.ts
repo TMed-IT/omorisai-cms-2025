@@ -140,13 +140,17 @@ export default buildConfig({
         version:{
           draft: '下書き',
           currentDraft: '現在の下書き',
-          lastSavedAgo: '最終保存：{{distance}}前',
-          published: '公開',
+          lastSavedAgo: '{{distance}}前に最終保存',
+          published: '公開中',
+
+          publishing: '公開しています...',
           publishAllLocales: 'すべてのロケールを公開',
           restoring: '復元中...',
           reverting: '取消中...',
-          unpublish: '取り下げ',
-          unpublishing: '取り下げ中...',
+          unpublish: '非公開にする',
+          unpublishing: '非公開にしています...',
+          confirmUnpublish: '本当に非公開にしますか？',
+
         },
         validation: {
           emailAddress: '有効なメールアドレスを入力してください',

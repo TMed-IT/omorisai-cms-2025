@@ -46,7 +46,6 @@ export const seed = async ({
       payload.updateGlobal({
         slug: global,
         data: {
-          navItems: [],
         },
         depth: 0,
         context: {
@@ -95,15 +94,7 @@ export const seed = async ({
     ),
   ])
 
-  const [demoAuthor, image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
-    payload.create({
-      collection: 'users',
-      data: {
-        name: 'Demo Author',
-        email: 'demo-author@example.com',
-        password: 'password',
-      },
-    }),
+  const [image1Doc, image2Doc, image3Doc, imageHomeDoc] = await Promise.all([
     payload.create({
       collection: 'media',
       data: image1,
@@ -213,7 +204,7 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
+    data: post1({ heroImage: image1Doc, blockImage: image2Doc }),
   })
 
   const post2Doc = await payload.create({
@@ -222,7 +213,7 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
+    data: post2({ heroImage: image2Doc, blockImage: image3Doc }),
   })
 
   const post3Doc = await payload.create({
@@ -231,7 +222,7 @@ export const seed = async ({
     context: {
       disableRevalidate: true,
     },
-    data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
+    data: post3({ heroImage: image3Doc, blockImage: image1Doc }),
   })
 
   // update each post with related posts

@@ -1,17 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&family=Zen+Kaku+Gothic+New&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&family=Zen+Kaku+Gothic+New&family=Noto+Sans+JP:wght@100..900&display=swap');
 
 body {
-  font-family: 'Zen Kaku Gothic New', sans-serif !important;
-}
-
-.payload-admin {
-  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+  font-family: 'Noto Sans JP', sans-serif !important;
 }
 
 input, textarea, select, button {
-  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+  font-family: 'Noto Sans JP', sans-serif !important;
 }
 
 code, pre, .code-block {
   font-family: 'M PLUS 1 Code', monospace !important;
+}
+
+.editor,
+[contenteditable="true"] {
+  font-family: 'Zen Kaku Gothic New', sans-serif !important;
 }

@@ -56,7 +56,7 @@ const InitializePage = () => {
             }
           }),
           {
-            loading: 'データを初期化中....',
+            loading: 'データベースを初期化中...',
             success: <SuccessMessage />,
             error: '初期化処理中にエラーが発生しました。',
           },

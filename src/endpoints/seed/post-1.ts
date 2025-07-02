@@ -4,18 +4,15 @@ import { RequiredDataFromCollectionSlug } from 'payload'
 export type PostArgs = {
   heroImage: Media
   blockImage: Media
-  author: User
 }
 
 export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> = ({
   heroImage,
   blockImage,
-  author,
 }) => {
   return {
     slug: 'digital-horizons',
     _status: 'published',
-    authors: [author],
     content: {
       root: {
         type: 'root',
