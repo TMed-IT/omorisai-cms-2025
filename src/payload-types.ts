@@ -104,11 +104,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     database: Database;
+    festival: Festival;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     database: DatabaseSelect<false> | DatabaseSelect<true>;
+    festival: FestivalSelect<false> | FestivalSelect<true>;
   };
   locale: null;
   user: User & {
@@ -193,7 +195,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FestivalTopBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -706,6 +708,23 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FestivalTopBlock".
+ */
+export interface FestivalTopBlock {
+  badgeText?: string | null;
+  showCountdown?: boolean | null;
+  showSlogan?: boolean | null;
+  showSchedule?: boolean | null;
+  showLocation?: boolean | null;
+  announcementText?: string | null;
+  slogan?: string | null;
+  noticeText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'festivalTop';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1013,6 +1032,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        festivalTop?: T | FestivalTopBlockSelect<T>;
       };
   meta?:
     | T
@@ -1109,6 +1129,22 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FestivalTopBlock_select".
+ */
+export interface FestivalTopBlockSelect<T extends boolean = true> {
+  badgeText?: T;
+  showCountdown?: T;
+  showSlogan?: T;
+  showSchedule?: T;
+  showLocation?: T;
+  announcementText?: T;
+  slogan?: T;
+  noticeText?: T;
   id?: T;
   blockName?: T;
 }
@@ -1589,6 +1625,29 @@ export interface Database {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "festival".
+ */
+export interface Festival {
+  id: string;
+  festivalInfo: {
+    year: string;
+    startDate: string;
+    endDate: string;
+    location: string;
+  };
+  socialLinks?:
+    | {
+        label: string;
+        url: string;
+        icon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1638,6 +1697,31 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "database_select".
  */
 export interface DatabaseSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "festival_select".
+ */
+export interface FestivalSelect<T extends boolean = true> {
+  festivalInfo?:
+    | T
+    | {
+        year?: T;
+        startDate?: T;
+        endDate?: T;
+        location?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        icon?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

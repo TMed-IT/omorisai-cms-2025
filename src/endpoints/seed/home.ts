@@ -141,6 +141,16 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
     },
     layout: [
       {
+        blockName: 'Festival Top Block',
+        blockType: 'festivalTop',
+        showCountdown: false,
+        showSlogan: true,
+        showSchedule: true,
+        showLocation: true,
+        announcementText: '開催日時は後日発表予定です',
+        slogan: '創造と革新が交差する、未来への扉を開く文化祭',
+      },
+      {
         blockName: 'Content Block',
         blockType: 'content',
         columns: [
