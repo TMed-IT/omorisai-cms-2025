@@ -46,8 +46,7 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-        },
+        data: global === 'festival' ? festivalData : {},
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -65,18 +64,6 @@ export const seed = async ({
       .filter((collection) => Boolean(payload.collections[collection].config.versions))
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
-
-  payload.logger.info(`— Seeding demo author and user...`)
-
-  await payload.delete({
-    collection: 'users',
-    depth: 0,
-    where: {
-      email: {
-        equals: 'demo-author@example.com',
-      },
-    },
-  })
 
   payload.logger.info(`— Seeding media...`)
 
@@ -282,18 +269,22 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Posts',
-              url: '/posts',
+              label: 'Message',
+              url: '/message',
             },
           },
           {
             link: {
-              type: 'reference',
-              label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
+              type: 'custom',
+              label: 'Events',
+              url: '/events',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'SNS',
+              url: '/social',
             },
           },
         ],

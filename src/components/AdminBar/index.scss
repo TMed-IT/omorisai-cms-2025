@@ -1,7 +1,14 @@
 @import '~@payloadcms/ui/scss';
 
+:root {
+  --admin-bar-height: 48px;
+}
+
 .admin-bar {
   @include small-break {
     display: none;
   }
+  
+  height: var(--admin-bar-height);
+  min-height: var(--admin-bar-height);
 }

@@ -14,6 +14,15 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'ロゴ画像',
+      admin: {
+        description: 'ヘッダーに表示されるロゴ画像を選択してください',
+      },
+    },
+    {
       name: 'navItems',
       type: 'array',
       fields: [
@@ -27,8 +36,18 @@ export const Header: GlobalConfig = {
         components: {
           RowLabel: '@/Header/RowLabel#RowLabel',
         },
+        description: 'ヘッダーナビゲーションに表示する項目を追加してください',
       },
       label: 'ナビゲーション項目',
+    },
+    {
+      name: 'showSearch',
+      type: 'checkbox',
+      label: '検索ボタンを表示',
+      defaultValue: true,
+      admin: {
+        description: 'ヘッダーに検索ボタンを表示するかどうかを設定します',
+      },
     },
   ],
   hooks: {
