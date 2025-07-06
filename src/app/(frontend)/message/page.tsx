@@ -14,9 +14,3 @@ export default function MessagePage() {
     </div>
   )
 }
-
-export function generateMetadata(): Metadata {
-  return {
-    title: `メッセージ - 大森祭ウェブサイト管理システム`,
-  }
-} 

@@ -149,6 +149,10 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
         showLocation: true,
         announcementText: '開催日時は後日発表予定です',
         slogan: '創造と革新が交差する、未来への扉を開く文化祭',
+        dateFormat: {
+          startDateFormat: 'YYYY/MM/D',
+          endDateFormat: 'D',
+        },
       },
       {
         blockName: 'Content Block',

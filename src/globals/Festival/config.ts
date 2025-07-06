@@ -1,19 +1,29 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig, GlobalAfterChangeHook } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateFestival: GlobalAfterChangeHook = ({ doc, req: { context } }) => {
+  if (!context.disableRevalidate) {
+    revalidateTag('global_festival')
+  }
+}
 
 export const Festival: GlobalConfig = {
   slug: 'festival',
   access: {
     read: () => true,
   },
-  label: '開催情報',
+  label: '基本設定',
   admin: {
     group: 'コンテンツ管理',
+  },
+  hooks: {
+    afterChange: [revalidateFestival],
   },
   fields: [
     {
       name: 'festivalInfo',
       type: 'group',
-      label: '基本情報',
+      label: '開催情報',
       fields: [
         {
           name: 'year',

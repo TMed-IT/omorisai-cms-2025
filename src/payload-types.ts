@@ -716,6 +716,13 @@ export interface FestivalTopBlock {
   showSlogan?: boolean | null;
   showSchedule?: boolean | null;
   showLocation?: boolean | null;
+  /**
+   * ISO date format が利用できます。YYYY(年), YY(年の下2桁), MM(月2桁), M(月), DD(日2桁), D(日) を使用してください。例: YYYY/MM/DD, MM月DD日, YYYY年M月D日, YY-MM-DD
+   */
+  dateFormat: {
+    startDateFormat: string;
+    endDateFormat: string;
+  };
   announcementText?: string | null;
   slogan?: string | null;
   noticeText?: string | null;
@@ -1142,6 +1149,12 @@ export interface FestivalTopBlockSelect<T extends boolean = true> {
   showSlogan?: T;
   showSchedule?: T;
   showLocation?: T;
+  dateFormat?:
+    | T
+    | {
+        startDateFormat?: T;
+        endDateFormat?: T;
+      };
   announcementText?: T;
   slogan?: T;
   noticeText?: T;
