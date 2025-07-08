@@ -64,7 +64,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, festivalData }
 
   return (
     <header
-      className={`fixed left-0 right-0 z-30 bg-black/20 backdrop-blur-md border-b border-white/10 transition-all duration-600 ${
+      className={`fixed left-0 right-0 z-40 bg-black/20 backdrop-blur-md border-b border-white/10 transition-all duration-600 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full'
       }`}
       style={{ top: `${adminBarHeight}px` }}

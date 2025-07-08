@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
 
           <Header />
-          <main className="pt-[calc(var(--admin-bar-height,0px)+80px)] min-h-screen">
+          <main className="pt-[calc(var(--admin-bar-height,0px)+80px)] min-h-screen transition-all duration-300">
             {children}
           </main>
           <Footer />

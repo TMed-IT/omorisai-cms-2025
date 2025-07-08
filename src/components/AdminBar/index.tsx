@@ -5,7 +5,7 @@ import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import './index.scss'
@@ -46,9 +46,18 @@ export const AdminBar: React.FC<{
     setShow(Boolean(user?.id))
   }, [])
 
+  useEffect(() => {
+    const root = document.documentElement
+    if (show) {
+      root.style.setProperty('--admin-bar-height', '48px')
+    } else {
+      root.style.setProperty('--admin-bar-height', '0px')
+    }
+  }, [show])
+
   return (
     <div
-      className={cn(baseClass, 'fixed top-0 left-0 right-0 z-40 py-2 bg-black text-white', {
+      className={cn(baseClass, 'fixed top-0 left-0 right-0 z-20 py-2 bg-black text-white', {
         block: show,
         hidden: !show,
       })}
