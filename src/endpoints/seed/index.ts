@@ -1,4 +1,6 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import fs from 'fs'
+import path from 'path'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -10,11 +12,18 @@ import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
 import { festival as festivalData } from './festival'
+import { messages } from './message'
+import { events } from './events'
+import { clubs } from './clubs'
 
-const collections: CollectionSlug[] = [
+const allCollections: CollectionSlug[] = [
   'media',
   'pages',
   'posts',
+  // 'users', // ユーザーは消さない
+  'messages',
+  'events',
+  'clubs',
   'forms',
   'form-submissions',
   'search',
@@ -40,6 +49,14 @@ export const seed = async ({
   // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`)
 
+  // mediaディレクトリの物理ファイルを全削除
+  const mediaDir = path.resolve(process.cwd(), 'public/media')
+  if (fs.existsSync(mediaDir)) {
+    for (const file of fs.readdirSync(mediaDir)) {
+      fs.unlinkSync(path.join(mediaDir, file))
+    }
+  }
+
   // clear the database
   await Promise.all(
     globals.map((global) =>
@@ -55,12 +72,12 @@ export const seed = async ({
   )
 
   await Promise.all(
-    collections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
+    allCollections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
   )
 
   await Promise.all(
-    collections
-      .filter((collection) => Boolean(payload.collections[collection].config.versions))
+    allCollections
+      .filter((collection) => Boolean(payload.collections[collection]?.config.versions))
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
 
@@ -247,6 +264,40 @@ export const seed = async ({
       data: festivalData,
     }),
   ])
+
+  payload.logger.info(`— Seeding messages...`)
+  for (const msg of messages) {
+    await payload.create({
+      collection: 'messages',
+      data: msg,
+    })
+  }
+
+  payload.logger.info(`— Seeding events...`)
+  const eventThumbnails = [image1Doc, image2Doc]
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i] as any
+    await payload.create({
+      collection: 'events',
+      data: {
+        ...event,
+        thumbnail: eventThumbnails[i % eventThumbnails.length]?.id ?? '',
+      },
+    })
+  }
+
+  payload.logger.info(`— Seeding clubs...`)
+  const clubImages = [image3Doc, imageHomeDoc]
+  for (let i = 0; i < clubs.length; i++) {
+    const club = clubs[i] as any
+    await payload.create({
+      collection: 'clubs',
+      data: {
+        ...club,
+        image: clubImages[i % clubImages.length]?.id ?? '',
+      },
+    })
+  }
 
   payload.logger.info('Seeded database successfully!')
 }

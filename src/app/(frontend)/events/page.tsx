@@ -1,16 +1,24 @@
-import type { Metadata } from 'next'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+import { Media } from '@/components/Media'
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const payload = await getPayload({ config: configPromise })
+  const events = await payload.find({ collection: 'events' })
+
   return (
-    <div className="pt-16 pb-24">
-      <div className="container">
-        <div className="prose dark:prose-invert max-w-none text-center">
-          <h1 className="mb-8 lg:mb-16">イベント</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
-            大森祭で開催される様々なイベントの情報をご覧いただけます。
-          </p>
-        </div>
+    <main>
+      <h1>イベント</h1>
+      <div>
+        {events.docs.map((event: any) => (
+          <div key={event.id}>
+            <h2>{event.title}</h2>
+            <p>日時: {event.date}</p>
+            <p>場所: {event.location}</p>
+            <Media resource={event.thumbnail} />
+          </div>
+        ))}
       </div>
-    </div>
+    </main>
   )
 }

@@ -1,16 +1,21 @@
-import type { Metadata } from 'next'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
 
-export default function MessagePage() {
+export default async function MessagePage() {
+  const payload = await getPayload({ config: configPromise })
+  const messages = await payload.find({ collection: 'messages' })
+
   return (
-    <div className="pt-16 pb-24">
-      <div className="container">
-        <div className="prose dark:prose-invert max-w-none text-center">
-          <h1 className="mb-8 lg:mb-16">メッセージ</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
-            大森祭に関するメッセージやお知らせを掲載しています。
-          </p>
-        </div>
+    <main>
+      <h1>メッセージ</h1>
+      <div>
+        {messages.docs.map((msg: any) => (
+          <div key={msg.id}>
+            <h2>{msg.position}：{msg.name}</h2>
+            <div dangerouslySetInnerHTML={{ __html: msg.message }} />
+          </div>
+        ))}
       </div>
-    </div>
+    </main>
   )
 }

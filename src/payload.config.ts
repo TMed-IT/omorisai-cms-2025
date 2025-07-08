@@ -18,6 +18,9 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { ja } from '@payloadcms/translations/languages/ja'
 import Database from '@/Database/config'
+import Message from './collections/Message'
+import Events from './collections/Events'
+import Clubs from './collections/Clubs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,7 +67,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Users],
+  collections: [Pages, Posts, Media, Users, Message, Events, Clubs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Database, Festival],
   plugins: [
