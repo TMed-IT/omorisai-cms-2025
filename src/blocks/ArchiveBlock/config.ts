@@ -57,16 +57,6 @@ export const Archive: Block = {
       ],
     },
     {
-      name: 'categories',
-      type: 'relationship',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
-      },
-      hasMany: true,
-      label: '表示するカテゴリー',
-      relationTo: 'categories',
-    },
-    {
       name: 'limit',
       type: 'number',
       admin: {
