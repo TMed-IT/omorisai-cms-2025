@@ -1,9 +1,23 @@
+import { authenticated } from '@/access/authenticated'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import type { CollectionConfig } from 'payload'
 
-const Message: CollectionConfig = {
+const Messages: CollectionConfig = {
   slug: 'messages',
+  labels: {
+    singular: 'メッセージ',
+    plural: 'メッセージ',
+  },
+  access: {
+    create: authenticated,
+    delete: authenticated,
+    read: authenticatedOrPublished,
+    update: authenticated,
+  },
   admin: {
-    useAsTitle: 'name',
+    defaultColumns: ['slug', 'name', 'position'],
+    group: 'コンテンツ管理',
+    useAsTitle: 'position',
   },
   hooks: {
     beforeChange: [
@@ -60,6 +74,15 @@ const Message: CollectionConfig = {
       label: '挨拶文',
     },
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: false,
+    },
+    maxPerDoc: 50,
+  },
 }
 
-export default Message 
+export default Messages 

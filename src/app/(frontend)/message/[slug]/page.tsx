@@ -1,12 +1,10 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
-import { Header } from '@/Header/Component'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Quote, User } from 'lucide-react'
 import { FadeIn, ScaleIn } from '@/components/Animations/animations'
-import { BackgroundEffects } from '@/components/Custom/background-effects'
 import Link from 'next/link'
 import RichText from '@/components/RichText'
 
@@ -40,10 +38,7 @@ export default async function MessageDetailPage({ params }: Props) {
     }
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
-        <BackgroundEffects variant="default" />
-        <Header />
-
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800"> 
         <section className="relative pt-24 pb-16 px-4">
           <div className="container mx-auto max-w-4xl">
             <FadeIn>

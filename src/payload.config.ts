@@ -18,7 +18,7 @@ import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { ja } from '@payloadcms/translations/languages/ja'
 import Database from '@/Database/config'
-import Message from './collections/Message'
+import Messages from './collections/Messages'
 import Events from './collections/Events'
 import Clubs from './collections/Clubs'
 
@@ -67,7 +67,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Media, Users, Message, Events, Clubs],
+  collections: [Pages, Posts, Media, Users, Messages, Events, Clubs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Database, Festival],
   plugins: [
