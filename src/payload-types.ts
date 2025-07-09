@@ -735,6 +735,10 @@ export interface User {
  */
 export interface Message {
   id: string;
+  /**
+   * 自動生成されます
+   */
+  slug: string;
   position: string;
   name: string;
   message: {
@@ -1343,6 +1347,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "messages_select".
  */
 export interface MessagesSelect<T extends boolean = true> {
+  slug?: T;
   position?: T;
   name?: T;
   message?: T;

@@ -1,5 +1,6 @@
 export const messages = [
   {
+    slug: '1',
     position: '実行委員長',
     name: '山田 太郎',
     message: {
@@ -29,6 +30,7 @@ export const messages = [
     },
   },
   {
+    slug: '2',
     position: '副委員長',
     name: '佐藤 花子',
     message: {
