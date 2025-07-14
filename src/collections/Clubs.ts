@@ -2,8 +2,13 @@ import type { CollectionConfig } from 'payload'
 
 const Clubs: CollectionConfig = {
   slug: 'clubs',
+  labels: {
+    singular: '部活紹介',
+    plural: '部活紹介',
+  },
   admin: {
-    useAsTitle: 'name',
+    defaultColumns: ['name', 'image'],
+    group: 'コンテンツ管理',
   },
   fields: [
     {

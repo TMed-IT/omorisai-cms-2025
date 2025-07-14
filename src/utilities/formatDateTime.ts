@@ -68,3 +68,11 @@ export const formatDateByISOFormat = (date: Date, format: string): string => {
     .replace('DD', DD)
     .replace('D', D)
 }
+
+export const formatDateShortJP = (date: Date): string => {
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  return `${month}/${day} ${hour}:${minute.toString().padStart(2, '0')}`
+}

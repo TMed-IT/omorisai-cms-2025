@@ -2,8 +2,13 @@ import type { CollectionConfig } from 'payload'
 
 const Events: CollectionConfig = {
   slug: 'events',
+  labels: {
+    singular: 'イベント',
+    plural: 'イベント',
+  },
   admin: {
-    useAsTitle: 'title',
+    defaultColumns: ['title', 'date', 'location'],
+    group: 'コンテンツ管理',
   },
   fields: [
     {

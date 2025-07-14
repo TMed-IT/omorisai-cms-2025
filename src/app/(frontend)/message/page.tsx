@@ -23,7 +23,10 @@ export default async function MessagePage() {
       const text = message.message.root.children[0].children[0].text
       return text.length > 100 ? text.substring(0, 100) + '...' : text
     }
-    return 'メッセージを読み込んでいます...'
+    // スケルトン表示
+    return (
+      <div className="w-full h-6 bg-slate-700 rounded animate-pulse mb-2" />
+    )
   }
 
   return (
@@ -34,11 +37,6 @@ export default async function MessagePage() {
           <FadeIn>
             <div className="text-center mb-12">
               <h1 className="text-6xl font-bold text-white mb-6">MESSAGES</h1>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-                大森祭実行委員長をはじめ、学長、教職員、地域の皆様からの
-                <br />
-                温かい応援メッセージをお届けします。
-              </p>
             </div>
           </FadeIn>
         </div>
@@ -50,9 +48,9 @@ export default async function MessagePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {sortedMessages.map((message: any, index: number) => (
                 <StaggerItem key={message.id}>
-                  <Card className="bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group hover:scale-105 hover:bg-slate-700/90 transition-all duration-300 h-full">
+                  <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-300 ease-in-out hover:scale-[1.04] active:scale-100 hover:shadow-2xl hover:border-blue-400 h-full">
                     <div className="relative overflow-hidden">
-                      <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center">
+                      <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:opacity-80">
                         <div className="text-6xl text-white/30">
                           {message.name?.charAt(0) || '?'}
                         </div>
@@ -71,8 +69,8 @@ export default async function MessagePage() {
                       <p className="text-white/80 mb-6 leading-relaxed flex-1">
                         {getExcerpt(message)}
                       </p>
-                      <Link href={`/message/${message.slug}`}>
-                        <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 group-hover:scale-105 transition-all duration-300">
+                      <Link href={`/message/${message.slug}`} className="mt-auto">
+                        <Button className="w-full bg-gradient-to-r text-white/90 from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 group-hover:scale-105 transition-all duration-300">
                           続きを読む
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>

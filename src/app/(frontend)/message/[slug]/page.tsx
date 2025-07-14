@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowLeft, Quote, User } from 'lucide-react'
+import { ArrowLeft, User } from 'lucide-react'
 import { FadeIn, ScaleIn } from '@/components/Animations/animations'
 import Link from 'next/link'
 import RichText from '@/components/RichText'
@@ -76,26 +76,14 @@ export default async function MessageDetailPage({ params }: Props) {
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <Quote className="w-8 h-8 text-blue-400 flex-shrink-0 mt-1" />
-                    <div className="text-white/80 leading-relaxed">
+                  <div>
+                    <div className="text-white/80 leading-relaxed w-full">
                       <RichText data={message.message} />
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </ScaleIn>
-
-            <FadeIn delay={0.8}>
-              <div className="mt-8 text-center">
-                <Link href="/message">
-                  <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-8">
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    他のメッセージを見る
-                  </Button>
-                </Link>
-              </div>
-            </FadeIn>
           </div>
         </section>
       </div>

@@ -1,6 +1,7 @@
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import type { CollectionConfig } from 'payload'
+import { defaultLexical } from '@/fields/defaultLexical'
 
 const Messages: CollectionConfig = {
   slug: 'messages',
@@ -15,7 +16,7 @@ const Messages: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['slug', 'name', 'position'],
+    defaultColumns: ['position', 'name', 'slug'],
     group: 'コンテンツ管理',
     useAsTitle: 'position',
   },
@@ -72,6 +73,7 @@ const Messages: CollectionConfig = {
       type: 'richText',
       required: true,
       label: '挨拶文',
+      editor: defaultLexical,
     },
   ],
   versions: {
