@@ -20,20 +20,24 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 }
 
 export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post> | null
+  doc?: Partial<Page> | Partial<Post> | null
+  defaultTitle?: string
+  defaultDescription?: string
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, defaultTitle, defaultDescription } = args
 
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | 大森祭ウェブサイト管理システム'
-    : '大森祭ウェブサイト管理システム'
+    ? doc.meta.title + ' | 大森祭ウェブサイト管理システム'
+    : defaultTitle || '大森祭ウェブサイト管理システム'
+
+  const description = doc?.meta?.description || defaultDescription || ''
 
   return {
-    description: doc?.meta?.description,
+    description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description,
       images: ogImage
         ? [
             {

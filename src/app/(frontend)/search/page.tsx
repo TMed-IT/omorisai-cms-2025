@@ -7,6 +7,7 @@ import React from 'react'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
+import { generateMeta } from '@/utilities/generateMeta'
 
 type Args = {
   searchParams: Promise<{
@@ -80,8 +81,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   )
 }
 
-export function generateMetadata(): Metadata {
-  return {
-    title: `検索 - 大森祭ウェブサイト管理システム`,
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateMeta({
+    defaultTitle: '検索'
+  })
 }

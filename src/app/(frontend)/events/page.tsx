@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { FadeIn, Stagger, StaggerItem } from '@/components/Animations/animations'
 import { Calendar, MapPin } from 'lucide-react'
 import { formatDateShortJP } from '@/utilities/formatDateTime'
+import { WaveText } from '@/components/ui/wave-text'
 
 export default async function EventsPage() {
   const payload = await getPayload({ config: configPromise })
@@ -12,12 +13,15 @@ export default async function EventsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
-      {/* Hero Section */}
       <section className="relative pt-24 pb-16 px-4">
         <div className="container mx-auto">
           <FadeIn>
             <div className="text-center mb-12">
-              <h1 className="text-6xl font-bold text-white mb-6">EVENTS</h1>
+              <WaveText 
+                text="EVENTS" 
+                delay={0.4}
+                className="text-6xl font-bold text-white mb-6"
+              />
             </div>
           </FadeIn>
         </div>

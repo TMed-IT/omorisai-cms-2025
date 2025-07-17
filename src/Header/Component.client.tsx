@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import type { Header, Festival } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
-import { Media } from '@/components/Media'
 
 interface HeaderClientProps {
   data: Header
@@ -74,11 +73,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, festivalData }
         <div className="flex items-center justify-between">
           <div className="hover:scale-105 active:scale-95 transition-transform duration-200">
             <Link href="/" className="flex items-center space-x-2">
-              {logo ? (
-                <Media resource={logo} className="h-8 w-auto" />
-              ) : (
-                <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-              )}
+              <Logo loading="eager" priority="high" className="invert dark:invert-0" />
               <span className="text-2xl font-bold text-white hover:text-blue-300 transition-colors">
                 大森祭
               </span>
@@ -160,7 +155,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, festivalData }
                 >
                   <Link
                     href="/search"
-                    className="text-white/80 hover:text-white transition-colors py-2 block flex items-center space-x-2"
+                    className="text-white/80 hover:text-white transition-colors py-2 flex items-center space-x-2"
                     onClick={() => setIsOpen(false)}
                   >
                     <Search className="w-4 h-4" />

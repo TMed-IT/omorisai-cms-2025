@@ -1,19 +1,18 @@
 name: oomorisai-cms
 services:
-  payload:
-    image: node:20-alpine
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: oomorisai-cms-app
     ports:
       - '3000:3000'
-    volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "npm install -g pnpm && pnpm install && pnpm dev"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.prod
     depends_on:
       - mongo
-    env_file:
-      - .env
 
   mongo:
     image: mongo:latest
@@ -31,5 +30,4 @@ services:
         max-file: "3"
 
 volumes:
-  data:
-  node_modules:
+  data: 

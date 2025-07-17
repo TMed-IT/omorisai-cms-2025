@@ -316,6 +316,25 @@ export default buildConfig({
 
 アプリを手動でデプロイすることもできます。完全な詳細については[デプロイドキュメント](https://payloadcms.com/docs/production/deployment)をチェックしてください。
 
+## start.sh の使い方
+
+対話的な `start.sh` スクリプトを使って、開発環境または本番環境を起動できます。
+
+1. スクリプトを実行:
+
+   ```sh
+   ./start.sh
+   ```
+
+2. ↑↓ の矢印キーで以下から選択します：
+   - `Development (docker-compose.yml)`：開発環境
+   - `Production (docker-compose.prod.yml)`：本番環境
+   - `Exit`：終了
+
+3. Enterキーで決定すると、選択した環境が自動的に起動します。
+
+- `tput` コマンドが必要です（macOSやLinuxでは通常インストール済み）。
+
 ## 質問
 
 問題や質問がある場合は、[Discord](https://discord.com/invite/payload)でお問い合わせいただくか、[GitHubディスカッション](https://github.com/payloadcms/payload/discussions)を開始してください。

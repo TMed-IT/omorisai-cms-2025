@@ -7,6 +7,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import { generateMeta } from '@/utilities/generateMeta'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -55,8 +56,8 @@ export default async function Page() {
   )
 }
 
-export function generateMetadata(): Metadata {
-  return {
-    title: `投稿一覧 - 大森祭ウェブサイト管理システム`,
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateMeta({
+    defaultTitle: '投稿一覧'
+  })
 }

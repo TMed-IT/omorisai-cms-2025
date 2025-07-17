@@ -8,6 +8,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 import { notFound } from 'next/navigation'
+import { generateMeta } from '@/utilities/generateMeta'
 
 export const revalidate = 600
 
@@ -64,9 +65,9 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
-  return {
-    title: `投稿一覧 - ページ${pageNumber || ''} | 大森祭ウェブサイト管理システム`,
-  }
+  return generateMeta({
+    defaultTitle: `投稿一覧 - ページ${pageNumber || ''}`
+  })
 }
 
 export async function generateStaticParams() {
