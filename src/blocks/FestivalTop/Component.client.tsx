@@ -1,80 +1,89 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Calendar, MapPin } from "lucide-react"
-import { FadeIn, SlideIn, Stagger, StaggerItem, Typewriter } from "@/components/Animations/animations"
-import { Countdown } from "@/components/Custom/countdown"
-import { BackgroundEffects } from "@/components/Custom/background-effects"
-import { formatDateByISOFormat, formatDateByLocale } from "@/utilities/formatDateTime"
-import type { FestivalTopBlock as FestivalTopBlockProps } from '@/payload-types'
-import type { Festival as FestivalGlobal } from '@/payload-types'
+import { Badge } from "@/components/ui/badge";
+import { Calendar, MapPin } from "lucide-react";
+import {
+  FadeIn,
+  SlideIn,
+  Stagger,
+  StaggerItem,
+  Typewriter,
+} from "@/components/Animations/animations";
+import { Countdown } from "@/components/Custom/countdown";
+import { BackgroundEffects } from "@/components/Custom/background-effects";
+import {
+  formatDateByISOFormat,
+  formatDateByLocale,
+} from "@/utilities/formatDateTime";
+import type { FestivalTopBlock as FestivalTopBlockProps } from "@/payload-types";
+import type { Festival as FestivalGlobal } from "@/payload-types";
 
-type Props = Omit<FestivalTopBlockProps, 'blockType'> & {
-  festivalData: FestivalGlobal
-}
+type Props = Omit<FestivalTopBlockProps, "blockType"> & {
+  festivalData: FestivalGlobal;
+};
 
 export const FestivalTopBlockClient: React.FC<Props> = ({
   festivalData,
-  badgeText = '',
+  badgeText = "",
   showCountdown = false,
   showSlogan = false,
   showSchedule = false,
   showLocation = false,
-  announcementText = '',
-  slogan = '',
-  noticeText = '',
+  announcementText = "",
+  slogan = "",
+  noticeText = "",
   dateFormat,
 }) => {
-  const festivalInfo = festivalData?.festivalInfo
-  
-  const festivalDate = festivalInfo?.startDate
-  const festivalYear = festivalInfo?.year || "2024"
-  
+  const festivalInfo = festivalData?.festivalInfo;
+
+  const festivalDate = festivalInfo?.startDate;
+  const festivalYear = festivalInfo?.year || "2024";
+
   const getFormattedSchedule = () => {
     if (!festivalInfo?.startDate || !festivalInfo?.endDate) {
-      return "日程未定"
+      return "日程未定";
     }
-    
-    const startDate = new Date(festivalInfo.startDate)
-    const endDate = new Date(festivalInfo.endDate)
-    
-    const startFormat = dateFormat?.startDateFormat
-    const endFormat = dateFormat?.endDateFormat
-    
-    let formattedStart: string
-    let formattedEnd: string
-    
+
+    const startDate = new Date(festivalInfo.startDate);
+    const endDate = new Date(festivalInfo.endDate);
+
+    const startFormat = dateFormat?.startDateFormat;
+    const endFormat = dateFormat?.endDateFormat;
+
+    let formattedStart: string;
+    let formattedEnd: string;
+
     if (startFormat) {
-      formattedStart = formatDateByISOFormat(startDate, startFormat)
+      formattedStart = formatDateByISOFormat(startDate, startFormat);
     } else {
-      formattedStart = formatDateByLocale(startDate, 'ja-JP', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      })
+      formattedStart = formatDateByLocale(startDate, "ja-JP", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
     }
-    
+
     if (endFormat) {
-      formattedEnd = formatDateByISOFormat(endDate, endFormat)
+      formattedEnd = formatDateByISOFormat(endDate, endFormat);
     } else {
-      formattedEnd = formatDateByLocale(endDate, 'ja-JP', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      })
+      formattedEnd = formatDateByLocale(endDate, "ja-JP", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
     }
-    
-    return `${formattedStart} - ${formattedEnd}`
-  }
-  
-  const schedule = getFormattedSchedule()
-  const location = festivalInfo?.location || ""
+
+    return `${formattedStart} - ${formattedEnd}`;
+  };
+
+  const schedule = getFormattedSchedule();
+  const location = festivalInfo?.location || "";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
-      <BackgroundEffects variant="coming-soon" />
+    <div className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
+      {/* <BackgroundEffects variant="coming-soon" /> */}
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+      <div className="relative z-10 flex items-center justify-center px-4">
         <div className="text-center max-w-6xl mx-auto">
           <div className="mb-12">
             {badgeText && (
@@ -138,31 +147,36 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
                   {showCountdown ? "開催まで" : "開催について"}
                 </h2>
-                <div className="w-20 md:w-32 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto rounded-full"></div>
+                <div className="w-20 md:w-32 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto rounded-full">
+                </div>
               </div>
 
               <div className="bg-black/20 backdrop-blur-md rounded-2xl p-6 md:p-8 lg:p-10 border border-white/10 mx-auto max-w-4xl">
-                {showCountdown && festivalDate ? (
-                  <Countdown targetDate={new Date(festivalDate)} />
-                ) : (
-                  <div className="text-center">
-                    <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
-                      <Calendar className="w-12 h-12 text-white" />
+                {showCountdown && festivalDate
+                  ? <Countdown targetDate={new Date(festivalDate)} />
+                  : (
+                    <div className="text-center">
+                      <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <Calendar className="w-12 h-12 text-white" />
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                        大森祭 {festivalYear}
+                      </h3>
+                      {announcementText && (
+                        <p className="text-lg md:text-xl text-white/80 mb-4">
+                          {announcementText}
+                        </p>
+                      )}
+                      {noticeText && (
+                        <p className="text-white/60">{noticeText}</p>
+                      )}
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">大森祭 {festivalYear}</h3>
-                    {announcementText && (
-                      <p className="text-lg md:text-xl text-white/80 mb-4">{announcementText}</p>
-                    )}
-                    {noticeText && (
-                      <p className="text-white/60">{noticeText}</p>
-                    )}
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           </FadeIn>
         </div>
       </div>
     </div>
-  )
-} 
+  );
+};

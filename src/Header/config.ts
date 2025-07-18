@@ -14,15 +14,6 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
-      name: 'logo',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'ロゴ画像',
-      admin: {
-        description: 'ヘッダーに表示されるロゴ画像を選択してください',
-      },
-    },
-    {
       name: 'navItems',
       type: 'array',
       fields: [

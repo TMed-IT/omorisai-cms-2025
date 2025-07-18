@@ -1,21 +1,24 @@
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { cn } from '@/utilities/ui'
-import React from 'react'
+import React from "react";
 
-import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
-import { Providers } from '@/providers'
-import { InitTheme } from '@/providers/Theme/InitTheme'
-import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
+import { AdminBar } from "@/components/AdminBar";
+import { Footer } from "@/Footer/Component";
+import { Header } from "@/Header/Component";
+import { Providers } from "@/providers";
+import { InitTheme } from "@/providers/Theme/InitTheme";
+import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
+import { draftMode } from "next/headers";
+import { useHeaderHeight } from "@/providers/HeaderHeightContext";
 
-import './globals.css'
-import { getServerSideURL } from '@/utilities/getURL'
+import "./globals.css";
+import { getServerSideURL } from "@/utilities/getURL";
+import ClientMain from "./ClientMain";
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled } = await draftMode()
+export default async function RootLayout(
+  { children }: { children: React.ReactNode },
+) {
+  const { isEnabled } = await draftMode();
 
   return (
     <html className="font-sans" lang="ja" suppressHydrationWarning>
@@ -33,21 +36,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
 
           <Header />
-          <main className="pt-[calc(var(--admin-bar-height,0px)+80px)] min-h-screen transition-all duration-300">
-            {children}
-          </main>
+          <ClientMain>{children}</ClientMain>
           <Footer />
         </Providers>
       </body>
     </html>
-  )
+  );
 }
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   openGraph: mergeOpenGraph(),
   twitter: {
-    card: 'summary_large_image',
-    creator: '@oomorisai',
+    card: "summary_large_image",
+    creator: "@oomorisai",
   },
-}
+};

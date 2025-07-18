@@ -1633,10 +1633,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Header {
   id: string;
   /**
-   * ヘッダーに表示されるロゴ画像を選択してください
-   */
-  logo?: (string | null) | Media;
-  /**
    * ヘッダーナビゲーションに表示する項目を追加してください
    */
   navItems?:
@@ -1732,7 +1728,6 @@ export interface Festival {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  logo?: T;
   navItems?:
     | T
     | {

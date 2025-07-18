@@ -1,103 +1,83 @@
-import type { Metadata } from 'next'
-import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Media } from '@/components/Media'
+import type { Metadata } from "next";
+import { getCachedGlobal } from "@/utilities/getGlobals";
+import { Media } from "@/components/Media";
 
-import type { Festival } from '@/payload-types'
-import { FadeIn, Stagger, StaggerItem } from '@/components/Animations/animations'
-import { WaveText } from '@/components/ui/wave-text'
+import type { Festival } from "@/payload-types";
+import { WaveText } from "@/components/ui/wave-text";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { GridItem, StaggerGrid } from "@/components/Animations/animations";
+import Link from "next/link";
 
-type SocialLink = NonNullable<Festival['socialLinks']>[0]
+type SocialLink = NonNullable<Festival["socialLinks"]>[0];
 
 export default async function SocialPage() {
-  const festivalData = await getCachedGlobal('festival', 1)() as Festival
-  const socialLinks = festivalData?.socialLinks || []
+  const festivalData = await getCachedGlobal("festival", 1)() as Festival;
+  const socialLinks = festivalData?.socialLinks || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
-      <section className="relative pt-24 pb-16 px-4">
-        <div className="container mx-auto">
-          <FadeIn>
-            <div className="text-center mb-12">
-              <WaveText 
-                text="SNS" 
-                delay={0.4}
-                className="text-6xl font-bold text-white mb-6"
-              />
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+    <div>
+      <div className="container mx-auto text-center">
+        <WaveText
+          text="SNS"
+          className="text-6xl font-bold text-white"
+        />
+      </div>
 
-      <section className="py-16 px-4 bg-black/20">
+      <section className="py-16 px-4">
         <div className="container mx-auto">
-          <FadeIn>
-            <h2 className="text-4xl font-bold text-white mb-12">SNSリンク</h2>
-          </FadeIn>
-
-          {socialLinks.length > 0 ? (
-            <Stagger>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {socialLinks.map((socialLink: SocialLink, index: number) => (
-                  <StaggerItem key={index}>
-                    <a
-                      href={socialLink.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group block p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-                    >
-                      <div className="flex items-center space-x-4">
-                        {socialLink.icon ? (
-                          <div className="flex-shrink-0">
-                            <Media 
-                              resource={socialLink.icon} 
-                              className="w-12 h-12 object-cover rounded-lg group-hover:scale-110 transition-transform duration-300"
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <span className="text-white font-bold text-lg">
-                              {socialLink.label.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        )}
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-white group-hover:text-blue-300 transition-colors">
+          <StaggerGrid>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {socialLinks.length > 0
+                ? (
+                  socialLinks.map((socialLink: SocialLink, index: number) => (
+                    <GridItem key={index} index={index}>
+                      <Link
+                        href={socialLink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative p-0 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <div className="w-full flex flex-col items-center justify-center pt-8 pb-4">
+                          {socialLink.icon
+                            ? (
+                              <Media
+                                resource={socialLink.icon}
+                                className="w-20 h-20 object-cover rounded-full group-hover:scale-110 transition-transform duration-500 border-2 border-white shadow-lg bg-white"
+                              />
+                            )
+                            : (
+                              <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 border-2 border-white shadow-lg">
+                                <span className="text-white font-bold text-3xl">
+                                  {socialLink.label.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                            )}
+                        </div>
+                        <CardHeader className="w-full flex flex-col items-center text-center pt-0 pb-2 px-6">
+                          <CardTitle className="text-white text-xl group-hover:text-blue-300 transition-all duration-300">
                             {socialLink.label}
-                          </h3>
-                          <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
-                            フォローする
-                          </p>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex-1 w-full flex flex-col items-center justify-end px-6 pb-4">
+                        </CardContent>
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-500 pointer-events-none">
                         </div>
-                        <div className="flex-shrink-0">
-                          <svg 
-                            className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </a>
-                  </StaggerItem>
-                ))}
-              </div>
-            </Stagger>
-          ) : (
-            <div className="text-center py-12 animate-fade-in-delay-2">
-              <p className="text-gray-500 dark:text-gray-400">
-                SNSリンクが設定されていません。管理画面でSNSリンクを追加してください。
-              </p>
+                      </Link>
+                    </GridItem>
+                  ))
+                )
+                : (
+                  <div className="text-center py-12 animate-fade-in-delay-2 col-span-full">
+                    <p className="text-gray-500 dark:text-gray-400">
+                      SNSリンクが設定されていません。管理画面でSNSリンクを追加してください。
+                    </p>
+                  </div>
+                )}
             </div>
-          )}
+          </StaggerGrid>
         </div>
       </section>
     </div>
-  )
+  );
 }

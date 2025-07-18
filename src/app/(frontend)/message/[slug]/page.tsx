@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, User } from 'lucide-react'
-import { FloatIn, MorphIn, RevealText, ParallaxContainer } from '@/components/Animations/animations'
+import { FloatIn, RevealText, ParallaxContainer, MorphIn } from '@/components/Animations/animations'
 import Link from 'next/link'
 import RichText from '@/components/RichText'
 
@@ -38,18 +38,17 @@ export default async function MessageDetailPage({ params }: Props) {
     }
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800"> 
-        <ParallaxContainer offset={60}>
+      <div className="min-h-screen"> 
+
           <section className="relative pt-24 pb-16 px-4">
             <div className="container mx-auto max-w-4xl">
-              <FloatIn delay={0.1}>
-                <Link href="/message">
-                  <Button variant="outline" className="mb-8 border-slate-600 text-white hover:bg-slate-700 bg-transparent transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
-                    <ArrowLeft className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1" />
-                    メッセージ一覧に戻る
-                  </Button>
-                </Link>
-              </FloatIn>
+              <Link href="/message">
+                <Button variant="outline" className="mb-8 border-slate-600 text-white bg-transparent hover:bg-transparent transition-all duration-300 hover:scale-105">
+                  <ArrowLeft className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1" />
+                  メッセージ一覧
+                </Button>
+              </Link>
+
 
               <Card className="bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden relative">
                 <div className="relative">
@@ -64,13 +63,13 @@ export default async function MessageDetailPage({ params }: Props) {
                 </div>
 
                 <CardHeader className="pb-8">
-                  <RevealText delay={0.7}>
+                  <RevealText>
                     <CardTitle className="text-white text-3xl md:text-4xl mb-4">
                       {message.position} 挨拶
                     </CardTitle>
                   </RevealText>
 
-                  <FloatIn delay={0.9}>
+                  <FloatIn>
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full flex items-center justify-center relative overflow-hidden group">
                         <User className="w-8 h-8 text-white transition-all duration-300 group-hover:scale-110" />
@@ -84,7 +83,7 @@ export default async function MessageDetailPage({ params }: Props) {
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                  <FloatIn delay={1.1}>
+                  <FloatIn>
                     <div>
                       <div className="text-white/80 leading-relaxed w-full prose prose-invert max-w-none">
                         <div className="transition-all duration-300 hover:text-white/90">
@@ -99,7 +98,6 @@ export default async function MessageDetailPage({ params }: Props) {
               </Card>
             </div>
           </section>
-        </ParallaxContainer>
       </div>
     )
   } catch (error) {
