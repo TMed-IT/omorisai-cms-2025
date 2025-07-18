@@ -6,10 +6,8 @@ import { AdminBar } from "@/components/AdminBar";
 import { Footer } from "@/Footer/Component";
 import { Header } from "@/Header/Component";
 import { Providers } from "@/providers";
-import { InitTheme } from "@/providers/Theme/InitTheme";
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 import { draftMode } from "next/headers";
-import { useHeaderHeight } from "@/providers/HeaderHeightContext";
 
 import "./globals.css";
 import { getServerSideURL } from "@/utilities/getURL";
@@ -21,13 +19,16 @@ export default async function RootLayout(
   const { isEnabled } = await draftMode();
 
   return (
-    <html className="font-sans" lang="ja" suppressHydrationWarning>
+    <html
+      className="font-sans"
+      lang="ja"
+      suppressHydrationWarning
+    >
       <head>
-        <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
         <Providers>
           <AdminBar
             adminBarProps={{

@@ -22,10 +22,7 @@ export default async function EventsPage() {
   return (
     <div>
       <div className="container mx-auto text-center">
-        <WaveText
-          text="EVENTS"
-          className="text-6xl font-bold text-white"
-        />
+        <WaveText text="EVENTS" />
       </div>
 
       <section className="py-16 px-4">
@@ -42,7 +39,7 @@ export default async function EventsPage() {
                       />
                     </div>
                     <CardHeader>
-                      <CardTitle className="text-white text-xl group-hover:text-blue-300 transition-all duration-300">
+                      <CardTitle className="text-xl group-hover:text-blue-300 transition-all duration-300">
                         {event.title}
                       </CardTitle>
                       <div className="text-white/70">

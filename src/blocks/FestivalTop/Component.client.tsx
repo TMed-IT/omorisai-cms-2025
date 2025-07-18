@@ -80,7 +80,7 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
   const location = festivalInfo?.location || "";
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
+    <div>
       {/* <BackgroundEffects variant="coming-soon" /> */}
 
       <div className="relative z-10 flex items-center justify-center px-4">
@@ -88,7 +88,7 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
           <div className="mb-12">
             {badgeText && (
               <FadeIn delay={0.2}>
-                <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 px-6 py-2 text-sm font-semibold mb-6">
+                <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 border-0 px-6 py-2 text-sm font-semibold mb-6">
                   {badgeText}
                 </Badge>
               </FadeIn>
@@ -101,7 +101,7 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
             </FadeIn>
 
             <SlideIn delay={0.6} direction="up">
-              <div className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-4">
+              <div className="text-xl md:text-2xl lg:text-3xl font-bold mb-4">
                 OMORI FESTIVAL {festivalYear}
               </div>
             </SlideIn>
@@ -122,7 +122,7 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                   {showSchedule && (
                     <StaggerItem>
-                      <div className="flex items-center gap-2 text-white">
+                      <div className="flex items-center gap-2">
                         <Calendar className="w-5 h-5" />
                         <span className="font-semibold">{schedule}</span>
                       </div>
@@ -130,7 +130,7 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
                   )}
                   {showLocation && (
                     <StaggerItem>
-                      <div className="flex items-center gap-2 text-white">
+                      <div className="flex items-center gap-2">
                         <MapPin className="w-5 h-5" />
                         <span className="font-semibold">{location}</span>
                       </div>
@@ -144,7 +144,7 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
           <FadeIn delay={1.2}>
             <div className="mb-12">
               <div className="text-center mb-8">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
                   {showCountdown ? "開催まで" : "開催について"}
                 </h2>
                 <div className="w-20 md:w-32 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto rounded-full">
@@ -157,9 +157,9 @@ export const FestivalTopBlockClient: React.FC<Props> = ({
                   : (
                     <div className="text-center">
                       <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center">
-                        <Calendar className="w-12 h-12 text-white" />
+                        <Calendar className="w-12 h-12" />
                       </div>
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                      <h3 className="text-2xl md:text-3xl font-bold mb-4">
                         大森祭 {festivalYear}
                       </h3>
                       {announcementText && (

@@ -17,10 +17,7 @@ export default async function SocialPage() {
   return (
     <div>
       <div className="container mx-auto text-center">
-        <WaveText
-          text="SNS"
-          className="text-6xl font-bold text-white"
-        />
+        <WaveText text="SNS" />
       </div>
 
       <section className="py-16 px-4">
@@ -48,14 +45,14 @@ export default async function SocialPage() {
                             )
                             : (
                               <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 border-2 border-white shadow-lg">
-                                <span className="text-white font-bold text-3xl">
+                                <span className="font-bold text-3xl">
                                   {socialLink.label.charAt(0).toUpperCase()}
                                 </span>
                               </div>
                             )}
                         </div>
                         <CardHeader className="w-full flex flex-col items-center text-center pt-0 pb-2 px-6">
-                          <CardTitle className="text-white text-xl group-hover:text-blue-300 transition-all duration-300">
+                          <CardTitle className="text-xl group-hover:text-blue-300 transition-all duration-300">
                             {socialLink.label}
                           </CardTitle>
                         </CardHeader>

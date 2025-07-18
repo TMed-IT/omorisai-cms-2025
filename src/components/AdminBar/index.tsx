@@ -64,7 +64,7 @@ export const AdminBar: React.FC<{
     <div
       className={cn(
         baseClass,
-        "fixed top-0 left-0 right-0 z-20 py-2 bg-black text-white",
+        "fixed top-0 left-0 right-0 z-20 py-2 bg-black",
         {
           block: show,
           hidden: !show,
@@ -74,11 +74,9 @@ export const AdminBar: React.FC<{
       <div className="container">
         <PayloadAdminBar
           {...adminBarProps}
-          className="py-2 text-white"
+          className="py-2"
           classNames={{
-            controls: "font-medium text-white",
-            logo: "text-white",
-            user: "text-white",
+            controls: "font-medium",
           }}
           cmsURL={getClientSideURL()}
           collectionSlug={collection}

@@ -44,7 +44,7 @@ export default async function EventDetailPage({ params }: Props) {
           <Link href="/events">
             <Button
               variant="outline"
-              className="mb-8 border-slate-600 text-white bg-transparent hover:bg-transparent transition-all duration-300 hover:scale-105"
+              className="mb-8 border-slate-600 bg-transparent hover:bg-transparent transition-all duration-300 hover:scale-105"
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1" />
               イベント一覧
@@ -72,7 +72,7 @@ export default async function EventDetailPage({ params }: Props) {
 
             <CardHeader className="pb-8">
               <RevealText>
-                <CardTitle className="text-white text-3xl md:text-4xl mb-4">
+                <CardTitle className="text-3xl md:text-4xl mb-4">
                   {event.title}
                 </CardTitle>
               </RevealText>

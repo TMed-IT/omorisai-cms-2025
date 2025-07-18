@@ -1,16 +1,16 @@
-"use client"
-import { motion } from "framer-motion"
+"use client";
+import { motion } from "framer-motion";
 
 export function WaveText({
   text,
   delay = 0,
-  className = ""
+  className = "",
 }: {
   text: string;
   delay?: number;
   className?: string;
 }) {
-  const letters = text.split("")
+  const letters = text.split("");
   return (
     <motion.div
       initial="hidden"
@@ -23,7 +23,7 @@ export function WaveText({
           },
         },
       }}
-      className={className}
+      className={`text-6xl font-bold mt-10 ${className}`}
     >
       {letters.map((letter, index) => (
         <motion.span
@@ -32,12 +32,12 @@ export function WaveText({
             hidden: {
               opacity: 0,
               y: 20,
-              filter: "blur(4px)"
+              filter: "blur(4px)",
             },
             visible: {
               opacity: 1,
               y: 0,
-              filter: "blur(0px)"
+              filter: "blur(0px)",
             },
           }}
           transition={{
@@ -50,5 +50,5 @@ export function WaveText({
         </motion.span>
       ))}
     </motion.div>
-  )
-} 
+  );
+}

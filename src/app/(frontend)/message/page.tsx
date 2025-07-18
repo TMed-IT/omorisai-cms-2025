@@ -9,12 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import {
-  FloatIn,
-  GridItem,
-  ParallaxContainer,
-  StaggerGrid,
-} from "@/components/Animations/animations";
+import { GridItem, StaggerGrid } from "@/components/Animations/animations";
 import { WaveText } from "@/components/ui/wave-text";
 import Link from "next/link";
 
@@ -48,10 +43,7 @@ export default async function MessagePage() {
   return (
     <div>
       <div className="container mx-auto text-center">
-        <WaveText
-          text="MESSAGES"
-          className="text-6xl font-bold text-white"
-        />
+        <WaveText text="MESSAGES" />
       </div>
 
       <section className="py-16 px-4">
@@ -70,7 +62,7 @@ export default async function MessagePage() {
                     </div>
 
                     <CardHeader>
-                      <CardTitle className="text-white text-xl group-hover:text-blue-300 transition-all duration-300">
+                      <CardTitle className="text-xl group-hover:text-blue-300 transition-all duration-300">
                         {message.position} 挨拶
                       </CardTitle>
                       <div className="text-white/70">

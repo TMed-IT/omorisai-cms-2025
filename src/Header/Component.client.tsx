@@ -80,7 +80,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
                 priority="high"
                 className="invert dark:invert-0"
               />
-              <span className="text-2xl font-bold text-white hover:text-blue-300 transition-colors">
+              <span className="text-2xl font-bold hover:text-blue-300 transition-colors">
                 大森祭
               </span>
             </Link>
@@ -124,7 +124,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
             <Button
               variant="ghost"
               size="sm"
-              className="md:hidden text-white"
+              className="md:hidden"
               onClick={() => setIsOpen(!isOpen)}
             >
               <div className="transition-all duration-200">
