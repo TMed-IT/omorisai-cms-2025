@@ -12,6 +12,7 @@ import { draftMode } from "next/headers";
 import "./globals.css";
 import { getServerSideURL } from "@/utilities/getURL";
 import ClientMain from "./ClientMain";
+import { mPlus1Code, notoSansJP, zenKakuGothicNew } from "./ui/fonts";
 
 export default async function RootLayout(
   { children }: { children: React.ReactNode },
@@ -20,15 +21,18 @@ export default async function RootLayout(
 
   return (
     <html
-      className="font-sans"
       lang="ja"
       suppressHydrationWarning
+      className={zenKakuGothicNew.variable + " " + notoSansJP.variable + " " +
+        mPlus1Code.variable}
     >
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
+      <body
+        className={"bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800"}
+      >
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -50,6 +54,6 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: "summary_large_image",
-    creator: "@oomorisai",
+    creator: "@omorisai",
   },
 };

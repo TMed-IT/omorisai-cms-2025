@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&family=Zen+Kaku+Gothic+New&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -93,7 +91,6 @@
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
-    font-family: 'Zen Kaku Gothic New', sans-serif;
   }
 }
 

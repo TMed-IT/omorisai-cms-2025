@@ -1,8 +1,8 @@
-name: oomorisai-cms
+name: omorisai-cms
 services:
   payload:
     image: node:20-alpine
-    container_name: oomorisai-cms-app
+    container_name: omorisai-cms-app
     ports:
       - '3000:3000'
     volumes:
@@ -14,10 +14,12 @@ services:
       - mongo
     env_file:
       - .env
+    networks:
+      - omorisai-cms-network
 
   mongo:
     image: mongo:latest
-    container_name: oomorisai-cms-mongo
+    container_name: omorisai-cms-mongo
     ports:
       - '27017:27017'
     command:
@@ -29,7 +31,13 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    networks:
+      - omorisai-cms-network
 
 volumes:
   data:
   node_modules:
+
+networks:
+  omorisai-cms-network:
+    driver: bridge

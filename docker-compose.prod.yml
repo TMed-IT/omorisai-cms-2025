@@ -1,22 +1,27 @@
-name: oomorisai-cms
+name: omorisai-cms
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: oomorisai-cms-app
+  payload:
+    image: node:20-alpine
+    container_name: omorisai-cms-app
     ports:
       - '3000:3000'
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "npm install -g pnpm && pnpm install && pnpm start"
     environment:
       - NODE_ENV=production
     env_file:
-      - .env.prod
+      - .env
     depends_on:
       - mongo
+    networks:
+      - omorisai-cms-network
 
   mongo:
     image: mongo:latest
-    container_name: oomorisai-cms-mongo
+    container_name: omorisai-cms-mongo
     ports:
       - '27017:27017'
     command:
@@ -28,6 +33,22 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    networks:
+      - omorisai-cms-network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: omorisai-cms-cloudflared
+    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    no-autoupdate: true
+    networks:
+      - omorisai-cms-network
+
+networks:
+  omorisai-cms-network:
+    driver: bridge
 
 volumes:
-  data: 
+  data:
+  node_modules: 

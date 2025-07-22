@@ -32,7 +32,7 @@ export const Archive: Block = {
       defaultValue: 'collection',
       options: [
         {
-          label: 'コレクション',
+          label: 'コレクションから',
           value: 'collection',
         },
         {
@@ -40,6 +40,7 @@ export const Archive: Block = {
           value: 'selection',
         },
       ],
+      label: '表示方法',
     },
     {
       name: 'relationTo',
@@ -51,8 +52,16 @@ export const Archive: Block = {
       label: '表示するコレクション',
       options: [
         {
-          label: '投稿',
+          label: 'お知らせ',
           value: 'posts',
+        },
+        {
+          label: 'イベント',
+          value: 'events',
+        },
+        {
+          label: '部活動',
+          value: 'clubs',
         },
       ],
     },
@@ -64,7 +73,7 @@ export const Archive: Block = {
         step: 1,
       },
       defaultValue: 10,
-      label: '制限',
+      label: '表示上限',
     },
     {
       name: 'selectedDocs',
@@ -74,7 +83,7 @@ export const Archive: Block = {
       },
       hasMany: true,
       label: '選択',
-      relationTo: ['posts'],
+      relationTo: ['posts', 'events', 'clubs'],
     },
   ],
   labels: {

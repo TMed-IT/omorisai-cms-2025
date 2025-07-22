@@ -18,8 +18,8 @@ import { defaultLexical } from '@/fields/defaultLexical'
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   labels: {
-    singular: '投稿',
-    plural: '投稿',
+    singular: 'お知らせ',
+    plural: 'お知らせ',
   },
   access: {
     create: authenticated,
@@ -70,12 +70,6 @@ export const Posts: CollectionConfig<'posts'> = {
         {
           fields: [
             {
-              name: 'heroImage',
-              type: 'upload',
-              relationTo: 'media',
-              label: 'ヒーロー画像',
-            },
-            {
               name: 'content',
               type: 'richText',
               editor: defaultLexical,
@@ -102,7 +96,7 @@ export const Posts: CollectionConfig<'posts'> = {
               },
               hasMany: true,
               relationTo: 'posts',
-              label: '関連投稿',
+              label: '関連',
             },
           ],
           label: 'メタ',

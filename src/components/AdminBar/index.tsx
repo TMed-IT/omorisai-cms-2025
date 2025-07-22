@@ -23,8 +23,8 @@ const collectionLabels = {
     singular: "ページ",
   },
   posts: {
-    plural: "投稿",
-    singular: "投稿",
+    plural: "お知らせ",
+    singular: "お知らせ",
   },
   projects: {
     plural: "プロジェクト",

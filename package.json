@@ -1,7 +1,7 @@
 {
-  "name": "oomorisai-cms",
+  "name": "omorisai-cms",
   "version": "1.0.0",
-  "description": "Oomorisai website CMS",
+  "description": "omorisai website CMS",
   "license": "MIT",
   "type": "module",
   "scripts": {

@@ -26,7 +26,6 @@ export const clubs = [
         version: 1,
       },
     },
-    image: '',
   },
   {
     name: '吹奏楽部',
@@ -55,6 +54,5 @@ export const clubs = [
         version: 1,
       },
     },
-    image: '',
   },
 ] as const; 

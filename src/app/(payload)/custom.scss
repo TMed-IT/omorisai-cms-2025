@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&family=Zen+Kaku+Gothic+New&family=Noto+Sans+JP:wght@100..900&display=swap');
 
-body {
-  font-family: 'Noto Sans JP', sans-serif !important;
+:root {
+  --font-body: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif !important;
+  --font-mono: 'M PLUS 1 Code', monospace !important;
+  --font-size: 16px;
 }
 
 input, textarea, select, button {
@@ -15,4 +17,4 @@ code, pre, .code-block {
 .editor,
 [contenteditable="true"] {
   font-family: 'Zen Kaku Gothic New', sans-serif !important;
-}
+} 

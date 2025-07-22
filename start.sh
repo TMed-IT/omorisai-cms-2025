@@ -8,6 +8,7 @@ fi
 OPTIONS=(
   "Development"
   "Production"
+  "No Cache Build"
   "Exit"
 )
 
@@ -51,11 +52,16 @@ choice=$?
 case $choice in
   0)
     echo "Starting development environment..."
-    docker-compose up -d
+    docker compose up -d
     ;;
   1)
     echo "Starting production environment..."
-    docker-compose -f docker-compose.prod.yml up -d --build
+    docker compose -f docker-compose.prod.yml up -d --build
+    ;;
+  2)
+    echo "Starting development environment with no cache build..."
+    docker compose build --no-cache
+    docker compose up -d
     ;;
   *)
     echo "Exiting."

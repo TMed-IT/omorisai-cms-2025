@@ -35,7 +35,7 @@ export default async function EventsPage() {
                     <div className="relative overflow-hidden">
                       <Media
                         resource={event.thumbnail}
-                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
                       />
                     </div>
                     <CardHeader>
