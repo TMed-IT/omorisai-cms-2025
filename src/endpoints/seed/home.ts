@@ -9,7 +9,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
     },
     layout: [
       {
-        blockName: 'Festival Top Block',
+        blockName: 'トップ',
         blockType: 'festivalTop',
         showCountdown: false,
         showSlogan: true,
@@ -23,7 +23,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
         },
       },
       {
-        blockName: 'Archive Block',
+        blockName: 'お知らせ一覧',
         blockType: 'archive',
         introContent: {
           root: {
@@ -38,7 +38,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
                     format: 0,
                     mode: 'normal',
                     style: '',
-                    text: 'Recent posts',
+                    text: 'お知らせ',
                     version: 1,
                   },
                 ],
@@ -47,26 +47,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
                 indent: 0,
                 tag: 'h3',
                 version: 1,
-              },
-              {
-                type: 'paragraph',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'The posts below are displayed in an "Archive" layout building block which is an extremely powerful way to display documents on a page. It can be auto-populated by collection or by category, or posts can be individually selected. Pagination controls will automatically appear if the number of results exceeds the number of items per page.',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                textFormat: 0,
-                version: 1,
-              },
+              }
             ],
             direction: 'ltr',
             format: '',
@@ -79,8 +60,8 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
       },
     ],
     meta: {
-      title: '大森祭公式ウェブサイト',
+      title: 'ホーム',
     },
-    title: 'Home',
+    title: 'ホーム',
   }
 }

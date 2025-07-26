@@ -9,48 +9,22 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
   contactForm,
 }) => {
   return {
-    slug: 'contact',
-    _status: 'published',
+    slug: "contact",
+    _status: "published",
     hero: {
-      type: 'none',
+      type: 'textOnly',
+      text: 'お問い合わせ',
     },
     layout: [
       {
         blockType: 'formBlock',
-        enableIntro: true,
+        enableIntro: false,
         form: contactForm,
-        introContent: {
-          root: {
-            type: 'root',
-            children: [
-              {
-                type: 'heading',
-                children: [
-                  {
-                    type: 'text',
-                    detail: 0,
-                    format: 0,
-                    mode: 'normal',
-                    style: '',
-                    text: 'お問い合わせフォーム',
-                    version: 1,
-                  },
-                ],
-                direction: 'ltr',
-                format: '',
-                indent: 0,
-                tag: 'h3',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1,
-          },
-        },
       },
     ],
-    title: 'Contact',
-  }
-}
+    title: "お問い合わせ",
+    meta: {
+      title: "お問い合わせ",
+    },
+  };
+};

@@ -78,7 +78,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
               <Logo
                 loading="eager"
                 priority="high"
-                className="invert dark:invert-0"
               />
               <span className="text-2xl font-bold hover:text-blue-300 transition-colors">
                 大森祭

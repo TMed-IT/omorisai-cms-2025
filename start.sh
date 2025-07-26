@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [ ! -f .env ]; then
+  echo ".env file not found."
+  echo "Generating secrets and creating .env file..."
+  if [ -f generate-secrets.sh ]; then
+    ./generate-secrets.sh
+  else
+    echo "Error: generate-secrets.sh not found."
+    exit 1
+  fi
+fi
+
 if ! command -v tput &> /dev/null; then
   echo "tput command is required. Please install it."
   exit 1

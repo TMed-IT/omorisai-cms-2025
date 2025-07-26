@@ -40,12 +40,42 @@ cd oomorisai-cms
 
 ### 2. 環境変数の設定
 
-`.env`ファイルを作成し、必要な環境変数を設定してください：
+プロジェクトには`.env.example`ファイルが含まれており、必要な環境変数のテンプレートが提供されています。
+
+#### 自動設定（推奨）
+
+```bash
+# シークレットを自動生成して.envファイルを作成
+./generate-secrets.sh
+```
+
+このスクリプトは以下のシークレットを自動生成します：
+- `PAYLOAD_SECRET`: JWTトークン暗号化用
+- `CRON_SECRET`: Cronジョブ認証用
+- `PREVIEW_SECRET`: プレビューリクエスト検証用
+
+#### 手動設定
+
+`.env`ファイルを手動で作成する場合：
 
 ```env
-DATABASE_URI=mongodb://localhost:27017/omorisai-cms
+# MongoDB接続URI（docker composeのmongoサービスを利用）
+DATABASE_URI=mongodb://mongo:27017/
+
+# JWTトークン暗号化用シークレット
 PAYLOAD_SECRET=your-secret-key
+
+# サーバーのURL（本番は自動で上書きされる場合あり、ローカルは http://localhost:3000 でOK）
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+
+# Cronジョブ認証用シークレット
 CRON_SECRET=your-cron-secret
+
+# プレビューリクエスト検証用シークレット
+PREVIEW_SECRET=your-secret-here
+
+# Cloudflareトンネル用トークン（必要な場合のみ）
+CLOUDFLARE_TUNNEL_TOKEN=your-token-here
 ```
 
 ### 3. 依存関係のインストール
@@ -59,12 +89,17 @@ pnpm install
 #### 方法1: Docker Compose（推奨）
 
 ```bash
-# 開発環境
+# 開発環境（.envファイルが自動生成されます）
 ./start.sh
 
 # または直接実行
 docker-compose up -d
 ```
+
+`start.sh`スクリプトは以下の処理を行います：
+- `.env`ファイルが存在しない場合、`generate-secrets.sh`を自動実行
+- 環境選択メニューを表示（Development/Production/No Cache Build）
+- 選択した環境でDocker Composeを起動
 
 #### 方法2: ローカル環境
 
@@ -116,7 +151,10 @@ src/
 ## 開発コマンド
 
 ```bash
-# 開発サーバー起動
+# 開発サーバー起動（Docker）
+./start.sh
+
+# 開発サーバー起動（ローカル）
 pnpm dev
 
 # 本番ビルド
@@ -133,6 +171,9 @@ pnpm lint
 
 # リンター修正
 pnpm lint:fix
+
+# シークレット生成
+./generate-secrets.sh
 ```
 
 ## Docker
@@ -140,12 +181,20 @@ pnpm lint:fix
 ### 開発環境
 
 ```bash
+# 対話式メニューで環境選択
+./start.sh
+
+# または直接実行
 docker-compose up -d
 ```
 
 ### 本番環境
 
 ```bash
+# 対話式メニューで本番環境選択
+./start.sh
+
+# または直接実行
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
@@ -182,6 +231,7 @@ docker-compose -f docker-compose.prod.yml up -d --build
 
 - 認証機能付き管理画面
 - 環境変数による機密情報管理
+- 自動シークレット生成機能
 - CORS設定
 - 入力値検証
 

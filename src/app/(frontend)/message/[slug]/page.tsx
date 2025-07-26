@@ -4,12 +4,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, User } from "lucide-react";
-import {
-  FloatIn,
-  MorphIn,
-  ParallaxContainer,
-  RevealText,
-} from "@/components/Animations/animations";
+import { FloatIn, RevealText } from "@/components/Animations/animations";
 import Link from "next/link";
 import RichText from "@/components/RichText";
 

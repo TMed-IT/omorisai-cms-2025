@@ -114,9 +114,13 @@ const config = {
             {
               '--tw-prose-body': 'var(--text)',
               '--tw-prose-headings': 'var(--text)',
+              '--tw-prose-strong': 'hsl(var(--foreground))',
               h1: {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',
+              },
+              strong: {
+                color: 'hsl(var(--foreground))',
               },
             },
           ],
@@ -131,6 +135,9 @@ const config = {
                 fontSize: '1.25rem',
                 fontWeight: 600,
               },
+              strong: {
+                color: 'hsl(var(--foreground))',
+              },
             },
           ],
         },
@@ -142,6 +149,9 @@ const config = {
               },
               h2: {
                 fontSize: '1.5rem',
+              },
+              strong: {
+                color: 'hsl(var(--foreground))',
               },
             },
           ],

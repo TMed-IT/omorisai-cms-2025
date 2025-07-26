@@ -29,8 +29,8 @@ export const generateMeta = async (args: {
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc.meta.title + ' | 大森祭ウェブサイト管理システム'
-    : defaultTitle || '大森祭ウェブサイト管理システム'
+    ? doc.meta.title
+    : defaultTitle || '大森祭ウェブサイト'
 
   const description = doc?.meta?.description || defaultDescription || ''
 

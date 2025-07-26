@@ -1,14 +1,5 @@
 import type { Field } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { linkGroup } from '@/fields/linkGroup'
-
 export const hero: Field = {
   name: 'hero',
   type: 'group',
@@ -20,49 +11,34 @@ export const hero: Field = {
       label: 'Type',
       options: [
         {
-          label: 'None',
+          label: 'なし',
           value: 'none',
         },
         {
-          label: 'High Impact',
-          value: 'highImpact',
+          label: 'テキストと画像',
+          value: 'textAndImage',
         },
         {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
-          label: 'Low Impact',
-          value: 'lowImpact',
+          label: 'テキストのみ',
+          value: 'textOnly',
         },
       ],
       required: true,
     },
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
-    },
-    linkGroup({
-      overrides: {
-        maxRows: 2,
+      name: 'text',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type !== 'none',
       },
-    }),
+      label: 'タイトル',
+      required: true,
+    },
     {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => type === 'textAndImage',
       },
       relationTo: 'media',
       required: true,

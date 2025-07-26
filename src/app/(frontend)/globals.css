@@ -238,3 +238,9 @@
     font-size: 3rem;
   }
 }
+
+@layer payload-default {
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+}

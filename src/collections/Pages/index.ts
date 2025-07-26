@@ -94,7 +94,7 @@ export const Pages: CollectionConfig<'pages'> = {
         },
         {
           name: 'meta',
-          label: 'SEO',
+          label: 'メタデータ',
           fields: [
             OverviewField({
               titlePath: 'meta.title',

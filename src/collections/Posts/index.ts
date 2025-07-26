@@ -103,7 +103,7 @@ export const Posts: CollectionConfig<'posts'> = {
         },
         {
           name: 'meta',
-          label: 'SEO',
+          label: 'メタデータ',
           fields: [
             OverviewField({
               titlePath: 'meta.title',

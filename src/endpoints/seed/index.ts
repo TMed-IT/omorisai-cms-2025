@@ -10,6 +10,7 @@ import { messages } from './message'
 import { events } from './events'
 import { clubs } from './clubs'
 import { posts } from './posts'
+import { privacyPolicy } from './privacy-policy'
 
 const allCollections: CollectionSlug[] = [
   'media',
@@ -110,7 +111,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -120,6 +121,11 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: contactPageData({ contactForm: contactForm }),
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: privacyPolicy(),
     }),
   ])
 
@@ -161,24 +167,15 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Admin',
+              label: '管理画面',
               url: '/admin',
             },
           },
           {
             link: {
               type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
+              label: 'プライバシーポリシー',
+              url: '/privacy',
             },
           },
         ],
