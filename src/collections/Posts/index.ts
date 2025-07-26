@@ -147,6 +147,7 @@ export const Posts: CollectionConfig<'posts'> = {
         ],
       },
       label: '公開日時',
+      required: true,
     },
     ...slugField(),
   ],

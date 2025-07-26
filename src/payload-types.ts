@@ -161,7 +161,15 @@ export interface Page {
     text?: string | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FestivalTopBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | PostArchiveBlock
+    | FormBlock
+    | FestivalTopBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -348,7 +356,7 @@ export interface Post {
     image?: (string | null) | Media;
     description?: string | null;
   };
-  publishedAt?: string | null;
+  publishedAt: string;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -496,6 +504,31 @@ export interface Club {
   image: string | Media;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostArchiveBlock".
+ */
+export interface PostArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postArchive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1048,6 +1081,7 @@ export interface PagesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
+        postArchive?: T | PostArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         festivalTop?: T | FestivalTopBlockSelect<T>;
       };
@@ -1134,6 +1168,16 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   relationTo?: T;
   limit?: T;
   selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostArchiveBlock_select".
+ */
+export interface PostArchiveBlockSelect<T extends boolean = true> {
+  introContent?: T;
+  limit?: T;
   id?: T;
   blockName?: T;
 }

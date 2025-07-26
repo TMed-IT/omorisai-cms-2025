@@ -8,6 +8,7 @@ import { ContentBlock } from "@/blocks/Content/Component";
 import { FormBlock } from "@/blocks/Form/Component";
 import { MediaBlock } from "@/blocks/MediaBlock/Component";
 import { FestivalTopBlock } from "@/blocks/FestivalTop/Component";
+import { PostArchiveBlock } from "@/blocks/PostArchiveBlock/Component";
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,6 +17,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   festivalTop: FestivalTopBlock,
+  postArchive: PostArchiveBlock,
 };
 
 export const RenderBlocks: React.FC<{

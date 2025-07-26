@@ -1,57 +1,82 @@
-'use client'
-import { cn } from '@/utilities/ui'
-import useClickableCard from '@/utilities/useClickableCard'
-import Link from 'next/link'
-import React, { Fragment } from 'react'
+"use client";
+import { cn } from "@/utilities/ui";
+import useClickableCard from "@/utilities/useClickableCard";
+import Link from "next/link";
+import React from "react";
 
-import type { Post } from '@/payload-types'
+import type { Post } from "@/payload-types";
 
-import { Media } from '@/components/Media'
-
-export type CardPostData = Pick<Post, 'slug' | 'meta' | 'title'>
+export type CardPostData = Pick<
+  Post,
+  "slug" | "meta" | "title" | "publishedAt"
+>;
 
 export const Card: React.FC<{
-  alignItems?: 'center'
-  className?: string
-  doc?: CardPostData
-  relationTo?: 'posts'
-  showCategories?: boolean
-  title?: string
+  alignItems?: "center";
+  className?: string;
+  doc?: CardPostData;
+  relationTo?: "posts";
+  showCategories?: boolean;
+  title?: string;
 }> = (props) => {
-  const { card, link } = useClickableCard({})
-  const { className, doc, relationTo, showCategories, title: titleFromProps } = props
+  const { card, link } = useClickableCard({});
+  const { className, doc, relationTo, showCategories, title: titleFromProps } =
+    props;
 
-  const { slug, meta, title } = doc || {}
-  const { description, image: metaImage } = meta || {}
+  const { slug, meta, title, publishedAt } = doc || {};
+  const { description } = meta || {};
 
-  const titleToUse = titleFromProps || title
-  const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
+  const titleToUse = titleFromProps || title;
+  const sanitizedDescription = description?.replace(/\s/g, " ");
+  const href = `/${relationTo}/${slug}`;
+
+  let dateStr = "";
+  if (publishedAt) {
+    const date = new Date(publishedAt);
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    dateStr = `${mm}/${dd}`;
+  }
 
   return (
     <article
       className={cn(
-        'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer',
+        "group flex flex-row items-center w-full max-w-none px-0 py-4 border-b border-blue-900 last:border-b-0",
+        "transition-colors duration-200 hover:bg-blue-900/40",
         className,
       )}
       ref={card.ref}
     >
-      <div className="relative w-full ">
-        {!metaImage && <div className="">画像なし</div>}
-        {metaImage && typeof metaImage !== 'string' && <Media resource={metaImage} size="33vw" />}
+      <div className="flex flex-col items-center justify-center min-w-[64px] mr-8">
+        <span className="text-base text-blue-300 font-bold tracking-widest leading-none select-none">
+          {dateStr}
+        </span>
       </div>
-      <div className="p-4">
+
+      <div className="flex-1 min-w-0">
         {titleToUse && (
-          <div className="prose">
-            <h3>
-              <Link className="not-prose" href={href} ref={link.ref}>
-                {titleToUse}
-              </Link>
-            </h3>
-          </div>
+          <h3 className="font-bold text-xl text-white mb-1 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">
+            <Link
+              href={href}
+              ref={link.ref}
+              className="hover:text-blue-300 transition-colors duration-150"
+            >
+              {titleToUse}
+            </Link>
+          </h3>
         )}
-        {description && <div className="mt-2">{description && <p>{sanitizedDescription}</p>}</div>}
+        {description && (
+          <p className="text-base text-blue-100 truncate">
+            {sanitizedDescription}
+          </p>
+        )}
+      </div>
+
+      <div className="ml-8 flex items-center">
+        <span className="text-blue-400 group-hover:text-blue-200 text-3xl font-bold select-none">
+          ≫
+        </span>
       </div>
     </article>
-  )
-}
+  );
+};
