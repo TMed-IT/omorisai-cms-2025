@@ -52,6 +52,31 @@ export const Festival: GlobalConfig = {
       ],
     },
     {
+      name: 'slogan',
+      type: 'group',
+      label: 'スローガン設定',
+      fields: [
+        {
+          name: 'english',
+          type: 'text',
+          label: '英語スローガン',
+          required: false,
+        },
+        {
+          name: 'japanese',
+          type: 'text',
+          label: '日本語スローガン',
+          required: false,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: '説明文',
+          required: false,
+        },
+      ],
+    },
+    {
       name: 'socialLinks',
       type: 'array',
       label: 'SNSリンク',

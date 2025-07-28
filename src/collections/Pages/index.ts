@@ -3,12 +3,15 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
-import { PostArchive } from '../../blocks/PostArchiveBlock/config'
+import { CollectionGrid } from '../../blocks/CollectionGrid/config'
+import { CollectionList } from '../../blocks/CollectionList/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
+
 import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { FestivalTopBlock } from '../../blocks/FestivalTop/config'
+import { FestivalInfoBlock } from '../../blocks/FestivalInfo/config'
+import { CountdownBlock } from '../../blocks/Countdown/config'
+import { SloganBlock } from '../../blocks/Slogan/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -83,7 +86,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, PostArchive, FormBlock, FestivalTopBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, CollectionGrid, CollectionList, FestivalInfoBlock, CountdownBlock, SloganBlock],
               required: true,
               admin: {
                 initCollapsed: true,

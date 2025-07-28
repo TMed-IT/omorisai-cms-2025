@@ -23,16 +23,16 @@ export const PostCard: React.FC<{ post: Post; index: number }> = (
     return (
         <article
             key={index}
-            className="group flex flex-row items-center w-full max-w-none py-4 border-b border-blue-900 last:border-b-0 transition-colors duration-200 hover:bg-blue-900/40"
+            className="group flex flex-col sm:flex-row items-start sm:items-center w-full p-4 sm:p-6 transition-all duration-200 hover:bg-blue-900/20 first:rounded-t-2xl last:rounded-b-2xl"
         >
-            <div className="flex flex-col items-center justify-center min-w-[64px] mr-8">
-                <span className="text-base text-blue-300 font-bold tracking-widest leading-none select-none">
+            <div className="flex flex-col items-center justify-center min-w-[60px] sm:min-w-[64px] mb-3 sm:mb-0 sm:mr-6 lg:mr-8">
+                <span className="text-sm sm:text-base text-blue-300 font-bold tracking-widest leading-none select-none">
                     {dateStr}
                 </span>
             </div>
             <div className="flex-1 min-w-0">
                 {title && (
-                    <h3 className="font-bold text-xl text-white mb-1 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">
+                    <h3 className="font-bold text-lg sm:text-xl text-white mb-2 sm:mb-1 tracking-wide line-clamp-2 sm:line-clamp-1">
                         <a
                             href={href}
                             className="hover:text-blue-300 transition-colors duration-150"
@@ -42,13 +42,13 @@ export const PostCard: React.FC<{ post: Post; index: number }> = (
                     </h3>
                 )}
                 {description && (
-                    <p className="text-base text-blue-100 truncate">
+                    <p className="text-sm sm:text-base text-blue-100 line-clamp-2 sm:line-clamp-1">
                         {sanitizedDescription}
                     </p>
                 )}
             </div>
-            <div className="ml-8 flex items-center">
-                <span className="text-blue-400 group-hover:text-blue-200 text-3xl font-bold select-none">
+            <div className="mt-3 sm:mt-0 sm:ml-6 lg:ml-8 flex items-center">
+                <span className="text-blue-400 group-hover:text-blue-200 text-2xl sm:text-3xl font-bold select-none transition-colors duration-150">
                     ≫
                 </span>
             </div>

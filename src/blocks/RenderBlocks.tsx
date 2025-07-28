@@ -5,19 +5,25 @@ import type { Page } from "@/payload-types";
 import { ArchiveBlock } from "@/blocks/ArchiveBlock/Component";
 import { CallToActionBlock } from "@/blocks/CallToAction/Component";
 import { ContentBlock } from "@/blocks/Content/Component";
-import { FormBlock } from "@/blocks/Form/Component";
+
 import { MediaBlock } from "@/blocks/MediaBlock/Component";
-import { FestivalTopBlock } from "@/blocks/FestivalTop/Component";
-import { PostArchiveBlock } from "@/blocks/PostArchiveBlock/Component";
+import { FestivalInfoBlock } from "@/blocks/FestivalInfo/Component";
+import { CountdownBlock } from "@/blocks/Countdown/Component";
+import { SloganBlock } from "@/blocks/Slogan/Component";
+import { CollectionGrid } from "@/blocks/CollectionGrid/Component";
+import { CollectionList } from "@/blocks/CollectionList/Component";
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
-  formBlock: FormBlock,
+
   mediaBlock: MediaBlock,
-  festivalTop: FestivalTopBlock,
-  postArchive: PostArchiveBlock,
+  festivalInfo: FestivalInfoBlock,
+  countdown: CountdownBlock,
+  slogan: SloganBlock,
+  collectionGrid: CollectionGrid,
+  collectionList: CollectionList,
 };
 
 export const RenderBlocks: React.FC<{

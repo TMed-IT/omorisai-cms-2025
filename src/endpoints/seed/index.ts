@@ -2,9 +2,9 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 import fs from 'fs'
 import path from 'path'
 
-import { contactForm as contactFormData } from './contact-form'
-import { contact as contactPageData } from './contact-page'
+
 import { home } from './home'
+import { eventsPage } from './events-page'
 import { festival as festivalData } from './festival'
 import { messages } from './message'
 import { events } from './events'
@@ -19,8 +19,6 @@ const allCollections: CollectionSlug[] = [
   'messages',
   'events',
   'clubs',
-  'forms',
-  'form-submissions',
   'search',
 ]
 const globals: GlobalSlug[] = ['header', 'footer', 'festival']
@@ -101,14 +99,6 @@ export const seed = async ({
     }),
   ])
 
-  payload.logger.info(`— Seeding contact form...`)
-
-  const contactForm = await payload.create({
-    collection: 'forms',
-    depth: 0,
-    data: contactFormData,
-  })
-
   payload.logger.info(`— Seeding pages...`)
 
   await Promise.all([
@@ -120,7 +110,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: contactPageData({ contactForm: contactForm }),
+      data: eventsPage(),
     }),
     payload.create({
       collection: 'pages',

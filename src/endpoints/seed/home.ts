@@ -9,22 +9,33 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
     },
     layout: [
       {
-        blockName: 'トップ',
-        blockType: 'festivalTop',
-        showCountdown: false,
-        showSlogan: true,
+        blockName: 'スローガン',
+        blockType: 'slogan',
+        showEnglish: true,
+        showJapanese: true,
+        showDescription: true,
+        animationType: 'fade',
+      },
+      {
+        blockName: 'フェスティバル情報',
+        blockType: 'festivalInfo',
         showSchedule: true,
         showLocation: true,
-        announcementText: '開催日時は後日発表予定です',
-        slogan: '創造と革新が交差する、未来への扉を開く文化祭',
         dateFormat: {
           startDateFormat: 'YYYY/MM/D',
           endDateFormat: 'D',
         },
       },
       {
+        blockName: 'カウントダウン',
+        blockType: 'countdown',
+        showCountdown: false,
+        announcementText: '開催日時は後日発表予定です',
+        noticeText: '詳細が決まり次第、こちらのサイトとSNSでお知らせいたします',
+      },
+      {
         blockName: 'お知らせ一覧',
-        blockType: 'archive',
+        blockType: 'collectionList',
         introContent: {
           root: {
             type: 'root',
@@ -38,7 +49,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
                     format: 0,
                     mode: 'normal',
                     style: '',
-                    text: 'お知らせ',
+                    text: '最新のお知らせ',
                     version: 1,
                   },
                 ],
@@ -57,6 +68,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
         },
         populateBy: 'collection',
         relationTo: 'posts',
+        limit: 5,
       },
     ],
     meta: {
