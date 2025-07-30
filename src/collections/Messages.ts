@@ -1,4 +1,5 @@
-import { authenticated } from '@/access/authenticated'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
+import { canAccessAdminPanel } from '@/access/canAccessAdminPanel'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import type { CollectionConfig } from 'payload'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -10,10 +11,11 @@ const Messages: CollectionConfig = {
     plural: 'メッセージ',
   },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    admin: canAccessAdminPanel,
+    create: isEditorOrAdmin,
+    delete: isEditorOrAdmin,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: isEditorOrAdmin,
   },
   admin: {
     defaultColumns: ['position', 'name', 'slug'],

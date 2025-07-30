@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
 
 const Database: GlobalConfig = {
   slug: 'database',
@@ -8,6 +9,7 @@ const Database: GlobalConfig = {
   },
   access: {
     read: () => true,
+    update: isEditorOrAdmin,
   },
   fields: [],
 }

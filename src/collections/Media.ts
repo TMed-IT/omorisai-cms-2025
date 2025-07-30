@@ -9,7 +9,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
+import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,10 +22,11 @@ export const Media: CollectionConfig = {
     plural: 'メディア',
   },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    admin: canAccessAdminPanel,
+    create: isEditorOrAdmin,
+    delete: isEditorOrAdmin,
     read: anyone,
-    update: authenticated,
+    update: isEditorOrAdmin,
   },
   admin: {
     group: 'メディア管理',

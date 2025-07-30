@@ -637,6 +637,10 @@ export interface SloganBlock {
  */
 export interface User {
   id: string;
+  /**
+   * 管理者は全ての機能にアクセスでき、編集者はユーザー管理以外の機能にアクセスできます。
+   */
+  role: 'admin' | 'editor';
   lastName?: string | null;
   firstName?: string | null;
   lastNameRoman?: string | null;
@@ -1183,6 +1187,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   lastName?: T;
   firstName?: T;
   lastNameRoman?: T;

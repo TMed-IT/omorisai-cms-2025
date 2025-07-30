@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { isEditorOrAdmin } from '../../access/isEditorOrAdmin'
+import { canAccessAdminPanel } from '../../access/canAccessAdminPanel'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CollectionGrid } from '../../blocks/CollectionGrid/config'
@@ -33,10 +34,11 @@ export const Pages: CollectionConfig<'pages'> = {
     plural: 'ページ',
   },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    admin: canAccessAdminPanel,
+    create: isEditorOrAdmin,
+    delete: isEditorOrAdmin,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: isEditorOrAdmin,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

@@ -1,10 +1,21 @@
 import type { CollectionConfig } from 'payload'
 
+import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
+import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
+import { anyone } from '../access/anyone'
+
 const Clubs: CollectionConfig = {
   slug: 'clubs',
   labels: {
     singular: '部活紹介',
     plural: '部活紹介',
+  },
+  access: {
+    admin: canAccessAdminPanel,
+    create: isEditorOrAdmin,
+    delete: isEditorOrAdmin,
+    read: anyone,
+    update: isEditorOrAdmin,
   },
   admin: {
     defaultColumns: ['name', 'image'],

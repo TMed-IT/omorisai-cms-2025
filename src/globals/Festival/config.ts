@@ -1,5 +1,6 @@
 import type { GlobalConfig, GlobalAfterChangeHook } from 'payload'
 import { revalidateTag } from 'next/cache'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
 
 const revalidateFestival: GlobalAfterChangeHook = ({ doc: _doc, req: { context } }) => {
   if (!context.disableRevalidate) {
@@ -11,6 +12,7 @@ export const Festival: GlobalConfig = {
   slug: 'festival',
   access: {
     read: () => true,
+    update: isEditorOrAdmin,
   },
   label: '基本設定',
   admin: {

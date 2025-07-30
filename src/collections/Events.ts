@@ -1,10 +1,21 @@
 import type { CollectionConfig } from 'payload'
 
+import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
+import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
+import { anyone } from '../access/anyone'
+
 const Events: CollectionConfig = {
   slug: 'events',
   labels: {
     singular: 'イベント',
     plural: 'イベント',
+  },
+  access: {
+    admin: canAccessAdminPanel,
+    create: isEditorOrAdmin,
+    delete: isEditorOrAdmin,
+    read: anyone,
+    update: isEditorOrAdmin,
   },
   admin: {
     defaultColumns: ['title', 'date', 'location'],

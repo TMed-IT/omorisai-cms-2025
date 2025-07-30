@@ -2,12 +2,14 @@ import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
   label: 'フッター',
   access: {
     read: () => true,
+    update: isEditorOrAdmin,
   },
   admin: {
     group: 'サイト設定',

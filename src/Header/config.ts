@@ -2,12 +2,14 @@ import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
 
 export const Header: GlobalConfig = {
   slug: 'header',
   label: 'ヘッダー',
   access: {
     read: () => true,
+    update: isEditorOrAdmin,
   },
   admin: {
     group: 'サイト設定',
