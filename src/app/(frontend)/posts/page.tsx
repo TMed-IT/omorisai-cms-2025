@@ -50,7 +50,7 @@ export default async function Page() {
           <div className="max-w-4xl mx-auto">
             <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden">
               <div className="flex flex-col divide-y divide-blue-900/50">
-                {posts.docs?.map((post: any, index: number) => {
+                {posts.docs?.map((post: any, index: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
                   if (typeof post === "object" && post !== null) {
                     return (
                       <PostCard

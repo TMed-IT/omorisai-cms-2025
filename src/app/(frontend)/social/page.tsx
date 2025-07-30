@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { Media } from "@/components/Media";
 

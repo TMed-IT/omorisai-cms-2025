@@ -1,6 +1,5 @@
 "use client";
-import { useHeaderTheme } from "@/providers/HeaderTheme";
-import React, { useEffect } from "react";
+import React from "react";
 
 const PageClient: React.FC = () => {
   return <React.Fragment />;

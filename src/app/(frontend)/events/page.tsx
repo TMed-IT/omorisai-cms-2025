@@ -8,12 +8,13 @@ import { WaveText } from "@/components/ui/wave-text";
 import { Media } from "@/components/Media";
 import Link from "next/link";
 import { formatDateShortJP } from "@/utilities/formatDateTime";
+import type { Event } from "@/payload-types";
 
 export default async function EventsPage() {
   const payload = await getPayload({ config: configPromise });
   const events = await payload.find({ collection: "events" });
 
-  const sortedEvents = events.docs.sort((a: any, b: any) => {
+  const sortedEvents = events.docs.sort((a: Event, b: Event) => {
     const dateA = new Date(a.date).getTime() || 0;
     const dateB = new Date(b.date).getTime() || 0;
     return dateA - dateB;
@@ -29,7 +30,7 @@ export default async function EventsPage() {
         <div className="container mx-auto">
           <StaggerGrid>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sortedEvents.map((event: any, index: number) => (
+              {sortedEvents.map((event: Event, index: number) => (
                 <GridItem key={event.id} index={index}>
                   <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative">
                     <div className="relative overflow-hidden">

@@ -9,12 +9,13 @@ import Link from "next/link";
 import RichText from "@/components/RichText";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function MessageDetailPage({ params }: Props) {
+  const { slug } = await params;
   const payload = await getPayload({ config: configPromise });
 
   try {
@@ -22,7 +23,7 @@ export default async function MessageDetailPage({ params }: Props) {
       collection: "messages",
       where: {
         slug: {
-          equals: params.slug,
+          equals: slug,
         },
       },
     });
@@ -109,7 +110,7 @@ export default async function MessageDetailPage({ params }: Props) {
         </div>
       </section>
     );
-  } catch (error) {
+  } catch (_error) {
     notFound();
   }
 }

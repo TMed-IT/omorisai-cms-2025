@@ -1,5 +1,3 @@
-import type { Post } from "@/payload-types";
-
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 import React from "react";
@@ -8,10 +6,10 @@ import { PostCard } from "./PostCard";
 
 type CollectionListProps = {
     id?: string;
-    introContent?: any;
+    introContent?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     limit?: number;
     populateBy?: "collection" | "selection";
-    selectedDocs?: Array<{ value: any }>;
+    selectedDocs?: Array<{ value: any }>; // eslint-disable-line @typescript-eslint/no-explicit-any
     relationTo?: string;
 };
 
@@ -27,13 +25,13 @@ export const CollectionList: React.FC<CollectionListProps> = async (props) => {
 
     const limit = limitFromProps || 10;
 
-    let posts: any[] = [];
+    let posts: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     if (populateBy === "collection") {
         const payload = await getPayload({ config: configPromise });
 
         const fetchedPosts = await payload.find({
-            collection: (relationTo || "posts") as any,
+            collection: (relationTo || "posts") as any, // eslint-disable-line @typescript-eslint/no-explicit-any
             depth: 1,
             limit,
         });
@@ -43,7 +41,7 @@ export const CollectionList: React.FC<CollectionListProps> = async (props) => {
         if (selectedDocs?.length) {
             const filteredSelectedPosts = selectedDocs.map((post) => {
                 if (typeof post.value === "object") return post.value;
-            }) as any[];
+            }) as any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 
             posts = filteredSelectedPosts;
         }
@@ -64,7 +62,7 @@ export const CollectionList: React.FC<CollectionListProps> = async (props) => {
                 <div className="max-w-4xl mx-auto">
                     <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden">
                         <div className="flex flex-col divide-y divide-blue-900/50">
-                            {posts?.map((post: any, index: number) => {
+                            {posts?.map((post: any, index: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
                                 if (typeof post === "object" && post !== null) {
                                     return (
                                         <PostCard

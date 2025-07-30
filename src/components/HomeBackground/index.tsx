@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Scroll, ScrollControls, Sparkles } from "@react-three/drei";
+import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
 type BackgroundAnimationProps = {
@@ -131,7 +131,7 @@ function FlowingStreams({ scrollOffset }: { scrollOffset: number }) {
         if (groupRef.current) {
             groupRef.current.rotation.y += delta * 0.1;
 
-            streams.forEach((stream, index) => {
+            streams.forEach((stream, _index) => {
                 if (
                     stream.material.uniforms &&
                     stream.material.uniforms.uTime &&
@@ -151,9 +151,9 @@ function FlowingStreams({ scrollOffset }: { scrollOffset: number }) {
 
     return (
         <group ref={groupRef}>
-            {streams.map((stream, index) => (
+            {streams.map((stream, _index) => (
                 <mesh
-                    key={index}
+                    key={_index}
                     geometry={stream.geometry}
                     material={stream.material}
                     rotation={[0, stream.rotation, 0]}

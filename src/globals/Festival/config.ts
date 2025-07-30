@@ -1,7 +1,7 @@
 import type { GlobalConfig, GlobalAfterChangeHook } from 'payload'
 import { revalidateTag } from 'next/cache'
 
-const revalidateFestival: GlobalAfterChangeHook = ({ doc, req: { context } }) => {
+const revalidateFestival: GlobalAfterChangeHook = ({ doc: _doc, req: { context } }) => {
   if (!context.disableRevalidate) {
     revalidateTag('global_festival')
   }

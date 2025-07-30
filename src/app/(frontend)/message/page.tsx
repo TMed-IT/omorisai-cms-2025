@@ -12,28 +12,33 @@ import { ArrowRight } from "lucide-react";
 import { GridItem, StaggerGrid } from "@/components/Animations/animations";
 import { WaveText } from "@/components/ui/wave-text";
 import Link from "next/link";
+import type { Message } from "@/payload-types";
 
 export default async function MessagePage() {
   const payload = await getPayload({ config: configPromise });
   const messages = await payload.find({ collection: "messages" });
 
-  const sortedMessages = messages.docs.sort((a: any, b: any) => {
+  const sortedMessages = messages.docs.sort((a: Message, b: Message) => {
     const slugA = parseInt(a.slug) || 0;
     const slugB = parseInt(b.slug) || 0;
     return slugA - slugB;
   });
 
-  const getExcerpt = (message: any) => {
-    const paragraphNode = message.message?.root?.children?.find((node: any) =>
-      node.type === "paragraph"
-    );
+  const getExcerpt = (message: Message) => {
+    const paragraphNode = message.message?.root?.children?.find((
+      node: unknown,
+    ) => (node as { type: string }).type === "paragraph");
     if (paragraphNode && Array.isArray(paragraphNode.children)) {
-      const text = paragraphNode.children.map((child: any) => child.text || "")
+      const text = paragraphNode.children.map((child: unknown) =>
+        (child as { text?: string }).text || ""
+      )
         .join("");
       const firstLine = text.split(/\r?\n/)[0];
-      return firstLine.length > 100
-        ? firstLine.substring(0, 100) + "..."
-        : firstLine;
+      if (firstLine) {
+        return firstLine.length > 100
+          ? firstLine.substring(0, 100) + "..."
+          : firstLine;
+      }
     }
     return (
       <div className="w-full h-6 bg-slate-700 rounded animate-pulse mb-2" />
@@ -50,7 +55,7 @@ export default async function MessagePage() {
         <div className="container mx-auto">
           <StaggerGrid>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sortedMessages.map((message: any, index: number) => (
+              {sortedMessages.map((message: Message, index: number) => (
                 <GridItem key={message.id} index={index}>
                   <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative">
                     <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 relative">

@@ -1,4 +1,4 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest } from 'payload'
 import fs from 'fs'
 import path from 'path'
 
@@ -179,7 +179,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding events...`)
   for (let i = 0; i < events.length; i++) {
-    const event = events[i] as any
+    const event = events[i] as any // eslint-disable-line @typescript-eslint/no-explicit-any
     const mediaId = i === 0 ? mediaLight.id : mediaDark.id
     await payload.create({
       collection: 'events',
@@ -192,7 +192,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding clubs...`)
   for (let i = 0; i < clubs.length; i++) {
-    const club = clubs[i] as any
+    const club = clubs[i] as any // eslint-disable-line @typescript-eslint/no-explicit-any
     const mediaId = i === 0 ? mediaLight.id : mediaDark.id
     await payload.create({
       collection: 'clubs',
@@ -207,7 +207,7 @@ export const seed = async ({
   for (const post of posts) {
     await payload.create({
       collection: 'posts',
-      data: post as any,
+      data: post as any, // eslint-disable-line @typescript-eslint/no-explicit-any
     })
   }
 

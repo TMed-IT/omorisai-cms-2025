@@ -12,11 +12,11 @@ import { Logo } from "@/components/Logo/Logo";
 
 interface HeaderClientProps {
   data: Header;
-  festivalData: Festival;
+  _festivalData: Festival;
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = (
-  { data, festivalData },
+  { data, _festivalData },
 ) => {
   const [theme, setTheme] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);

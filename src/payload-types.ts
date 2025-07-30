@@ -469,6 +469,7 @@ export interface ArchiveBlock {
 export interface Event {
   id: string;
   title: string;
+  slug: string;
   date: string;
   location: string;
   thumbnail: string | Media;
@@ -1215,6 +1216,7 @@ export interface MessagesSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   date?: T;
   location?: T;
   thumbnail?: T;

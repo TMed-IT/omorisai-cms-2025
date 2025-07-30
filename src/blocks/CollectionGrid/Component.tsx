@@ -1,5 +1,3 @@
-import type { Post } from "@/payload-types";
-
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 import React from "react";
@@ -9,10 +7,10 @@ import { CollectionArchive } from "@/components/CollectionArchive";
 
 type CollectionGridProps = {
     id?: string;
-    introContent?: any;
+    introContent?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     limit?: number;
     populateBy?: "collection" | "selection";
-    selectedDocs?: Array<{ value: any }>;
+    selectedDocs?: Array<{ value: any }>; // eslint-disable-line @typescript-eslint/no-explicit-any
     relationTo?: string;
 };
 
@@ -28,13 +26,13 @@ export const CollectionGrid: React.FC<CollectionGridProps> = async (props) => {
 
     const limit = limitFromProps || 10;
 
-    let posts: any[] = [];
+    let posts: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     if (populateBy === "collection") {
         const payload = await getPayload({ config: configPromise });
 
         const fetchedPosts = await payload.find({
-            collection: (relationTo || "posts") as any,
+            collection: (relationTo || "posts") as any, // eslint-disable-line @typescript-eslint/no-explicit-any
             depth: 1,
             limit,
         });
@@ -44,7 +42,7 @@ export const CollectionGrid: React.FC<CollectionGridProps> = async (props) => {
         if (selectedDocs?.length) {
             const filteredSelectedPosts = selectedDocs.map((post) => {
                 if (typeof post.value === "object") return post.value;
-            }) as any[];
+            }) as any[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 
             posts = filteredSelectedPosts;
         }

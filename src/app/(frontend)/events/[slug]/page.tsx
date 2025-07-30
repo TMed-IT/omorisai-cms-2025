@@ -3,19 +3,20 @@ import { getPayload } from "payload";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Calendar, Image as ImageIcon, MapPin } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin } from "lucide-react";
 import { FloatIn, RevealText } from "@/components/Animations/animations";
 import Link from "next/link";
 import { Media } from "@/components/Media";
 import { formatDateShortJP } from "@/utilities/formatDateTime";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function EventDetailPage({ params }: Props) {
+  const { slug } = await params;
   const payload = await getPayload({ config: configPromise });
 
   try {
@@ -23,7 +24,7 @@ export default async function EventDetailPage({ params }: Props) {
       collection: "events",
       where: {
         slug: {
-          equals: params.slug,
+          equals: slug,
         },
       },
     });
@@ -104,7 +105,7 @@ export default async function EventDetailPage({ params }: Props) {
         </div>
       </section>
     );
-  } catch (error) {
+  } catch (_error) {
     notFound();
   }
 }

@@ -1,69 +1,73 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface TimeUnit {
-  value: number
-  label: string
+  value: number;
+  label: string;
 }
 
 interface CountdownProps {
-  targetDate: Date
+  targetDate: Date;
 }
 
 export function Countdown({ targetDate }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeUnit[]>([])
-  const [mounted, setMounted] = useState(false)
-  const [prevTime, setPrevTime] = useState<TimeUnit[]>([])
+  const [timeLeft, setTimeLeft] = useState<TimeUnit[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const [prevTime, setPrevTime] = useState<TimeUnit[]>([]);
 
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
 
     const calculateTimeLeft = () => {
-      const now = new Date().getTime()
-      const target = targetDate.getTime()
-      const difference = target - now
+      const now = new Date().getTime();
+      const target = targetDate.getTime();
+      const difference = target - now;
 
       if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000)
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor(
+          (difference % (1000 * 60 * 60)) / (1000 * 60),
+        );
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
         return [
           { value: days, label: "日" },
           { value: hours, label: "時間" },
           { value: minutes, label: "分" },
           { value: seconds, label: "秒" },
-        ]
+        ];
       }
       return [
         { value: 0, label: "日" },
         { value: 0, label: "時間" },
         { value: 0, label: "分" },
         { value: 0, label: "秒" },
-      ]
-    }
+      ];
+    };
 
     const timer = setInterval(() => {
-      setPrevTime(timeLeft)
-      setTimeLeft(calculateTimeLeft())
-    }, 1000)
+      setPrevTime(timeLeft);
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
 
-    setTimeLeft(calculateTimeLeft())
+    setTimeLeft(calculateTimeLeft());
 
-    return () => clearInterval(timer)
-  }, [targetDate])
+    return () => clearInterval(timer);
+  }, [targetDate, timeLeft]);
 
   const placeholderTime = [
     { value: 0, label: "日" },
     { value: 0, label: "時間" },
     { value: 0, label: "分" },
     { value: 0, label: "秒" },
-  ]
+  ];
 
-  const displayTime = mounted ? timeLeft : placeholderTime
+  const displayTime = mounted ? timeLeft : placeholderTime;
 
   // グラデーション配列
   const gradients = [
@@ -73,37 +77,42 @@ export function Countdown({ targetDate }: CountdownProps) {
     "from-fuchsia-500 via-pink-500 to-red-500",
     "from-yellow-400 via-orange-500 to-pink-500",
     "from-indigo-400 via-blue-400 to-cyan-400",
-  ]
+  ];
 
   // グリッチ用ランダム関数
-  function randomGlitch() {
-    const v = Math.random()
-    if (v < 0.33) return "glitch-1"
-    if (v < 0.66) return "glitch-2"
-    return "glitch-3"
+  function _randomGlitch() {
+    const v = Math.random();
+    if (v < 0.33) return "glitch-1";
+    if (v < 0.66) return "glitch-2";
+    return "glitch-3";
   }
 
   return (
     <div className="w-full">
       <div className="flex justify-center items-center gap-4 md:gap-8 lg:gap-12 flex-wrap">
         {displayTime.map((unit, index) => {
-          const prev = prevTime[index]?.value
-          const isChanged = prev !== undefined && prev !== unit.value
-          const grad = gradients[index % gradients.length]
+          const prev = prevTime[index]?.value;
+          const isChanged = prev !== undefined && prev !== unit.value;
+          const grad = gradients[index % gradients.length];
           // 増加/減少でスライド方向を決定
-          const slideY = isChanged ? 40 : 0
-          const shadowColor = isChanged ? '#fff' : 'transparent'
+          const slideY = isChanged ? 40 : 0;
+          const _shadowColor = isChanged ? "#fff" : "transparent";
           return (
-            <div key={unit.label} className="flex flex-col items-center relative">
+            <div
+              key={unit.label}
+              className="flex flex-col items-center relative"
+            >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={unit.value}
-                  initial={isChanged ? {
-                    opacity: 0,
-                    scale: 1.4,
-                    y: slideY,
-                    filter: "blur(8px)",
-                  } : undefined}
+                  initial={isChanged
+                    ? {
+                      opacity: 0,
+                      scale: 1.4,
+                      y: slideY,
+                      filter: "blur(8px)",
+                    }
+                    : undefined}
                   animate={{
                     opacity: 1,
                     scale: 1,
@@ -117,17 +126,19 @@ export function Countdown({ targetDate }: CountdownProps) {
                       background: { duration: 0.5 },
                     },
                   }}
-                  exit={isChanged ? {
-                    opacity: 0,
-                    scale: 0.7,
-                    y: -slideY,
-                    filter: "blur(12px)",
-                  } : undefined}
+                  exit={isChanged
+                    ? {
+                      opacity: 0,
+                      scale: 0.7,
+                      y: -slideY,
+                      filter: "blur(12px)",
+                    }
+                    : undefined}
                   transition={{ duration: 0.7 }}
                   className={`text-5xl md:text-6xl lg:text-7xl font-extrabold bg-gradient-to-br ${grad} text-transparent bg-clip-text tracking-tight select-none`}
                   style={{
                     fontFamily: "'M PLUS 1 Code', monospace",
-                    textShadow: 'none',
+                    textShadow: "none",
                   }}
                 >
                   {unit.value.toString().padStart(2, "0")}
@@ -140,11 +151,12 @@ export function Countdown({ targetDate }: CountdownProps) {
                 {unit.label}
               </span>
             </div>
-          )
+          );
         })}
       </div>
       {/* グリッチ用CSS */}
-      <style jsx global>{`
+      <style jsx global>
+        {`
         .glitch-1 {
           animation: glitch1 0.5s linear 1;
         }
@@ -175,7 +187,8 @@ export function Countdown({ targetDate }: CountdownProps) {
           60% { filter: blur(2px) contrast(0.8); }
           100% { filter: blur(0px) contrast(1); }
         }
-      `}</style>
+      `}
+      </style>
     </div>
-  )
+  );
 }

@@ -73,14 +73,14 @@ export const Users: CollectionConfig = {
           }
         }
         if (data?.lastNameRoman) {
-          let lastNameRoman = data.lastNameRoman as string
+          const lastNameRoman = data.lastNameRoman as string
           if (!/^[A-Za-z]+$/.test(lastNameRoman)) {
             throw new NameValidationError('姓（ローマ字）は半角英字のみで入力してください')
           }
           data.lastNameRoman = lastNameRoman.charAt(0).toUpperCase() + lastNameRoman.slice(1).toLowerCase()
         }
         if (data?.firstNameRoman) {
-          let firstNameRoman = data.firstNameRoman as string
+          const firstNameRoman = data.firstNameRoman as string
           if (!/^[A-Za-z]+$/.test(firstNameRoman)) {
             throw new NameValidationError('名（ローマ字）は半角英字のみで入力してください')
           }
