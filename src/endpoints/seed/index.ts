@@ -19,7 +19,6 @@ const allCollections: CollectionSlug[] = [
   'messages',
   'events',
   'clubs',
-  'search',
 ]
 const globals: GlobalSlug[] = ['header', 'footer', 'festival']
 
@@ -154,13 +153,6 @@ export const seed = async ({
       slug: 'footer',
       data: {
         navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: '管理画面',
-              url: '/admin',
-            },
-          },
           {
             link: {
               type: 'custom',

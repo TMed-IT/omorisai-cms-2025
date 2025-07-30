@@ -31,15 +31,6 @@ export const Header: GlobalConfig = {
       },
       label: 'ナビゲーション項目',
     },
-    {
-      name: 'showSearch',
-      type: 'checkbox',
-      label: '検索ボタンを表示',
-      defaultValue: true,
-      admin: {
-        description: 'ヘッダーに検索ボタンを表示するかどうかを設定します',
-      },
-    },
   ],
   hooks: {
     afterChange: [revalidateHeader],

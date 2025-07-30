@@ -75,7 +75,6 @@ export interface Config {
     events: Event;
     clubs: Club;
     redirects: Redirect;
-    search: Search;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -91,7 +90,6 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     clubs: ClubsSelect<false> | ClubsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
-    search: SearchSelect<false> | SearchSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -628,9 +626,6 @@ export interface SloganBlock {
   showEnglish?: boolean | null;
   showJapanese?: boolean | null;
   showDescription?: boolean | null;
-  animationType?:
-    | ('fade' | 'slide' | 'typewriter' | 'burst' | 'starfield' | 'lightstreak' | 'disintegrate' | 'parallax')
-    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'slogan';
@@ -709,29 +704,6 @@ export interface Redirect {
           value: string | Post;
         } | null);
     url?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * これは自動生成される検索結果のコレクションです。コンテンツが作成・更新されると自動的に反映されます。
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search".
- */
-export interface Search {
-  id: string;
-  title?: string | null;
-  priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: string | Post;
-  };
-  slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (string | null) | Media;
   };
   updatedAt: string;
   createdAt: string;
@@ -866,10 +838,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'redirects';
         value: string | Redirect;
-      } | null)
-    | ({
-        relationTo: 'search';
-        value: string | Search;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -1091,7 +1059,6 @@ export interface SloganBlockSelect<T extends boolean = true> {
   showEnglish?: T;
   showJapanese?: T;
   showDescription?: T;
-  animationType?: T;
   id?: T;
   blockName?: T;
 }
@@ -1283,25 +1250,6 @@ export interface RedirectsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search_select".
- */
-export interface SearchSelect<T extends boolean = true> {
-  title?: T;
-  priority?: T;
-  doc?: T;
-  slug?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs_select".
  */
 export interface PayloadJobsSelect<T extends boolean = true> {
@@ -1392,10 +1340,6 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
-  /**
-   * ヘッダーに検索ボタンを表示するかどうかを設定します
-   */
-  showSearch?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1484,7 +1428,6 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  showSearch?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

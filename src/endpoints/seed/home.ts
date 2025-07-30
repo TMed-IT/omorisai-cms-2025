@@ -17,7 +17,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
         animationType: 'fade',
       },
       {
-        blockName: 'フェスティバル情報',
+        blockName: '開催情報',
         blockType: 'festivalInfo',
         showSchedule: true,
         showLocation: true,
@@ -72,7 +72,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
       },
     ],
     meta: {
-      title: 'ホーム',
+      title: '大森祭ウェブサイト',
     },
     title: 'ホーム',
   }

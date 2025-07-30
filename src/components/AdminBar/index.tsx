@@ -32,7 +32,7 @@ const collectionLabels = {
   },
 };
 
-const Title: React.FC = () => <span>ダッシュボード</span>;
+const Title: React.FC = () => <span>管理画面</span>;
 
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps;
@@ -83,6 +83,9 @@ export const AdminBar: React.FC<{
           collectionLabels={{
             plural: collectionLabels[collection]?.plural || "Pages",
             singular: collectionLabels[collection]?.singular || "Page",
+          }}
+          createProps={{
+            style: { display: "none" },
           }}
           logo={<Title />}
           onAuthChange={onAuthChange}

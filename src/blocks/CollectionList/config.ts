@@ -86,8 +86,4 @@ export const CollectionList: Block = {
       relationTo: ['posts', 'events', 'clubs'],
     },
   ],
-  labels: {
-    plural: 'コレクションリスト',
-    singular: 'コレクションリスト',
-  },
 } 

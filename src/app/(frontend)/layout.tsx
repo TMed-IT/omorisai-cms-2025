@@ -12,7 +12,13 @@ import { draftMode } from "next/headers";
 import "./globals.css";
 import { getServerSideURL } from "@/utilities/getURL";
 import ClientMain from "./ClientMain";
-import { mPlus1Code, notoSansJP, zenKakuGothicNew } from "./ui/fonts";
+import {
+  castoroTitling,
+  mPlus1Code,
+  notoSansJP,
+  shipporiMinchoB1,
+  zenKakuGothicNew,
+} from "./ui/fonts";
 
 export default async function RootLayout(
   { children }: { children: React.ReactNode },
@@ -23,8 +29,7 @@ export default async function RootLayout(
     <html
       lang="ja"
       suppressHydrationWarning
-      className={zenKakuGothicNew.variable + " " + notoSansJP.variable + " " +
-        mPlus1Code.variable}
+      className={`${zenKakuGothicNew.variable} ${notoSansJP.variable} ${mPlus1Code.variable} ${shipporiMinchoB1.variable} ${castoroTitling.variable}`}
     >
       <head>
         <link href="/favicon.ico" rel="icon" sizes="32x32" />

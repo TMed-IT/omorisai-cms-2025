@@ -2,12 +2,9 @@ import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { searchFields } from '@/search/fieldOverrides'
-import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -55,24 +52,6 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
-  }),
-
-  searchPlugin({
-    collections: ['posts'],
-    beforeSync: beforeSyncWithSearch,
-    searchOverrides: {
-      fields: ({ defaultFields }) => {
-        return [...defaultFields, ...searchFields]
-      },
-      labels: {
-        singular: '検索結果',
-        plural: '検索結果',
-      },
-      admin: {
-        group: 'サイト設定',
-        description: 'これは自動生成される検索結果のコレクションです。コンテンツが作成・更新されると自動的に反映されます。',
-      },
-    },
   }),
   payloadCloudPlugin(),
 ]

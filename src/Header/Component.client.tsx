@@ -3,7 +3,7 @@ import { useHeaderTheme } from "@/providers/HeaderTheme";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import type { Festival, Header } from "@/payload-types";
@@ -60,7 +60,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
   }, []);
 
   const navItems = data?.navItems || [];
-  const showSearch = data?.showSearch !== false;
 
   return (
     <header
@@ -71,15 +70,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
       style={{ top: "var(--admin-bar-height, 0px)" }}
       {...(theme ? { "data-theme": theme } : {})}
     >
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 min-h-[64px] flex items-center">
+        <div className="flex items-center justify-between w-full">
           <div className="hover:scale-105 active:scale-95 transition-transform duration-200">
             <Link href="/" className="flex items-center space-x-2">
               <Logo
                 loading="eager"
                 priority="high"
               />
-              <span className="text-2xl font-bold hover:text-blue-300 transition-colors">
+              <span className="text-2xl font-bold">
                 大森祭
               </span>
             </Link>
@@ -103,75 +102,68 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
             ))}
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
-            {showSearch && (
-              <div
-                className="opacity-0 animate-fade-in-up hover:scale-110 active:scale-90 transition-transform duration-200"
-                style={{ animationDelay: `${(navItems.length + 1) * 100}ms` }}
+          <div className="flex items-center space-x-4">
+            <div className="hover:scale-110 active:scale-90 transition-transform duration-200">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="md:hidden"
+                onClick={() => setIsOpen(!isOpen)}
               >
-                <Link
-                  href="/search"
-                  className="text-white/80 hover:text-white transition-colors"
-                >
-                  <Search className="w-5 h-5" />
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <div className="hover:scale-110 active:scale-90 transition-transform duration-200">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              <div className="transition-all duration-200">
-                {isOpen
-                  ? <X className="w-5 h-5" />
-                  : <Menu className="w-5 h-5" />}
-              </div>
-            </Button>
+                <div className="relative w-5 h-5">
+                  <Menu
+                    className={`absolute w-5 h-5 transition-all duration-300 ease-out ${
+                      isOpen
+                        ? "opacity-0 rotate-180 scale-75"
+                        : "opacity-100 rotate-0 scale-100"
+                    }`}
+                  />
+                  <X
+                    className={`absolute w-5 h-5 transition-all duration-300 ease-out ${
+                      isOpen
+                        ? "opacity-100 rotate-0 scale-100"
+                        : "opacity-0 -rotate-180 scale-75"
+                    }`}
+                  />
+                </div>
+              </Button>
+            </div>
           </div>
         </div>
 
-        {isOpen && (
-          <div className="md:hidden overflow-hidden border-t border-white/10">
-            <div className="flex flex-col space-y-2 pt-4 pb-4">
+        <div
+          className={`md:hidden absolute top-full left-0 right-0 bg-black/20 backdrop-blur-md border-b border-white/10 z-50 overflow-hidden transition-all duration-300 ease-out ${
+            isOpen
+              ? "max-h-96 opacity-100 translate-y-0"
+              : "max-h-0 opacity-0 -translate-y-2"
+          }`}
+        >
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex flex-col space-y-2">
               {navItems.map(({ link }, index) => (
                 <div
                   key={index}
-                  className="opacity-0 animate-fade-in-up hover:translate-x-2 active:scale-95 transition-all duration-200"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className={`transform transition-all duration-300 ease-out hover:translate-x-2 active:scale-95 ${
+                    isOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-4"
+                  }`}
+                  style={{
+                    transitionDelay: isOpen ? `${index * 100 + 100}ms` : "0ms",
+                  }}
                 >
                   <Link
                     href={link.url || "#"}
-                    className="text-white/80 hover:text-white transition-colors py-2 block"
+                    className="text-white/80 hover:text-white transition-colors duration-200 py-2 block"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.label}
                   </Link>
                 </div>
               ))}
-
-              {showSearch && (
-                <div
-                  className="opacity-0 animate-fade-in-up hover:translate-x-2 active:scale-95 transition-all duration-200"
-                  style={{ animationDelay: `${navItems.length * 100}ms` }}
-                >
-                  <Link
-                    href="/search"
-                    className="text-white/80 hover:text-white transition-colors py-2 flex items-center space-x-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Search className="w-4 h-4" />
-                    <span>検索</span>
-                  </Link>
-                </div>
-              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );
