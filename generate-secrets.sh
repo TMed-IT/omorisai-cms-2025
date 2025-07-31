@@ -13,15 +13,15 @@ fi
 
 echo "Generating secrets..."
 
-PAYLOAD_SECRET=$(openssl rand -base64 64 | tr -d '\n')
-CRON_SECRET=$(openssl rand -base64 32 | tr -d '\n')
-PREVIEW_SECRET=$(openssl rand -base64 32 | tr -d '\n')
+PAYLOAD_SECRET=$(openssl rand -base64 64 | tr -d '\n' | tr -d '+/' | tr '=' 'A')
+CRON_SECRET=$(openssl rand -base64 32 | tr -d '\n' | tr -d '+/' | tr '=' 'A')
+PREVIEW_SECRET=$(openssl rand -base64 32 | tr -d '\n' | tr -d '+/' | tr '=' 'A')
 
 cp .env.example .env
 
-sed -i.bak "s/PAYLOAD_SECRET=YOUR_SECRET_HERE/PAYLOAD_SECRET=${PAYLOAD_SECRET}/" .env
-sed -i.bak "s/CRON_SECRET=YOUR_CRON_SECRET_HERE/CRON_SECRET=${CRON_SECRET}/" .env
-sed -i.bak "s/PREVIEW_SECRET=YOUR_SECRET_HERE/PREVIEW_SECRET=${PREVIEW_SECRET}/" .env
+sed -i.bak "s|PAYLOAD_SECRET=YOUR_SECRET_HERE|PAYLOAD_SECRET=${PAYLOAD_SECRET}|" .env
+sed -i.bak "s|CRON_SECRET=YOUR_CRON_SECRET_HERE|CRON_SECRET=${CRON_SECRET}|" .env
+sed -i.bak "s|PREVIEW_SECRET=YOUR_SECRET_HERE|PREVIEW_SECRET=${PREVIEW_SECRET}|" .env
 
 rm -f .env.bak
 
