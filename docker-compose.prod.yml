@@ -39,9 +39,8 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: omorisai-cms-cloudflared
-    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    command: tunnel run --token ${CLOUDFLARE_TUNNEL_TOKEN} --no-autoupdate
     restart: unless-stopped
-    no-autoupdate: true
     networks:
       - omorisai-cms-network
 
