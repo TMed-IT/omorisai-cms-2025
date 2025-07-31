@@ -68,6 +68,12 @@ PAYLOAD_SECRET=your-secret-key
 # サーバーのURL（本番は自動で上書きされる場合あり、ローカルは http://localhost:3000 でOK）
 NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 
+# 開発環境用URL設定（start.shで自動設定）
+DEV_SERVER_URL=http://localhost:3000
+
+# 本番環境用URL設定（start.shで自動設定）
+PROD_SERVER_URL=https://yourdomain.com
+
 # Cronジョブ認証用シークレット
 CRON_SECRET=your-cron-secret
 
@@ -76,6 +82,14 @@ PREVIEW_SECRET=your-secret-here
 
 # Cloudflareトンネル用トークン（必要な場合のみ）
 CLOUDFLARE_TUNNEL_TOKEN=your-token-here
+
+# メール設定（パスワードリセット用）
+FROM_EMAIL=noreply@example.com
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_SECURE=false
 ```
 
 ### 3. 依存関係のインストール
@@ -86,27 +100,21 @@ pnpm install
 
 ### 4. 開発サーバーの起動
 
-#### 方法1: Docker Compose（推奨）
+#### Docker Compose
 
 ```bash
-# 開発環境（.envファイルが自動生成されます）
 ./start.sh
-
-# または直接実行
-docker-compose up -d
 ```
 
 `start.sh`スクリプトは以下の処理を行います：
 - `.env`ファイルが存在しない場合、`generate-secrets.sh`を自動実行
 - 環境選択メニューを表示（Development/Production/No Cache Build）
+- 選択した環境に応じて`.env`ファイルの`NEXT_PUBLIC_SERVER_URL`を自動設定
 - 選択した環境でDocker Composeを起動
 
-#### 方法2: ローカル環境
-
-```bash
-# MongoDBを別途起動する必要があります
-pnpm dev
-```
+**環境別URL設定**:
+- **開発環境**: `DEV_SERVER_URL`の値を使用（デフォルト: `http://localhost:3000`）
+- **本番環境**: `PROD_SERVER_URL`の値を使用（必須設定）
 
 ## 📖 使用方法
 
@@ -127,7 +135,6 @@ pnpm dev
 サンプルデータを投入する場合：
 
 ```bash
-# シードスクリプトの実行
 curl http://localhost:3000/api/seed
 ```
 
@@ -181,20 +188,18 @@ pnpm lint:fix
 ### 開発環境
 
 ```bash
-# 対話式メニューで環境選択
 ./start.sh
 
-# または直接実行
+# or
 docker-compose up -d
 ```
 
 ### 本番環境
 
 ```bash
-# 対話式メニューで本番環境選択
 ./start.sh
 
-# または直接実行
+# or
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
@@ -234,6 +239,8 @@ docker-compose -f docker-compose.prod.yml up -d --build
 - 自動シークレット生成機能
 - CORS設定
 - 入力値検証
+- パスワードリセット機能
+
 
 ## レスポンシブ対応
 

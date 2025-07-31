@@ -1,9 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
-import { isEditorOrAdmin } from '../../access/isEditorOrAdmin'
-import { canAccessAdminPanel } from '../../access/canAccessAdminPanel'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
 import {
@@ -23,7 +22,6 @@ export const Posts: CollectionConfig<'posts'> = {
     plural: 'お知らせ',
   },
   access: {
-    admin: canAccessAdminPanel,
     create: isEditorOrAdmin,
     delete: isEditorOrAdmin,
     read: authenticatedOrPublished,

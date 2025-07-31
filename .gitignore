@@ -4,7 +4,6 @@ node_modules
 .DS_Store
 .env
 .next
-.vercel
 
 # Payload default media upload directory
 public/media/
@@ -12,3 +11,4 @@ public/media/
 public/robots.txt
 public/sitemap*.xml
 /.pnpm-store
+src/collections/@/public/media/

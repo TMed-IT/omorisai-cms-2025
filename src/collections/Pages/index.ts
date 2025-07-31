@@ -1,22 +1,21 @@
 import type { CollectionConfig } from 'payload'
 
-import { isEditorOrAdmin } from '../../access/isEditorOrAdmin'
-import { canAccessAdminPanel } from '../../access/canAccessAdminPanel'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CollectionGrid } from '../../blocks/CollectionGrid/config'
-import { CollectionList } from '../../blocks/CollectionList/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
-import { Content } from '../../blocks/Content/config'
+import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { Archive } from '@/blocks/ArchiveBlock/config'
+import { CollectionGrid } from '@/blocks/CollectionGrid/config'
+import { CollectionList } from '@/blocks/CollectionList/config'
+import { CallToAction } from '@/blocks/CallToAction/config'
+import { Content } from '@/blocks/Content/config'
 
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { FestivalInfoBlock } from '../../blocks/FestivalInfo/config'
-import { CountdownBlock } from '../../blocks/Countdown/config'
-import { SloganBlock } from '../../blocks/Slogan/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { FestivalInfoBlock } from '@/blocks/FestivalInfo/config'
+import { CountdownBlock } from '@/blocks/Countdown/config'
+import { SloganBlock } from '@/blocks/Slogan/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
-import { populatePublishedAt } from '../../hooks/populatePublishedAt'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { populatePublishedAt } from '@/hooks/populatePublishedAt'
+import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import {
@@ -34,7 +33,6 @@ export const Pages: CollectionConfig<'pages'> = {
     plural: 'ページ',
   },
   access: {
-    admin: canAccessAdminPanel,
     create: isEditorOrAdmin,
     delete: isEditorOrAdmin,
     read: authenticatedOrPublished,

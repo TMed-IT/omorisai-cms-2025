@@ -636,6 +636,9 @@ export interface SloganBlock {
  * via the `definition` "users".
  */
 export interface User {
+  /**
+   * メールアドレスに基づいて自動生成されます
+   */
   id: string;
   /**
    * 管理者は全ての機能にアクセスでき、編集者はユーザー管理以外の機能にアクセスできます。
@@ -1187,6 +1190,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  id?: T;
   role?: T;
   lastName?: T;
   firstName?: T;

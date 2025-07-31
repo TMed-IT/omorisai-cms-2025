@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&family=Zen+Kaku+Gothic+New&family=Noto+Sans+JP:wght@100..900&display=swap");
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 :root {
   --font-body: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif !important;
   --font-mono: "M PLUS 1 Code", monospace !important;
@@ -16,4 +21,13 @@ code, pre, .code-block {
 .editor,
 [contenteditable=true] {
   font-family: "Zen Kaku Gothic New", sans-serif !important;
+}
+
+a[href="/admin/forgot"],
+a[href*="forgot"],
+.forgot-password,
+.forgot-password-link,
+[data-testid="forgot-password"],
+[data-testid="forgot-password-link"] {
+  display: none !important;
 }

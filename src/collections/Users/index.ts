@@ -1,10 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
-import { adminOnly } from '../../access/adminOnly'
-import { canAccessAdminPanel } from '../../access/canAccessAdminPanel'
-import { validateEmail } from '../../utilities/validateEmail'
-import { EmailValidationError, NameValidationError } from '../../utilities/errors'
+import { adminOnly } from '@/access/adminOnly'
+import { canAccessAdminPanel } from '@/access/canAccessAdminPanel'
+import { validateEmail } from '@/utilities/validateEmail'
+import { EmailValidationError, NameValidationError } from '@/utilities/errors'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -24,8 +23,7 @@ export const Users: CollectionConfig = {
     update: ({ req: { user }, id, data }) => {
       if (!user) return false
       if (user.role === 'admin') return true
-      // editorは自分のパスワード変更のみ許可
-      if (user.id === id && data && Object.keys(data).length === 1 && 'password' in data) {
+      if (user.id === id && data ) {
         return true
       }
       return false
@@ -37,6 +35,15 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   fields: [
+    {
+      name: 'id',
+      type: 'text',
+      label: 'ID',
+      admin: {
+        readOnly: true,
+        description: 'メールアドレスに基づいて自動生成されます',
+      },
+    },
     {
       name: 'role',
       type: 'select',
@@ -89,6 +96,11 @@ export const Users: CollectionConfig = {
           if (validationResult !== true) {
             throw new EmailValidationError(validationResult)
           }
+          
+          const atIndex = email.indexOf('@')
+          if (atIndex !== -1) {
+            data.id = email.substring(0, atIndex)
+          }
         }
         if (data?.lastName) {
           const lastName = data.lastName as string
@@ -138,12 +150,11 @@ export const Users: CollectionConfig = {
       },
     ],
     beforeChange: [
-      async ({ data, req }) => {
+      async ({ data, req, originalDoc }) => {
         if (!req.user) return data
         
-        if (req.user.role !== 'admin') {
-          const { role, ...restData } = data
-          return restData
+        if (req.user.role === 'editor') {
+          throw new Error('編集者はユーザー情報の変更は許可されていません')
         }
         
         return data

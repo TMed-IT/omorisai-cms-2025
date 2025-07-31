@@ -11,9 +11,9 @@ export const festival: FestivalSeedData = {
     location: '東邦大学大森キャンパス',
   },
   slogan: {
-    english: 'Innovation Meets Tradition',
-    japanese: '創造と革新が交差する、未来への扉を開く文化祭',
-    description: '東邦大学大森キャンパスで開催される、学生たちの創造性と技術が融合する文化祭です。',
+    english: 'Fusion',
+    japanese: '和',
+    description: '融合とは、異なる要素が一つに溶け合い、新たな価値を生み出すことを指します。\n大森祭では、音楽、ダンス、美術など、多様な表現や出し物が行われます。そうした異なる分野の要素を調和させ、組み合わせることで、新たな創造や交流を生み出すことを期待しています。',
   },
   socialLinks: [
     {

@@ -26,7 +26,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  admin: {
+    admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
@@ -35,6 +35,7 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: ['@/components/BeforeDashboard'],
       beforeNavLinks: ['@/components/CustomStyle'],
+ 
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -63,11 +64,13 @@ export default buildConfig({
       ],
     },
   },
+
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   collections: [Pages, Posts, Media, Users, Messages, Events, Clubs],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Database, Festival],
@@ -87,7 +90,7 @@ export default buildConfig({
         if (req.user) return true
 
         // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
+        // for the Cron secret to be present as an
         // Authorization header:
         const authHeader = req.headers.get('authorization')
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
@@ -102,6 +105,19 @@ export default buildConfig({
       ja: {
         authentication: {
           beginCreateFirstUser: 'はじめに、最初のユーザーを作成してください。',
+          forgotPassword: 'パスワードを忘れた場合',
+          forgotPasswordSuccess: '管理者にお問い合わせください',
+          forgotPasswordError: '管理者にお問い合わせください',
+          resetPassword: 'パスワードをリセット',
+          resetPasswordSuccess: 'パスワードが正常にリセットされました',
+          resetPasswordError: 'パスワードのリセットに失敗しました',
+          invalidToken: '無効なトークンです',
+          tokenExpired: 'トークンの有効期限が切れています',
+          forgotPasswordEmailInstructions: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
+          forgotPasswordDescription: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
+          forgotPasswordEmailLabel: '管理者にお問い合わせください',
+          forgotPasswordSubmitLabel: '管理者にお問い合わせください',
+          forgotPasswordBackToLogin: 'ログイン画面へ戻る',
         },
         operators: {
           contains: '次を含む',
@@ -140,6 +156,10 @@ export default buildConfig({
           stayOnThisPage: 'このページに留まる',
           leaveAnyway: '変更を破棄して離れる',
           submitting: '送信中...',
+          forgotPasswordDescription: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
+          forgotPasswordButtonText: 'ログイン画面へ戻る',
+          submit: '管理者にお問い合わせください',
+          backToLogin: 'ログイン画面へ戻る',
         },
         version:{
           draft: '下書き',
@@ -160,14 +180,21 @@ export default buildConfig({
           emailAddress: '有効なメールアドレスを入力してください',
           enterNumber: '有効な数値を入力してください',
           required: 'この項目は必須です',
+          email: '管理者にお問い合わせください',
         },
         fields: {
           chooseFromExisting: 'メディアから選択',
+          email: '管理者にお問い合わせください',
         },
         errors: {
           emailOrPasswordIncorrect: 'メールアドレスまたはパスワードが間違っています',
           correctInvalidFields: '無効なフィールドを修正してください',
-
+        },
+        forgotPassword: {
+          title: 'パスワードを忘れた場合',
+          description: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
+          buttonText: 'ログイン画面へ戻る',
+          emailLabel: '管理者にお問い合わせください',
         },
       },
     },
