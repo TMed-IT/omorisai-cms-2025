@@ -13,13 +13,18 @@ export const Users: CollectionConfig = {
   },
   access: {
     admin: canAccessAdminPanel,
-    create: adminOnly,
+    create: ({ req }) => {
+      if (!req.user) return true
+      return adminOnly({ req })
+    },
     delete: adminOnly,
-    read: ({ req: { user }, id }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    read: ({ req: { user } }) => {
       if (!user) return false
       if (user.role === 'admin') return true
       return { id: { equals: user.id } }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     update: ({ req: { user }, id, data }) => {
       if (!user) return false
       if (user.role === 'admin') return true
@@ -135,22 +140,30 @@ export const Users: CollectionConfig = {
           data.firstNameRoman = firstNameRoman.charAt(0).toUpperCase() + firstNameRoman.slice(1).toLowerCase()
         }
         
-        if (!req.user && req.payload) {
-          const users = await req.payload.find({
-            collection: 'users',
-            limit: 1,
-          })
-          
-          if (users.docs.length === 0) {
+        if (!req.user && req.payload && typeof req.payload.find === 'function') {
+          try {
+            const users = await req.payload.find({
+              collection: 'users',
+              limit: 1,
+            })
+            
+            if (users.docs.length === 0) {
+              data.role = 'admin'
+            }
+          } catch (error) {
+            console.error('Error checking existing users:', error)
             data.role = 'admin'
           }
+        } else if (!req.user) {
+          data.role = 'admin'
         }
         
         return data
       },
     ],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     beforeChange: [
-      async ({ data, req, originalDoc }) => {
+      async ({ data, req }) => {
         if (!req.user) return data
         
         if (req.user.role === 'editor') {

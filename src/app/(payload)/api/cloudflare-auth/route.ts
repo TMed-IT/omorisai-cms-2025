@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     const userInfo = extractUserInfoFromCloudflare(cloudflarePayload)
     
-    let user = await payload.find({
+    const user = await payload.find({
       collection: 'users',
       where: {
         email: {
@@ -42,41 +42,20 @@ export async function POST(req: NextRequest) {
         password: Math.random().toString(36),
       }
 
-      const created = await payload.create({
+      await payload.create({
         collection: 'users',
         data: userData,
       })
-
-      user.docs = [created]
     }
 
-    const loginResult = await payload.login({
-      collection: 'users',
-      data: {
-        email: userInfo.email,
-        password: user.docs[0]?.password || Math.random().toString(36),
-      },
+    return NextResponse.json({
+      message: 'ユーザー情報を取得しました',
+      user: userInfo,
     })
-
-    const response = NextResponse.json({
-      message: 'Cloudflare Accessでログインしました',
-      user: loginResult.user,
-    })
-
-    if (loginResult.token) {
-      response.cookies.set('payload-token', loginResult.token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-      })
-    }
-
-    return response
   } catch (error) {
     console.error('Cloudflare認証エラー:', error)
     return NextResponse.json(
-      { error: 'ログインに失敗しました' },
+      { error: 'ユーザー情報の取得に失敗しました' },
       { status: 500 }
     )
   }
@@ -85,11 +64,13 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const token = getCloudflareJWTFromRequest(req)
+
     if (!token) {
       return NextResponse.json({ authenticated: false })
     }
 
     const cloudflarePayload = await verifyCloudflareJWT(token)
+
     if (!cloudflarePayload) {
       return NextResponse.json({ authenticated: false })
     }

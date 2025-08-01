@@ -17,7 +17,6 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { ja } from '@payloadcms/translations/languages/ja'
-import Database from '@/Database/config'
 import Messages from './collections/Messages'
 import Events from './collections/Events'
 import Clubs from './collections/Clubs'
@@ -73,7 +72,7 @@ export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   collections: [Pages, Posts, Media, Users, Messages, Events, Clubs],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, Database, Festival],
+  globals: [Header, Footer, Festival],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
