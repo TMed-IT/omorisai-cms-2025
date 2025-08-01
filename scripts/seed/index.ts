@@ -65,8 +65,8 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding media...`)
 
-  const placeholderLightPath = path.resolve(process.cwd(), 'src/endpoints/seed/placeholder_light.png')
-  const placeholderDarkPath = path.resolve(process.cwd(), 'src/endpoints/seed/placeholder_dark.png')
+  const placeholderLightPath = path.resolve(process.cwd(), 'scripts/seed/placeholder_light.png')
+  const placeholderDarkPath = path.resolve(process.cwd(), 'scripts/seed/placeholder_dark.png')
 
   const placeholderLightBuffer = fs.readFileSync(placeholderLightPath)
   const placeholderDarkBuffer = fs.readFileSync(placeholderDarkPath)
@@ -105,16 +105,25 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: home(),
+      context: {
+        disableRevalidate: true,
+      },
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
       data: eventsPage(),
+      context: {
+        disableRevalidate: true,
+      },
     }),
     payload.create({
       collection: 'pages',
       depth: 0,
       data: privacyPolicy(),
+      context: {
+        disableRevalidate: true,
+      },
     }),
   ])
 
@@ -148,6 +157,9 @@ export const seed = async ({
           },
         ],
       },
+      context: {
+        disableRevalidate: true,
+      },
     }),
     payload.updateGlobal({
       slug: 'footer',
@@ -162,10 +174,16 @@ export const seed = async ({
           },
         ],
       },
+      context: {
+        disableRevalidate: true,
+      },
     }),
     payload.updateGlobal({
       slug: 'festival',
       data: festivalData,
+      context: {
+        disableRevalidate: true,
+      },
     }),
   ])
 
@@ -174,6 +192,9 @@ export const seed = async ({
     await payload.create({
       collection: 'messages',
       data: msg,
+      context: {
+        disableRevalidate: true,
+      },
     })
   }
 
@@ -186,6 +207,9 @@ export const seed = async ({
       data: {
         ...event,
         thumbnail: mediaId,
+      },
+      context: {
+        disableRevalidate: true,
       },
     })
   }
@@ -200,6 +224,9 @@ export const seed = async ({
         ...club,
         image: mediaId,
       },
+      context: {
+        disableRevalidate: true,
+      },
     })
   }
 
@@ -208,8 +235,48 @@ export const seed = async ({
     await payload.create({
       collection: 'posts',
       data: post as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      context: {
+        disableRevalidate: true,
+      },
     })
   }
 
   payload.logger.info('Seeded database successfully!')
+}
+
+// CLI実行用のメイン関数
+async function main() {
+  console.log('🚀 データベース初期化を開始します...')
+  
+  try {
+    const { getPayload } = await import('payload')
+    const config = await import('@payload-config')
+    
+    const payload = await getPayload({ config: config.default })
+    
+    console.log('📦 PayloadCMSに接続しました')
+    
+    const mockReq = {
+      user: {
+        id: 'cli-seed-user',
+        email: 'cli@example.com',
+        collection: 'users',
+      },
+    } as any
+    
+    await seed({ payload, req: mockReq })
+    
+    console.log('✅ データベース初期化が完了しました！')
+    console.log('🌐 ウェブサイトを確認するには: http://localhost:3000')
+    
+    process.exit(0)
+  } catch (error) {
+    console.error('❌ エラーが発生しました:', error)
+    process.exit(1)
+  }
+}
+
+// CLIから直接実行された場合のみmain関数を実行
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main()
 }

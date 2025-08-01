@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { adminOnly } from '@/access/adminOnly'
 import { canAccessAdminPanel } from '@/access/canAccessAdminPanel'
 import { validateEmail } from '@/utilities/validateEmail'
-import { EmailValidationError, NameValidationError } from '@/utilities/errors'
+import { EmailValidationError, NameValidationError, EditorCannotEditUserDataError } from '@/utilities/errors'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -18,13 +18,11 @@ export const Users: CollectionConfig = {
       return adminOnly({ req })
     },
     delete: adminOnly,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     read: ({ req: { user } }) => {
       if (!user) return false
       if (user.role === 'admin') return true
       return { id: { equals: user.id } }
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     update: ({ req: { user }, id, data }) => {
       if (!user) return false
       if (user.role === 'admin') return true
@@ -35,7 +33,7 @@ export const Users: CollectionConfig = {
     },
   },
   admin: {
-    defaultColumns: ['lastName', 'firstName', 'lastNameRoman', 'firstNameRoman', 'email', 'role'],
+    defaultColumns: ['name', 'nameRoman', 'email', 'role'],
     group: 'ユーザー管理',
   },
   auth: true,
@@ -66,28 +64,26 @@ export const Users: CollectionConfig = {
         },
       ],
       admin: {
-        description: '管理者は全ての機能にアクセスでき、編集者はユーザー管理以外の機能にアクセスできます。',
+        description: '管理者は全ての機能にアクセスでき、編集者はユーザー管理以外の機能にアクセスできます',
       },
     },
     {
-      name: 'lastName',
+      name: 'name',
       type: 'text',
-      label: '姓',
+      label: '名前',
+      required: true,
+      admin: {
+        description: '姓名の間は半角スペースで区切ってください',
+      },
     },
     {
-      name: 'firstName',
+      name: 'nameRoman',
       type: 'text',
-      label: '名',
-    },
-    {
-      name: 'lastNameRoman',
-      type: 'text',
-      label: '姓（ローマ字）',
-    },
-    {
-      name: 'firstNameRoman',
-      type: 'text',
-      label: '名（ローマ字）',
+      label: '名前（ローマ字）',
+      required: true,
+      admin: {
+        description: '姓名（ローマ字）の間は半角スペースで区切ってください',
+      },
     },
   ],
   hooks: {
@@ -107,37 +103,38 @@ export const Users: CollectionConfig = {
             data.id = email.substring(0, atIndex)
           }
         }
-        if (data?.lastName) {
-          const lastName = data.lastName as string
-          if (!lastName.trim()) {
-            throw new NameValidationError('姓を入力してください')
+        
+        if (data?.name) {
+          const name = data.name as string
+          if (!name.trim()) {
+            throw new NameValidationError('名前を入力してください')
           }
-          if (/\s/.test(lastName)) {
-            throw new NameValidationError('姓にスペースを含めないでください')
-          }
-        }
-        if (data?.firstName) {
-          const firstName = data.firstName as string
-          if (!firstName.trim()) {
-            throw new NameValidationError('名を入力してください')
-          }
-          if (/\s/.test(firstName)) {
-            throw new NameValidationError('名にスペースを含めないでください')
+          
+          if (!name.includes(' ')) {
+            throw new NameValidationError('姓名の間は半角スペースで区切ってください')
           }
         }
-        if (data?.lastNameRoman) {
-          const lastNameRoman = data.lastNameRoman as string
-          if (!/^[A-Za-z]+$/.test(lastNameRoman)) {
-            throw new NameValidationError('姓（ローマ字）は半角英字のみで入力してください')
+        
+        if (data?.nameRoman) {
+          const nameRoman = data.nameRoman as string
+          if (!nameRoman.trim()) {
+            throw new NameValidationError('名前（ローマ字）を入力してください')
           }
-          data.lastNameRoman = lastNameRoman.charAt(0).toUpperCase() + lastNameRoman.slice(1).toLowerCase()
-        }
-        if (data?.firstNameRoman) {
-          const firstNameRoman = data.firstNameRoman as string
-          if (!/^[A-Za-z]+$/.test(firstNameRoman)) {
-            throw new NameValidationError('名（ローマ字）は半角英字のみで入力してください')
+          
+          const nameRomanParts = nameRoman.trim().split(' ')
+
+          const lastNameRoman = nameRomanParts[0]
+          const firstNameRoman = nameRomanParts[1]
+
+          if (!lastNameRoman || !firstNameRoman) {
+            throw new NameValidationError('姓名（ローマ字）の間は半角スペースで区切ってください')
           }
-          data.firstNameRoman = firstNameRoman.charAt(0).toUpperCase() + firstNameRoman.slice(1).toLowerCase()
+
+          if (!/^[A-Za-z]+$/.test(lastNameRoman) || !/^[A-Za-z]+$/.test(firstNameRoman)) {
+            throw new NameValidationError('名前（ローマ字）は半角英字のみで入力してください')
+          }
+          
+          data.nameRoman = `${lastNameRoman.charAt(0).toUpperCase()}${lastNameRoman.slice(1).toLowerCase()} ${firstNameRoman.charAt(0).toUpperCase()}${firstNameRoman.slice(1).toLowerCase()}`
         }
         
         if (!req.user && req.payload && typeof req.payload.find === 'function') {
@@ -161,13 +158,12 @@ export const Users: CollectionConfig = {
         return data
       },
     ],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     beforeChange: [
       async ({ data, req }) => {
         if (!req.user) return data
         
         if (req.user.role === 'editor') {
-          throw new Error('編集者はユーザー情報の変更は許可されていません')
+          throw new EditorCannotEditUserDataError()
         }
         
         return data

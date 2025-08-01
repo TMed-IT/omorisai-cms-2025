@@ -101,13 +101,11 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    database: Database;
     festival: Festival;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    database: DatabaseSelect<false> | DatabaseSelect<true>;
     festival: FestivalSelect<false> | FestivalSelect<true>;
   };
   locale: null;
@@ -641,13 +639,17 @@ export interface User {
    */
   id: string;
   /**
-   * 管理者は全ての機能にアクセスでき、編集者はユーザー管理以外の機能にアクセスできます。
+   * 管理者は全ての機能にアクセスでき、編集者はユーザー管理以外の機能にアクセスできます
    */
   role: 'admin' | 'editor';
-  lastName?: string | null;
-  firstName?: string | null;
-  lastNameRoman?: string | null;
-  firstNameRoman?: string | null;
+  /**
+   * 姓名の間は半角スペースで区切ってください
+   */
+  name: string;
+  /**
+   * 姓名（ローマ字）の間は半角スペースで区切ってください
+   */
+  nameRoman: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1192,10 +1194,8 @@ export interface MediaSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   id?: T;
   role?: T;
-  lastName?: T;
-  firstName?: T;
-  lastNameRoman?: T;
-  firstNameRoman?: T;
+  name?: T;
+  nameRoman?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1385,15 +1385,6 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "database".
- */
-export interface Database {
-  id: string;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "festival".
  */
 export interface Festival {
@@ -1462,15 +1453,6 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "database_select".
- */
-export interface DatabaseSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

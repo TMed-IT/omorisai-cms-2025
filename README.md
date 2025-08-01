@@ -134,8 +134,14 @@ pnpm install
 
 サンプルデータを投入する場合：
 
+#### CLIツールを使用
+
 ```bash
-curl http://localhost:3000/api/seed
+# ローカル環境
+pnpm @seed/
+
+# Docker環境（既存のpayloadコンテナ内で実行）
+docker-compose exec payload pnpm @seed/
 ```
 
 ## プロジェクト構造
@@ -172,6 +178,9 @@ pnpm start
 
 # 型定義の生成
 pnpm generate:types
+
+# データベース初期化
+pnpm @seed/
 
 # リンター実行
 pnpm lint
@@ -247,6 +256,69 @@ docker-compose -f docker-compose.prod.yml up -d --build
 - モバイル（375px）
 - タブレット（768px）
 - デスクトップ（1440px）
+
+## API
+
+### ユーザー管理 API
+
+#### POST /api/users/upsert
+
+ユーザーの作成または更新を行います。emailが既存の場合は更新、存在しない場合は新規作成します。
+
+**認証**
+- リクエストヘッダーに `Authorization: Bearer {USERS_API_SECRET}` を設定
+- 環境変数 `USERS_API_SECRET` を設定する必要があります
+
+**リクエスト**
+```json
+{
+  "email": "m20000a@st.toho-u.ac.jp",
+  "name": "東邦 太郎",
+  "nameRoman": "Toho Taro",
+  "role": "editor"
+}
+```
+
+**レスポンス（新規作成時）**
+```json
+{
+  "created": true,
+  "password": "Abc12345"
+}
+```
+
+**レスポンス（更新時）**
+```json
+{
+  "updated": true
+}
+```
+
+**バリデーション**
+- email: `st.toho-u.ac.jp` ドメインの有効なメールアドレス
+- name: 姓名の間は半角スペースで区切る
+- nameRoman: 姓名（ローマ字）の間は半角スペースで区切る
+- role: `admin` または `editor`
+
+**エラーレスポンス**
+```json
+{
+  "error": "認証エラー"
+}
+```
+
+**使用例**
+```bash
+curl -X POST http://localhost:3000/api/users/upsert \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_USERS_API_SECRET" \
+  -d '{
+    "email": "m20000a@st.toho-u.ac.jp",
+    "name": "東邦 太郎",
+    "nameRoman": "Toho Taro",
+    "role": "editor"
+  }'
+```
 
 ## 🆘 サポート
 
