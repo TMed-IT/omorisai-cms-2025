@@ -20,7 +20,7 @@ export const getCloudflareConfig = (): CloudflareAccessConfig => {
   const applicationAUD = process.env.CLOUDFLARE_APPLICATION_AUD
 
   if (!teamSubdomain || !applicationAUD) {
-    console.error('Cloudflare Access environment variables are not set: CLOUDFLARE_TEAM_DOMAIN, CLOUDFLARE_APPLICATION_AUD')
+    throw new Error('Cloudflare Access environment variables are not set: CLOUDFLARE_TEAM_DOMAIN, CLOUDFLARE_APPLICATION_AUD')
   }
 
   const teamDomain = `https://${teamSubdomain}.cloudflareaccess.com`
