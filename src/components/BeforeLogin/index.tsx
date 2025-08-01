@@ -10,16 +10,18 @@ const BeforeLogin: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
 
   useEffect(() => {
     checkCloudflareAuth();
   }, []);
 
   useEffect(() => {
-    if (isCloudflareAvailable && !cloudflareUser && !isLoading) {
+    if (isCloudflareAvailable && !cloudflareUser && !isLoading && !hasAttemptedLogin) {
+      setHasAttemptedLogin(true);
       handleCloudflareLogin();
     }
-  }, [isCloudflareAvailable, cloudflareUser, isLoading]);
+  }, [isCloudflareAvailable, cloudflareUser, hasAttemptedLogin]);
 
   useEffect(() => {
     if (cloudflareUser) {
@@ -64,7 +66,7 @@ const BeforeLogin: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setCloudflareUser(data.user);
+        setCloudflareUser({ email: data.email });
       } else {
         const errorData = await response.json();
         setError(errorData.error || 'ユーザー情報の取得に失敗しました');

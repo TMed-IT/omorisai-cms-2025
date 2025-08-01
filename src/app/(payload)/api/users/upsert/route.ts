@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import payload from 'payload'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 import { validateEmail } from '@/utilities/validateEmail'
 import { EmailValidationError, NameValidationError, AdminUserCannotBeChangedToEditorError } from '@/utilities/errors'
 
@@ -19,6 +20,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '認証エラー' }, { status: 401 })
   }
 
+  const payload = await getPayload({ config })
+  
   const body = await req.json()
   const { email, name, nameRoman, role } = body
 
@@ -71,4 +74,4 @@ export async function POST(req: NextRequest) {
     })
     return NextResponse.json({ created: true, password })
   }
-}
+} 

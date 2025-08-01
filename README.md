@@ -58,40 +58,6 @@ cd oomorisai-cms
 
 `.env`ファイルを手動で作成する場合：
 
-```env
-# MongoDB接続URI（docker composeのmongoサービスを利用）
-DATABASE_URI=mongodb://mongo:27017/
-
-# JWTトークン暗号化用シークレット
-PAYLOAD_SECRET=your-secret-key
-
-# サーバーのURL（本番は自動で上書きされる場合あり、ローカルは http://localhost:3000 でOK）
-NEXT_PUBLIC_SERVER_URL=http://localhost:3000
-
-# 開発環境用URL設定（start.shで自動設定）
-DEV_SERVER_URL=http://localhost:3000
-
-# 本番環境用URL設定（start.shで自動設定）
-PROD_SERVER_URL=https://yourdomain.com
-
-# Cronジョブ認証用シークレット
-CRON_SECRET=your-cron-secret
-
-# プレビューリクエスト検証用シークレット
-PREVIEW_SECRET=your-secret-here
-
-# Cloudflareトンネル用トークン（必要な場合のみ）
-CLOUDFLARE_TUNNEL_TOKEN=your-token-here
-
-# メール設定（パスワードリセット用）
-FROM_EMAIL=noreply@example.com
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-SMTP_SECURE=false
-```
-
 ### 3. 依存関係のインストール
 
 ```bash

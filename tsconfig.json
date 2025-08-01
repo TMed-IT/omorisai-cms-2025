@@ -40,6 +40,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@/scripts/*": [
+        "./scripts/*"
+      ]
     }
   },
   "include": [

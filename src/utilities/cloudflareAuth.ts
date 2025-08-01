@@ -34,7 +34,6 @@ export const getCloudflareConfig = (): CloudflareAccessConfig => {
 
 export const getCloudflareJWTFromRequest = (req: NextRequest): string | null => {
   const token = req.headers.get('cf-access-jwt-assertion') || req.cookies.get('CF_Authorization')?.value
-
   return token || null
 }
 
@@ -46,45 +45,28 @@ export const verifyCloudflareJWT = async (token: string): Promise<CloudflareAcce
     if (!certsResponse.ok) {
       return null
     }
-    const certs = await certsResponse.json()
     
+    const certs = await certsResponse.json()
     const decoded = jwt.decode(token, { complete: true })
-    if (!decoded || !decoded.header.kid) {
+    
+    if (!decoded?.header?.kid) {
       return null
     }
     
     const cert = certs.keys.find((key: any) => key.kid === decoded.header.kid)
-    if (!cert) {
-      return null
-    }
-    
-    if (!cert.n || !cert.e) {
+    if (!cert?.n || !cert?.e) {
       return null
     }
     
     const payload = jwt.decode(token) as CloudflareAccessPayload
-    if (!payload || !payload.email) {
+    if (!payload?.email) {
       return null
     }
     
     return payload
-  } catch (error: unknown) {
+  } catch (error) {
+    console.error('Cloudflare JWT verification error:', error)
     return null
   }
 }
 
-export const extractUserInfoFromCloudflare = (payload: CloudflareAccessPayload) => {
-  const email = payload.email
-  const name = email.split('@')[0] || ''
-  
-  const [firstName, lastName] = name.includes(' ') 
-    ? name.split(' ', 2) 
-    : [name, '']
-
-  return {
-    email,
-    firstName: firstName || '',
-    lastName: lastName || '',
-    id: email.split('@')[0],
-  }
-}
