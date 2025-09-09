@@ -37,6 +37,12 @@ const Events: CollectionConfig = {
     {
       name: 'date',
       type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+          timeIntervals: 5,
+        },
+      },
       required: true,
       label: '日時',
     },

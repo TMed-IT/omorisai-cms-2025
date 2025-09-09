@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
 import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
+import { MediaExtensionNotAllowedError } from '@/utilities/errors'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -84,6 +85,28 @@ export const Media: CollectionConfig = {
         width: 1200,
         height: 630,
         crop: 'center',
+      },
+    ],
+    mimeTypes: ['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'],
+  },
+  hooks: {
+    beforeValidate: [
+      async ({ data }) => {
+        if (!data) return data
+        const mime = (data as any).mimeType as string | undefined
+        const filename = (data as any).filename as string | undefined
+        const allowedMimes = new Set(['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'])
+        if (mime && !allowedMimes.has(mime)) {
+          throw new MediaExtensionNotAllowedError('対応していない拡張子です')
+        }
+        if (filename && !mime) {
+          const ext = filename.split('.').pop()?.toLowerCase()
+          const allowedExts = new Set(['jpg','jpeg','png','webp','gif','svg'])
+          if (!ext || !allowedExts.has(ext)) {
+            throw new MediaExtensionNotAllowedError('対応していない拡張子です')
+          }
+        }
+        return data
       },
     ],
   },

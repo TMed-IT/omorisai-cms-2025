@@ -667,12 +667,15 @@ export interface User {
  */
 export interface Message {
   id: string;
-  /**
-   * 自動生成されます
-   */
+  avatar?: (string | null) | Media;
   slug: string;
+  slugLock?: boolean | null;
   position: string;
   name: string;
+  /**
+   * 小さいほど上に表示されます
+   */
+  order?: number | null;
   message: {
     root: {
       type: string;
@@ -1211,9 +1214,12 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "messages_select".
  */
 export interface MessagesSelect<T extends boolean = true> {
+  avatar?: T;
   slug?: T;
+  slugLock?: T;
   position?: T;
   name?: T;
+  order?: T;
   message?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -171,8 +171,6 @@ export function Typewriter(
   );
 }
 
-// 新しいモダンアニメーション
-
 export function FloatIn({
   children,
   delay = 0,

@@ -88,7 +88,7 @@ function ParallaxJourney(
                     pointerEvents: "none",
                     fontFamily: "var(--font-shippori-mincho-b1), serif",
                     zIndex: 10,
-                    padding: "0 1rem",
+                    padding: "0",
                     opacity: showSlogan ? 1 : 0,
                     transition:
                         "opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
@@ -150,7 +150,7 @@ function ParallaxJourney(
                         top: "150vh",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        maxWidth: "min(800px, 90vw)",
+                        maxWidth: "min(1000px, 90vw)",
                         fontSize: "clamp(18px, 2.5vw, 28px)",
                         lineHeight: 1.8,
                         color: "#f8fafc",
@@ -159,7 +159,8 @@ function ParallaxJourney(
                         textShadow: "0 2px 8px rgba(0,0,0,0.7)",
                         background:
                             "linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%)",
-                        padding: "2rem 3rem",
+                        padding:
+                            "clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3rem)",
                         borderRadius: "16px",
                         backdropFilter: "blur(10px)",
                         border: "1px solid rgba(255,255,255,0.1)",

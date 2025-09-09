@@ -3,10 +3,12 @@ import { getPayload } from "payload";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, User } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { FloatIn, RevealText } from "@/components/Animations/animations";
 import Link from "next/link";
 import RichText from "@/components/RichText";
+import { Media } from "@/components/Media";
+import Image from "next/image";
 
 interface Props {
   params: Promise<{
@@ -39,7 +41,7 @@ export default async function MessageDetailPage({ params }: Props) {
     }
 
     return (
-      <section className="relative pt-24 pb-16 px-4">
+      <section className="relative pt-24 pb-20 px-4">
         <div className="container mx-auto max-w-4xl">
           <Link href="/message">
             <Button
@@ -51,48 +53,50 @@ export default async function MessageDetailPage({ params }: Props) {
             </Button>
           </Link>
 
-          <Card className="bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden relative">
-            <div className="relative">
-              <div className="w-full h-64 md:h-80 bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center relative overflow-hidden">
-                <div className="text-6xl text-white/30">
-                  {message.name?.charAt(0) || "?"}
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5">
-                </div>
-                <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl animate-pulse">
-                </div>
-                <div
-                  className="absolute bottom-0 right-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
-                  style={{ animationDelay: "1s" }}
-                >
-                </div>
+          <Card className="bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden relative shadow-xl">
+            <div className="relative flex items-center justify-center pt-12 pb-2">
+              <div className="w-32 h-32 rounded-full overflow-hidden ring-2 ring-blue-500/20 relative bg-slate-700 flex items-center justify-center shadow-md">
+                {((message as any).avatar)
+                  ? (
+                    <Media
+                      resource={(message as any).avatar}
+                      fill
+                      imgClassName="object-cover object-center"
+                    />
+                  )
+                  : (
+                    <Image
+                      src="/icon-white.svg"
+                      alt="avatar"
+                      width={96}
+                      height={96}
+                      className="opacity-80"
+                    />
+                  )}
               </div>
             </div>
 
-            <CardHeader className="pb-8">
+            <CardHeader className="pb-6">
               <RevealText>
-                <CardTitle className="text-3xl md:text-4xl mb-4">
-                  {message.position} 挨拶
+                <CardTitle className="text-3xl md:text-4xl mb-2 text-center">
+                  {message.name}
                 </CardTitle>
               </RevealText>
 
               <FloatIn>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full flex items-center justify-center relative overflow-hidden group">
-                    <User className="w-8 h-8 transition-all duration-300 group-hover:scale-110" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-lg transition-all duration-300 hover:text-blue-300">
-                      {message.name}
-                    </p>
-                  </div>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-600/20 text-blue-200 border border-blue-500/30">
+                    {message.position}
+                  </span>
                 </div>
               </FloatIn>
             </CardHeader>
 
-            <CardContent className="space-y-6">
+            <div className="px-6">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent" />
+            </div>
+
+            <CardContent className="space-y-8 pt-6">
               <FloatIn>
                 <div>
                   <div className="text-white/80 leading-relaxed w-full prose prose-invert max-w-none">
@@ -104,8 +108,21 @@ export default async function MessageDetailPage({ params }: Props) {
               </FloatIn>
             </CardContent>
 
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 hover:from-blue-500/3 hover:to-purple-500/3 transition-all duration-500 pointer-events-none">
+            <div className="px-6 pb-8">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-6" />
+              <div className="flex justify-center">
+                <Link href="/message">
+                  <Button
+                    variant="secondary"
+                    className="border border-slate-600 bg-slate-700 hover:bg-slate-600"
+                  >
+                    メッセージ一覧に戻る
+                  </Button>
+                </Link>
+              </div>
             </div>
+
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 hover:from-blue-500/3 hover:to-purple-500/3 transition-all duration-500 pointer-events-none" />
           </Card>
         </div>
       </section>

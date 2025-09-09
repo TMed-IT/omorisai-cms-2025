@@ -351,6 +351,9 @@ export default function HomeBackground(
                 width: "100%",
                 height: "100vh",
                 overflow: "hidden",
+                // Ensure the background never captures pointer events
+                pointerEvents: "none",
+                zIndex: 0,
                 ...style,
             }}
         >
@@ -367,6 +370,8 @@ export default function HomeBackground(
                     position: "absolute",
                     inset: 0,
                     zIndex: 1,
+                    // Extra safeguard so the canvas never intercepts clicks
+                    pointerEvents: "none",
                 }}
                 onCreated={({ gl }) => {
                     gl.setClearColor("#0a0f1c", 1);

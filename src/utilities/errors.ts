@@ -23,3 +23,9 @@ export class EditorCannotEditUserDataError extends APIError {
     super('編集者はユーザー情報を編集できません', 400, undefined, true)
   }
 }
+
+export class MediaExtensionNotAllowedError extends APIError {
+  constructor(message: string) {
+    super(message, 400, undefined, true)
+  }
+}

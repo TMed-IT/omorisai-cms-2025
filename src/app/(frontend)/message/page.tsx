@@ -13,15 +13,14 @@ import { GridItem, StaggerGrid } from "@/components/Animations/animations";
 import { WaveText } from "@/components/ui/wave-text";
 import Link from "next/link";
 import type { Message } from "@/payload-types";
+import { Media } from "@/components/Media";
+import Image from "next/image";
 
 export default async function MessagePage() {
   const payload = await getPayload({ config: configPromise });
-  const messages = await payload.find({ collection: "messages" });
-
-  const sortedMessages = messages.docs.sort((a: Message, b: Message) => {
-    const slugA = parseInt(a.slug) || 0;
-    const slugB = parseInt(b.slug) || 0;
-    return slugA - slugB;
+  const messages = await payload.find({
+    collection: "messages",
+    sort: "order",
   });
 
   const getExcerpt = (message: Message) => {
@@ -55,18 +54,32 @@ export default async function MessagePage() {
         <div className="container mx-auto">
           <StaggerGrid>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sortedMessages.map((message: Message, index: number) => (
+              {messages.docs.map((message: Message, index: number) => (
                 <GridItem key={message.id} index={index}>
                   <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative">
-                    <div className="w-full h-48 bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 relative">
-                      <div className="text-6xl text-white/30">
-                        {message.name?.charAt(0) || "?"}
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500">
+                    <div className="p-6 pb-0">
+                      <div className="w-24 h-24 rounded-full overflow-hidden mx-auto ring-1 ring-slate-700 relative bg-slate-700 flex items-center justify-center">
+                        {((message as any).avatar)
+                          ? (
+                            <Media
+                              resource={(message as any).avatar}
+                              fill
+                              imgClassName="object-cover object-center"
+                            />
+                          )
+                          : (
+                            <Image
+                              src="/icon-white.svg"
+                              alt="avatar"
+                              width={64}
+                              height={64}
+                              className="opacity-80"
+                            />
+                          )}
                       </div>
                     </div>
 
-                    <CardHeader>
+                    <CardHeader className="text-center">
                       <CardTitle className="text-xl group-hover:text-blue-300 transition-all duration-300">
                         {message.position} 挨拶
                       </CardTitle>
@@ -78,7 +91,7 @@ export default async function MessagePage() {
                     </CardHeader>
 
                     <CardContent className="flex-1 flex flex-col">
-                      <p className="text-white/80 mb-2 leading-relaxed flex-1 transition-all duration-300 group-hover:text-white/90">
+                      <p className="text-white/80 mb-2 leading-relaxed flex-1 transition-all duration-300 group-hover:text-white/90 text-center">
                         {getExcerpt(message)}
                       </p>
                     </CardContent>

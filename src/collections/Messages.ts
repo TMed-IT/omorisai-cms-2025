@@ -3,6 +3,7 @@ import { canAccessAdminPanel } from '@/access/canAccessAdminPanel'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import type { CollectionConfig } from 'payload'
 import { defaultLexical } from '@/fields/defaultLexical'
+import { slugField } from '@/fields/slug'
 
 const Messages: CollectionConfig = {
   slug: 'messages',
@@ -18,46 +19,25 @@ const Messages: CollectionConfig = {
     update: isEditorOrAdmin,
   },
   admin: {
-    defaultColumns: ['position', 'name', 'slug'],
+    defaultColumns: ['position', 'name', 'order', 'slug'],
     group: 'コンテンツ管理',
     useAsTitle: 'position',
   },
-  hooks: {
-    beforeChange: [
-      async ({ data, req }) => {
-        if (!data.slug) {
-          const messages = await req.payload.find({
-            collection: 'messages',
-            sort: '-slug',
-            limit: 1,
-          })
-          
-          let nextNumber = 1
-          if (messages.docs.length > 0 && messages.docs[0] && messages.docs[0].slug) {
-            const maxSlug = parseInt(messages.docs[0].slug, 10)
-            if (!isNaN(maxSlug)) {
-              nextNumber = maxSlug + 1
-            }
-          }
-          
-          data.slug = nextNumber.toString()
-        }
-        
-        return data
-      },
-    ],
-  },
+  defaultSort: 'order',
+  hooks: {},
   fields: [
     {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      unique: true,
-      admin: {
-        readOnly: true,
-        description: '自動生成されます',
-      },
+      name: 'avatar',
+      type: 'upload',
+      relationTo: 'media',
+      label: '顔写真',
     },
+    ...slugField('name', {
+      slugOverrides: {
+        required: true,
+        unique: true,
+      },
+    }),
     {
       name: 'position',
       type: 'text',
@@ -69,6 +49,17 @@ const Messages: CollectionConfig = {
       type: 'text',
       required: true,
       label: '名前',
+    },
+    {
+      name: 'order',
+      type: 'number',
+      label: '表示順',
+      admin: {
+        description: '小さいほど上に表示されます',
+        position: 'sidebar',
+      },
+      defaultValue: 0,
+      index: true,
     },
     {
       name: 'message',
