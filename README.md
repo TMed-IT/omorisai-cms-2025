@@ -178,6 +178,134 @@ docker-compose up -d
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
+## 静的サイトデプロイ機能（Cloudflare）
+
+このプロジェクトには、admin以外の全てのルートを静的サイトとして書き出し、Cloudflare Workers/Pages にデプロイする機能が含まれています。
+
+### 機能概要
+
+- 管理画面: `/admin/deploy` でデプロイ管理UIにアクセス
+- Dockerビルド: 別のDockerコンテナで静的サイトをビルド
+- Cloudflareデプロイ: ビルドされたファイルをCloudflareへ自動デプロイ
+- リアルタイム監視: デプロイ進行状況の確認
+
+### セットアップ（環境変数）
+
+`.env` に以下を設定してください。
+
+```bash
+# Cloudflare設定
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
+CLOUDFLARE_ACCOUNT_ID=your_account_id_here
+CLOUDFLARE_PROJECT_ID=your_project_id_here
+
+# デプロイ設定
+NEXT_PUBLIC_SERVER_URL=https://your-domain.com
+```
+
+Cloudflare APIトークン権限（最低限・Account単位）:
+
+- Cloudflare Pages: Read
+- Cloudflare Pages: Edit
+
+補足:
+
+- ゾーン単位の権限は不要
+- Workers / R2 / KV 等の権限は本構成では不要
+- アカウントID/プロジェクトIDはCloudflareダッシュボードで確認
+
+### 依存関係のインストール
+
+```bash
+pnpm install
+```
+
+### Dockerの設定（ビルド用コンテナ）
+
+ビルド用のDockerイメージ（`build-service`）は `docker-compose*.yml` で起動され、常駐します。
+
+```bash
+docker build -f Dockerfile.build -t omorisai-build .
+```
+
+### 使用方法
+
+管理画面でのデプロイ:
+
+1. `/admin` にログイン
+2. `/admin/deploy` にアクセス
+3. 「デプロイ開始」ボタンをクリック
+4. 進行状況をリアルタイムで確認
+
+コマンドラインでのビルド:
+
+```bash
+bash scripts/build-static.sh [deploy-id]
+```
+
+### 関連ファイル構成
+
+```
+├── src/app/(payload)/admin/deploy/
+│   └── page.tsx                    # デプロイ管理UI
+├── src/app/api/deploy/
+│   ├── route.ts                    # デプロイ開始API
+│   ├── status/[deployId]/route.ts  # デプロイ状況確認API
+│   └── history/route.ts            # デプロイ履歴API
+├── Dockerfile.build                # ビルド用Dockerfile
+├── docker-compose.yml              # Docker Compose設定（dev）
+├── docker-compose.prod.yml         # Docker Compose設定（prod）
+└── scripts/build-static.sh         # ビルドスクリプト
+```
+
+### API エンドポイント
+
+POST `/api/deploy`（デプロイ開始）
+
+```json
+{
+  "deployId": "uuid",
+  "message": "デプロイプロセスを開始しました"
+}
+```
+
+GET `/api/deploy/status/[deployId]`（状況取得）
+
+```json
+{
+  "id": "uuid",
+  "status": "building|deploying|success|error",
+  "timestamp": "2024-01-15T14:30:00.000Z",
+  "duration": 120,
+  "buildUrl": "https://example.com",
+  "error": "エラーメッセージ（エラー時のみ）"
+}
+```
+
+GET `/api/deploy/history`（履歴一覧）
+
+### デプロイプロセス概要
+
+1. ビルド開始: `build-service` コンテナで静的サイトをビルド
+2. ファイル生成: `out/` ディレクトリへ出力
+3. Cloudflareデプロイ: 生成ファイルをCloudflareにアップロード
+4. 完了通知: デプロイURLを返却
+
+### トラブルシューティング
+
+ビルドエラー:
+- Dockerのインストール・起動を確認
+- `.env` の設定を確認
+- ビルドログを確認
+
+Cloudflareデプロイエラー:
+- APIトークンが有効か確認
+- アカウントID/プロジェクトIDが正しいか確認
+- レート制限などの状態を確認
+
+権限エラー:
+- 管理者権限（admin/editor）でログインしているか確認
+
 ## 📝 コレクション
 
 ### Pages（ページ）
@@ -286,6 +414,3 @@ curl -X POST http://localhost:3000/api/users/upsert \
   }'
 ```
 
-## 🆘 サポート
-
-問題が発生した場合や質問がある場合は、Issueを作成してください。

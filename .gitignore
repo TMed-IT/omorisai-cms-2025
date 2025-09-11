@@ -13,3 +13,4 @@ public/sitemap*.xml
 /.pnpm-store
 src/collections/@/public/media/
 .env.bak
+*.log
