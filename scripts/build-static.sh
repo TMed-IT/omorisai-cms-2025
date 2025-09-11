@@ -25,25 +25,73 @@ cd "$TMP_DIR"
 echo '依存関係をインストール中...'
 pnpm install --prefer-frozen-lockfile || pnpm install
 
+# Exclude admin（(payload)配下）と API/preview などの動的ルートを静的出力から除外
+if [ -d "src/app/(payload)" ]; then
+  echo '静的エクスポート対象から (payload) を除外します...'
+  rm -rf "src/app/(payload)"
+fi
+if [ -d "src/app/(frontend)/next" ]; then
+  echo '静的エクスポート対象から (frontend)/next を除外します...'
+  rm -rf "src/app/(frontend)/next"
+fi
+
+# Enable static export only in the temp workspace by injecting output: 'export'
+echo '一時的に next.config.js に output: export を付与します...'
+cp next.config.js next.config.backup.js
+cat > inject-export.js <<'EOF'
+const fs = require('fs')
+let s = fs.readFileSync('next.config.backup.js', 'utf8')
+if (!/output:\s*'export'/.test(s)) {
+  s = s.replace(/(const\s+nextConfig\s*=\s*\{)/, "$1\n  output: 'export',")
+}
+fs.writeFileSync('next.config.js', s)
+EOF
+node inject-export.js
+rm -f inject-export.js
+
 echo 'ビルドを実行中...'
 pnpm build
 
-echo '静的サイトをエクスポート中...'
-node node_modules/.bin/next export -o out
+echo '静的サイトをエクスポート中...（build に内包）'
+
+# Determine export output directory (Next.js 15 writes to out/ by default in export mode)
+OUT_SRC="out"
+if [ ! -d "$OUT_SRC" ]; then
+  if [ -d ".next/export" ]; then
+    OUT_SRC=".next/export"
+  fi
+fi
+
+if [ ! -d "$OUT_SRC" ]; then
+  echo 'エラー: 静的出力ディレクトリが見つかりません（out または .next/export）'
+  mv -f next.config.backup.js next.config.js 2>/dev/null || true
+  exit 2
+fi
 
 echo 'out をアプリディレクトリへ反映します...'
 rm -rf "$APP_DIR/out"
 mkdir -p "$APP_DIR/out"
-cp -r "$TMP_DIR/out/." "$APP_DIR/out/"
+cp -r "$TMP_DIR/$OUT_SRC/." "$APP_DIR/out/"
 
 echo 'ビルド完了！出力サマリ:'
-if [ ! -f "$APP_DIR/out/index.html" ]; then
-  echo 'index.html が見つかりません'
+
+# Validate that HTML files exist and are non-empty
+HTML_COUNT=$(find "$APP_DIR/out" -type f -name '*.html' | wc -l | tr -d ' ')
+if [ "$HTML_COUNT" = "0" ]; then
+  echo 'エラー: HTML が生成されていません（out/*.html が空）'
+  mv -f next.config.backup.js next.config.js 2>/dev/null || true
   exit 2
 fi
+
+EMPTY_FILES=$(find "$APP_DIR/out" -type f -empty | wc -l | tr -d ' ')
+if [ "$EMPTY_FILES" != "0" ]; then
+  echo "警告: 空ファイルが ${EMPTY_FILES} 件見つかりました"
+fi
+
 find "$APP_DIR/out" -type f | wc -l | xargs echo 'ファイル数:'
 du -sh "$APP_DIR/out" | awk '{print "容量:", $1}'
-echo 'index.html のハッシュ:'
-if command -v shasum >/dev/null 2>&1; then shasum -a 256 "$APP_DIR/out/index.html" | cut -d' ' -f1; else sha256sum "$APP_DIR/out/index.html" | cut -d' ' -f1; fi
+
+# restore original next.config.js in temp workspace (best-effort)
+mv -f next.config.backup.js next.config.js 2>/dev/null || true
 
 echo "ビルドが完了しました。静的ファイルは ./out ディレクトリに出力されています。"

@@ -16,7 +16,6 @@ import { Festival } from './globals/Festival/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { ja } from '@payloadcms/translations/languages/ja'
 import Messages from './collections/Messages'
 import Events from './collections/Events'
 import Clubs from './collections/Clubs'
@@ -98,7 +97,6 @@ export default buildConfig({
     tasks: [],
   },
   i18n: {
-    supportedLanguages: { ja },
     fallbackLanguage: 'ja',
     translations: {
       ja: {

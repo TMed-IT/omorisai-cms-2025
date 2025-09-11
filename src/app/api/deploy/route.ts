@@ -54,7 +54,12 @@ export async function POST(request: NextRequest) {
         })
         await new Promise<void>((resolve, reject) => {
           child.on('error', reject)
-          child.on('close', () => resolve())
+          child.on('close', (code) => {
+            if (typeof code === 'number' && code !== 0) {
+              return reject(new Error(`build failed with exit code ${code}`))
+            }
+            resolve()
+          })
         })
         
         deployStatuses.set(deployId, { 
@@ -104,6 +109,23 @@ async function deployToCloudflare(deployId: string) {
 
     if (!apiToken || !accountId || !projectName) {
       throw new Error('Cloudflare環境変数が不足しています (CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_PROJECT_NAME)')
+    }
+
+    // sanity check: ensure some HTML files exist before deploying
+    async function hasHtmlFiles(dir: string): Promise<boolean> {
+      const entries = await fs.readdir(dir, { withFileTypes: true })
+      for (const e of entries) {
+        const full = path.join(dir, e.name)
+        if (e.isFile() && e.name.endsWith('.html')) return true
+        if (e.isDirectory()) {
+          if (await hasHtmlFiles(full)) return true
+        }
+      }
+      return false
+    }
+
+    if (!(await hasHtmlFiles(outDir))) {
+      throw new Error('out ディレクトリに HTML が見つかりません。ビルド結果が空の可能性があります。')
     }
 
     const wranglerCmd = `npx --yes wrangler@3 pages deploy ${outDir} --project-name ${projectName} --branch main --commit-hash ${deployId}`

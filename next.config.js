@@ -6,7 +6,11 @@ const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // trailingSlash helps produce directory-style static paths when exporting
+  trailingSlash: true,
   images: {
+    // Keep image optimization disabled for static exports
+    unoptimized: true,
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
         const url = new URL(item)
