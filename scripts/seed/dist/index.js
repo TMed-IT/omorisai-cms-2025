@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { home } from './home';
-import { eventsPage } from './events-page';
 import { festival as festivalData } from './festival';
 import { messages } from './message';
 import { events } from './events';
@@ -75,11 +74,6 @@ export const seed = async ({ payload, req, }) => {
             collection: 'pages',
             depth: 0,
             data: home(),
-        }),
-        payload.create({
-            collection: 'pages',
-            depth: 0,
-            data: eventsPage(),
         }),
         payload.create({
             collection: 'pages',

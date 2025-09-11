@@ -4,7 +4,6 @@ import path from 'path'
 
 
 import { home } from '../../../scripts/seed/home'
-import { eventsPage } from '../../../scripts/seed/events-page'
 import { festival as festivalData } from '../../../scripts/seed/festival'
 import { messages } from '../../../scripts/seed/message'
 import { events } from '../../../scripts/seed/events'
@@ -105,11 +104,6 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: home(),
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: eventsPage(),
     }),
     payload.create({
       collection: 'pages',

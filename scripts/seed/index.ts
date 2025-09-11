@@ -4,7 +4,6 @@ import path from 'path'
 
 
 import { home } from './home'
-import { eventsPage } from './events-page'
 import { festival as festivalData } from './festival'
 import { messages } from './message'
 import { events } from './events'
@@ -105,14 +104,6 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: home(),
-      context: {
-        disableRevalidate: true,
-      },
-    }),
-    payload.create({
-      collection: 'pages',
-      depth: 0,
-      data: eventsPage(),
       context: {
         disableRevalidate: true,
       },
