@@ -109,3 +109,24 @@ export default async function EventDetailPage({ params }: Props) {
     notFound();
   }
 }
+
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise })
+  const events = await payload.find({
+    collection: 'events',
+    draft: false,
+    // Fetch all docs to generate every static route
+    limit: 0,
+    overrideAccess: false,
+    pagination: false,
+    select: { slug: true },
+  })
+
+  return events.docs
+    .filter((doc: any) => Boolean(doc?.slug))
+    .map((doc: any) => ({ slug: doc.slug as string }))
+}
+
+export const dynamic = 'force-static'
+export const revalidate = 600
+export const dynamicParams = false

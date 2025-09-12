@@ -199,11 +199,10 @@ export default function DeployPage() {
                                 color: "#f3f4f6",
                             }}
                         >
-                            静的サイトデプロイ
+                            本番サイトにデプロイ
                         </h1>
                         <p style={{ color: "#9ca3af", marginTop: 8 }}>
-                            admin以外の全てのルートを静的サイトとして書き出し、Cloudflare
-                            Workersにデプロイします
+                            admin以外の全てのルートを静的サイトとして書き出し、Cloudflare Pagesにデプロイします
                         </p>
                     </div>
                     <button

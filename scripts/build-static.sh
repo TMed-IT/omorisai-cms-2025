@@ -34,20 +34,33 @@ if [ -d "src/app/(frontend)/next" ]; then
   echo '静的エクスポート対象から (frontend)/next を除外します...'
   rm -rf "src/app/(frontend)/next"
 fi
+if [ -d "src/app/api" ]; then
+  echo '静的エクスポート対象から /api を除外します...'
+  rm -rf "src/app/api"
+fi
+# Temporarily exclude message detail dynamic route from export if present
+if [ -d "src/app/(frontend)/message/[slug]" ]; then
+  echo '静的エクスポート対象から (frontend)/message/[slug] を除外します...'
+  rm -rf "src/app/(frontend)/message/[slug]"
+fi
+# sitemaps は route handler を静的化（dynamic=force-static）して出力するため残す
 
 # Enable static export only in the temp workspace by injecting output: 'export'
 echo '一時的に next.config.js に output: export を付与します...'
 cp next.config.js next.config.backup.js
-cat > inject-export.js <<'EOF'
+cat > inject-export.cjs <<'EOF'
 const fs = require('fs')
 let s = fs.readFileSync('next.config.backup.js', 'utf8')
+// Normalize any existing output to 'export'
+s = s.replace(/output:\s*['\"][^'\"]+['\"]/g, "output: 'export'")
+// If output property is still missing, inject it
 if (!/output:\s*'export'/.test(s)) {
   s = s.replace(/(const\s+nextConfig\s*=\s*\{)/, "$1\n  output: 'export',")
 }
 fs.writeFileSync('next.config.js', s)
 EOF
-node inject-export.js
-rm -f inject-export.js
+node inject-export.cjs
+rm -f inject-export.cjs
 
 echo 'ビルドを実行中...'
 pnpm build

@@ -8,6 +8,8 @@ const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env
 const nextConfig = {
   // trailingSlash helps produce directory-style static paths when exporting
   trailingSlash: true,
+  // Produce a self-contained server build for Docker deployments
+  output: 'standalone',
   images: {
     // Keep image optimization disabled for static exports
     unoptimized: true,
