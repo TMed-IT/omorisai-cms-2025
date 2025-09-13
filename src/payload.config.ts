@@ -98,8 +98,7 @@ export default buildConfig({
     tasks: [],
   },
   i18n: {
-    supportedLanguages: { ja },
-    fallbackLanguage: 'ja',
+    supportedLanguages: { ja } as any,
     translations: {
       ja: {
         authentication: {

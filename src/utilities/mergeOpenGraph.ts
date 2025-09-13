@@ -3,14 +3,18 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'An open-source website built with Payload and Next.js.',
+  description: '大森祭の公式ウェブサイトです。イベント情報、お知らせなどを掲載しています。',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
+      url: `${getServerSideURL()}/OG.webp`,
+      width: 1200,
+      height: 630,
+      alt: '大森祭ウェブサイト',
     },
   ],
   siteName: '大森祭ウェブサイト',
   title: '大森祭ウェブサイト',
+  locale: 'ja_JP',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

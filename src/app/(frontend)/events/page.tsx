@@ -9,6 +9,11 @@ import { Media } from "@/components/Media";
 import Link from "next/link";
 import { formatDateShortJP } from "@/utilities/formatDateTime";
 import type { Event } from "@/payload-types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Events - 大森祭公式ウェブサイト",
+};
 
 export default async function EventsPage() {
   const payload = await getPayload({ config: configPromise });

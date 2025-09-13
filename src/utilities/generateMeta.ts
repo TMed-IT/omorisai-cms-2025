@@ -30,12 +30,14 @@ export const generateMeta = async (args: {
 
   const title = doc?.meta?.title
     ? doc.meta.title
-    : defaultTitle || '大森祭ウェブサイト'
+    : defaultTitle 
+      ? `${defaultTitle} - 大森祭公式ウェブサイト`
+      : '大森祭公式ウェブサイト'
 
   const description = doc?.meta?.description || defaultDescription || ''
 
   return {
-    description,
+    title,
     openGraph: mergeOpenGraph({
       description,
       images: ogImage
@@ -48,6 +50,5 @@ export const generateMeta = async (args: {
       title,
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
     }),
-    title,
   }
 }
