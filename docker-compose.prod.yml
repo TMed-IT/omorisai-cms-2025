@@ -37,19 +37,6 @@ services:
     networks:
       - omorisai-cms-network
 
-  build-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.build
-    container_name: omorisai-build-service
-    volumes:
-      - ./out:/app/out
-      - ./:/app/source
-    networks:
-      - omorisai-cms-network
-    command: sh -c "tail -f /dev/null"
-    restart: unless-stopped
-
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: omorisai-cms-cloudflared

@@ -1,10 +1,10 @@
 # 大森祭ウェブサイトCMS
 
-大森祭の公式ウェブサイトを管理するためのコンテンツ管理システム（CMS）です。Payload CMSとNext.jsを使用して構築されており、イベント情報、クラブ情報、お知らせ、メッセージなどのコンテンツを効率的に管理できます。
+大森祭の公式ウェブサイトを管理するためのコンテンツ管理システム（CMS）です。Payload CMSとNext.jsを使用して構築されており、イベント情報、部活情報、お知らせ、メッセージなどのコンテンツを効率的に管理できます。
 
-## 🚀 機能
+## 機能
 
-- **コンテンツ管理**: ページ、お知らせ、イベント、クラブ情報の管理
+- **コンテンツ管理**: ページ、お知らせ、イベント情報の管理
 - **メディア管理**: 画像・動画ファイルのアップロードと管理
 - **フォーム機能**: お問い合わせフォームの構築と管理
 - **SEO対応**: メタデータ、OGP、サイトマップの自動生成
@@ -12,10 +12,10 @@
 - **ライブプレビュー**: リアルタイムでのコンテンツ確認
 - **レスポンシブデザイン**: モバイル、タブレット、デスクトップ対応
 
-## 🛠 技術スタック
+## 技術スタック
 
-- **フレームワーク**: Next.js 15.3.0
-- **CMS**: Payload CMS 3.43.0
+- **フレームワーク**: Next.js
+- **CMS**: Payload CMS
 - **データベース**: MongoDB
 - **言語**: TypeScript
 - **スタイリング**: Tailwind CSS
@@ -23,13 +23,13 @@
 - **アニメーション**: Framer Motion
 - **パッケージマネージャー**: pnpm
 
-## 📋 前提条件
+## 前提条件
 
 - Node.js 18.20.2以上または20.9.0以上
 - pnpm 9以上または10以上
 - Docker & Docker Compose（推奨）
 
-## 🚀 セットアップ
+## セットアップ
 
 ### 1. リポジトリのクローン
 
@@ -82,7 +82,7 @@ pnpm install
 - **開発環境**: `DEV_SERVER_URL`の値を使用（デフォルト: `http://localhost:3000`）
 - **本番環境**: `PROD_SERVER_URL`の値を使用（必須設定）
 
-## 📖 使用方法
+## 使用方法
 
 ### 管理画面へのアクセス
 
@@ -178,50 +178,133 @@ docker-compose up -d
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
-## 📝 コレクション
+## 静的サイトデプロイ機能（Cloudflare）
 
-### Pages（ページ）
-- 静的ページの管理
-- ブロックベースのコンテンツ編集
-- SEO設定
+このプロジェクトには、admin以外の全てのルートを静的サイトとして書き出し、Cloudflare Pages にデプロイする機能が含まれています。
 
-### Posts（お知らせ）
-- お知らせ・ニュース記事の管理
-- カテゴリ分類
-- 公開日時設定
+### 機能概要
 
-### Events（イベント）
-- 祭り関連イベントの管理
-- 日時・場所情報
-- 参加者募集機能
+- 管理画面: `/admin/deploy` でデプロイ管理UIにアクセス
+- Dockerビルド: 別のDockerコンテナで静的サイトをビルド
+- Cloudflareデプロイ: ビルドされたファイルをCloudflareへ自動デプロイ
+- リアルタイム監視: デプロイ進行状況の確認
 
-### Clubs（クラブ）
-- 参加クラブ・団体の情報管理
-- 活動内容・実績
+### セットアップ（環境変数）
 
-### Messages（メッセージ）
-- お問い合わせメッセージの管理
-- フォーム送信データの保存
+`.env` に以下を設定してください。
 
-### Media（メディア）
-- 画像・動画ファイルの管理
-- 自動リサイズ・最適化
+```bash
+# Cloudflare設定
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token_here
+CLOUDFLARE_ACCOUNT_ID=your_account_id_here
+CLOUDFLARE_PROJECT_ID=your_project_id_here
 
-## セキュリティ
+# デプロイ設定
+NEXT_PUBLIC_SERVER_URL=https://your-domain.com
+```
 
-- 認証機能付き管理画面
-- 環境変数による機密情報管理
-- 自動シークレット生成機能
-- CORS設定
-- 入力値検証
-- パスワードリセット機能
+Cloudflare APIトークン権限（最低限・Account単位）:
 
+- Cloudflare Pages: Read
+- Cloudflare Pages: Edit
 
-## レスポンシブ対応
+補足:
 
-- モバイル（375px）
-- タブレット（768px）
-- デスクトップ（1440px）
+- ゾーン単位の権限は不要
+- Workers / R2 / KV 等の権限は本構成では不要
+- アカウントID/プロジェクトIDはCloudflareダッシュボードで確認
+
+### 依存関係のインストール
+
+```bash
+pnpm install
+```
+
+### Dockerの設定（ビルド用コンテナ）
+
+ビルド用のDockerイメージ（`build-service`）は `docker-compose*.yml` で起動され、常駐します。
+
+```bash
+docker build -f Dockerfile.build -t omorisai-build .
+```
+
+### 使用方法
+
+管理画面でのデプロイ:
+
+1. `/admin` にログイン
+2. `/admin/deploy` にアクセス
+3. 「デプロイ開始」ボタンをクリック
+4. 進行状況をリアルタイムで確認
+
+コマンドラインでのビルド:
+
+```bash
+bash scripts/build-static.sh [deploy-id]
+```
+
+### 関連ファイル構成
+
+```
+├── src/app/(payload)/admin/deploy/
+│   └── page.tsx                    # デプロイ管理UI
+├── src/app/api/deploy/
+│   ├── route.ts                    # デプロイ開始API
+│   ├── status/[deployId]/route.ts  # デプロイ状況確認API
+│   └── history/route.ts            # デプロイ履歴API
+├── Dockerfile.build                # ビルド用Dockerfile
+├── docker-compose.yml              # Docker Compose設定（dev）
+├── docker-compose.prod.yml         # Docker Compose設定（prod）
+└── scripts/build-static.sh         # ビルドスクリプト
+```
+
+### API エンドポイント
+
+POST `/api/deploy`（デプロイ開始）
+
+```json
+{
+  "deployId": "uuid",
+  "message": "デプロイプロセスを開始しました"
+}
+```
+
+GET `/api/deploy/status/[deployId]`（状況取得）
+
+```json
+{
+  "id": "uuid",
+  "status": "building|deploying|success|error",
+  "timestamp": "2024-01-15T14:30:00.000Z",
+  "duration": 120,
+  "buildUrl": "https://example.com",
+  "error": "エラーメッセージ（エラー時のみ）"
+}
+```
+
+GET `/api/deploy/history`（履歴一覧）
+
+### デプロイプロセス概要
+
+1. ビルド開始: `build-service` コンテナで静的サイトをビルド
+2. ファイル生成: `out/` ディレクトリへ出力
+3. Cloudflareデプロイ: 生成ファイルをCloudflareにアップロード
+4. 完了通知: デプロイURLを返却
+
+### トラブルシューティング
+
+ビルドエラー:
+- Dockerのインストール・起動を確認
+- `.env` の設定を確認
+- ビルドログを確認
+
+Cloudflareデプロイエラー:
+- APIトークンが有効か確認
+- アカウントID/プロジェクトIDが正しいか確認
+- レート制限などの状態を確認
+
+権限エラー:
+- 管理者権限（admin/editor）でログインしているか確認
 
 ## API
 
@@ -286,6 +369,21 @@ curl -X POST http://localhost:3000/api/users/upsert \
   }'
 ```
 
-## 🆘 サポート
+## 完全静的出力でメディアを同梱する
 
-問題が発生した場合や質問がある場合は、Issueを作成してください。
+静的エクスポート（例: Cloudflare Pages）では `/api/...` が存在しないため、メディアを完全静的に同梱できます。
+
+静的エクスポート + メディア同梱
+
+```bash
+pnpm export:full-static
+```
+
+内部で行うこと:
+- `out/` 配下の HTML/JS/JSON を走査し、`?v=...` を除去
+- `out/` に参照される `/media/*` を収集し、`public/media` からコピー（ミラー）
+
+メモ:
+- 既に `public/media` に置いてあるファイルはコピーされます
+- すべてのメディアは `public/media` に置いてください（アップロードは同ディレクトリに保存される設定です）
+- 単体実行: `pnpm export:static` の後に `pnpm postexport:media`

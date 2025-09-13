@@ -109,8 +109,7 @@ export async function GET(request: NextRequest) {
     const data: CloudflareProjectResponse = await response.json()
     const project = data.result
 
-    // 実際に公開されているデプロイメントを取得（canonical_deploymentが最優先）
-    const activeDeployment = project.canonical_deployment || project.production_deployment || project.latest_deployment
+    const activeDeployment = project.canonical_deployment
 
     console.log('Cloudflare Project Data:', {
       projectName: project.name,

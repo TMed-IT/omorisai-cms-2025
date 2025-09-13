@@ -43,9 +43,19 @@ export default function DeploymentHistory() {
                         ?.createdOn,
                 });
                 setCurrentDeployment(data.currentDeployment);
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(
+                    errorData.error || "現在のデプロイメント取得に失敗しました",
+                );
             }
         } catch (err) {
             console.error("現在のデプロイメント取得エラー:", err);
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "現在のデプロイメント取得に失敗しました",
+            );
         }
     };
 
@@ -85,8 +95,21 @@ export default function DeploymentHistory() {
     };
 
     useEffect(() => {
+        const onUR = (e: PromiseRejectionEvent) => {
+            e.preventDefault();
+            console.error("unhandledrejection:", e.reason);
+            setError(
+                e.reason instanceof Error
+                    ? e.reason.message
+                    : "予期しないエラーが発生しました",
+            );
+        };
+        window.addEventListener("unhandledrejection", onUR);
+
         fetchHistory();
         fetchCurrentDeployment();
+
+        return () => window.removeEventListener("unhandledrejection", onUR);
     }, []);
 
     const formatDate = (dateString: string) => {
