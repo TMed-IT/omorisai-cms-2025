@@ -8,9 +8,7 @@ import { unstable_cache } from 'next/cache'
 const getPostsSitemap = unstable_cache(
   async () => {
     const payload = await getPayload({ config })
-    const SITE_URL =
-      process.env.NEXT_PUBLIC_SERVER_URL ||
-      'https://example.com'
+    const SITE_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
     const results = await payload.find({
       collection: 'posts',
