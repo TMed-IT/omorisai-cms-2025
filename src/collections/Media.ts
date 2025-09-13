@@ -50,8 +50,8 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '@/public/media'),
+    // Upload to Next.js public/media so files are available for static export without env config
+    staticDir: path.resolve(process.cwd(), 'public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
@@ -107,6 +107,29 @@ export const Media: CollectionConfig = {
           }
         }
         return data
+      },
+    ],
+    afterRead: [
+      async ({ doc }) => {
+        // Normalize any API media URLs to static /media for initial SSR/HTML
+        const normalize = (u: string | undefined | null) => {
+          if (!u || typeof u !== 'string') return u
+          return u
+            .replace(/^\/api\/media\/file\//, '/media/')
+            .replace(/^\/api\/media\//, '/media/')
+        }
+
+        const anyDoc: any = doc
+        if (anyDoc.url) anyDoc.url = normalize(anyDoc.url)
+        if (anyDoc.sizes && typeof anyDoc.sizes === 'object') {
+          for (const key of Object.keys(anyDoc.sizes)) {
+            const s = anyDoc.sizes[key]
+            if (s && typeof s === 'object' && 'url' in s) {
+              s.url = normalize((s as any).url)
+            }
+          }
+        }
+        return doc
       },
     ],
   },

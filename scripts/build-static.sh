@@ -12,6 +12,7 @@ echo "デプロイID: $DEPLOY_ID でビルドを開始します..."
 
 # アプリコンテナ内で実行する前提（開発サーバーと並走するため、別ディレクトリでビルド）
 export NODE_ENV=production
+# no special env flags required for static bundling
 APP_DIR="$(pwd)"
 TMP_DIR="/home/node/tmp-build-${DEPLOY_ID:-temp}"
 
@@ -37,11 +38,6 @@ fi
 if [ -d "src/app/api" ]; then
   echo '静的エクスポート対象から /api を除外します...'
   rm -rf "src/app/api"
-fi
-# Temporarily exclude message detail dynamic route from export if present
-if [ -d "src/app/(frontend)/message/[slug]" ]; then
-  echo '静的エクスポート対象から (frontend)/message/[slug] を除外します...'
-  rm -rf "src/app/(frontend)/message/[slug]"
 fi
 # sitemaps は route handler を静的化（dynamic=force-static）して出力するため残す
 
@@ -103,6 +99,10 @@ fi
 
 find "$APP_DIR/out" -type f | wc -l | xargs echo 'ファイル数:'
 du -sh "$APP_DIR/out" | awk '{print "容量:", $1}'
+
+# Post-export: rewrite media URLs and bundle files into out/media
+echo 'メディアのURLを書き換え、out/media に同梱します...'
+(cd "$APP_DIR" && node scripts/staticize-media.mjs) || echo 'post-export メディア同梱に失敗しました（スキップ）'
 
 # restore original next.config.js in temp workspace (best-effort)
 mv -f next.config.backup.js next.config.js 2>/dev/null || true

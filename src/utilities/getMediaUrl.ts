@@ -16,6 +16,16 @@ function addCacheParam(u: string, cacheTag?: string | null) {
 export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | null): string => {
   if (!url) return ''
 
+  const canonicalize = (u: string): string => {
+    let out = u
+    // Normalize API media -> static /media
+    out = out.replace(/(^|https?:\/\/[^\s"'`]+)\/api\/media\/file\//g, (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/media/`)
+    out = out.replace(/(^|https?:\/\/[^\s"'`]+)\/api\/media\//g, (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/media/`)
+    // Drop cache-busting for static paths
+    out = out.replace(/(\/media\/[^\s"'`()?]+)\?v=[^\s"'`()]+/g, '$1')
+    return out
+  }
+
   // Absolute URLs: if same-origin, convert to relative to avoid remote fetch
   if (url.startsWith('http://') || url.startsWith('https://')) {
     try {
@@ -26,21 +36,21 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
         if (target.origin === baseURL.origin) {
           // keep path + search only
           const rel = `${target.pathname}${target.search || ''}`
-          return addCacheParam(rel, cacheTag)
+          return addCacheParam(canonicalize(rel), cacheTag)
         }
       }
     } catch {}
     // different origin or parse failure: return as-is
-    return addCacheParam(url, cacheTag)
+    return addCacheParam(canonicalize(url), cacheTag)
   }
 
   // For same-origin resources, prefer relative path to avoid remote allowlist issues
-  // e.g. '/media/...' or '/api/media/...'
+  // e.g. '/media/...'
   if (url.startsWith('/')) {
-    return addCacheParam(url, cacheTag)
+    return addCacheParam(canonicalize(url), cacheTag)
   }
 
   // Fallback: if a non-leading-slash path sneaks in, normalize to relative
   const normalized = `/${url.replace(/^\/+/, '')}`
-  return addCacheParam(normalized, cacheTag)
+  return addCacheParam(canonicalize(normalized), cacheTag)
 }

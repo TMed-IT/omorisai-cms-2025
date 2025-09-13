@@ -369,3 +369,21 @@ curl -X POST http://localhost:3000/api/users/upsert \
   }'
 ```
 
+## 完全静的出力でメディアを同梱する
+
+静的エクスポート（例: Cloudflare Pages）では `/api/...` が存在しないため、メディアを完全静的に同梱できます。
+
+静的エクスポート + メディア同梱
+
+```bash
+pnpm export:full-static
+```
+
+内部で行うこと:
+- `out/` 配下の HTML/JS/JSON を走査し、`?v=...` を除去
+- `out/` に参照される `/media/*` を収集し、`public/media` からコピー（ミラー）
+
+メモ:
+- 既に `public/media` に置いてあるファイルはコピーされます
+- すべてのメディアは `public/media` に置いてください（アップロードは同ディレクトリに保存される設定です）
+- 単体実行: `pnpm export:static` の後に `pnpm postexport:media`
