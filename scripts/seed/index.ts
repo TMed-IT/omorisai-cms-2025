@@ -237,7 +237,7 @@ export const seed = async ({
 
 // CLI実行用のメイン関数
 async function main() {
-  console.log('🚀 データベース初期化を開始します...')
+  console.log('Starting database initialization...')
   
   try {
     const { getPayload } = await import('payload')
@@ -245,7 +245,7 @@ async function main() {
     
     const payload = await getPayload({ config: config.default })
     
-    console.log('📦 PayloadCMSに接続しました')
+    console.log('Connected to PayloadCMS')
     
     const mockReq = {
       user: {
@@ -257,12 +257,12 @@ async function main() {
     
     await seed({ payload, req: mockReq })
     
-    console.log('✅ データベース初期化が完了しました！')
-    console.log('🌐 ウェブサイトを確認するには: http://localhost:3000')
+    console.log('Database initialization completed successfully!')
+    console.log('Check the website at: http://localhost:3000')
     
     process.exit(0)
   } catch (error) {
-    console.error('❌ エラーが発生しました:', error)
+    console.error('An error occurred:', error)
     process.exit(1)
   }
 }

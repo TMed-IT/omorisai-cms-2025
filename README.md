@@ -103,12 +103,36 @@ pnpm install
 #### CLIツールを使用
 
 ```bash
-# ローカル環境
+# 全データを初期化（ローカル環境）
 pnpm @seed/
 
 # Docker環境（既存のpayloadコンテナ内で実行）
 docker-compose exec payload pnpm @seed/
 ```
+
+#### 特定のコレクションのみを初期化
+
+特定のコレクションのみをseedしたい場合：
+
+```bash
+# 特定のコレクションをseed
+pnpm seed:collection posts
+pnpm seed:collection events
+pnpm seed:collection clubs
+pnpm seed:collection messages
+pnpm seed:collection pages
+pnpm seed:collection media
+
+# グローバル設定をseed
+pnpm seed:collection header
+pnpm seed:collection footer
+pnpm seed:collection festival
+
+# Docker環境（既存のpayloadコンテナ内で実行）
+docker-compose exec payload pnpm seed:collection posts
+```
+
+**注意**: `events`や`clubs`をseedする際は、必要な`media`も自動的にseedされます。
 
 ## プロジェクト構造
 
@@ -145,8 +169,11 @@ pnpm start
 # 型定義の生成
 pnpm generate:types
 
-# データベース初期化
+# データベース初期化（全データ）
 pnpm @seed/
+
+# 特定のコレクションのみ初期化
+pnpm seed:collection posts
 
 # リンター実行
 pnpm lint
