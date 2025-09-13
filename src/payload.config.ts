@@ -110,11 +110,6 @@ export default buildConfig({
           resetPasswordError: 'パスワードのリセットに失敗しました',
           invalidToken: '無効なトークンです',
           tokenExpired: 'トークンの有効期限が切れています',
-          forgotPasswordEmailInstructions: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
-          forgotPasswordDescription: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
-          forgotPasswordEmailLabel: '管理者にお問い合わせください',
-          forgotPasswordSubmitLabel: '管理者にお問い合わせください',
-          forgotPasswordBackToLogin: 'ログイン画面へ戻る',
         },
         operators: {
           contains: '次を含む',

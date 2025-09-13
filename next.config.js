@@ -10,6 +10,10 @@ const nextConfig = {
   trailingSlash: true,
   // Produce a self-contained server build for Docker deployments
   output: 'standalone',
+  i18n: {
+    locales: ['ja'],
+    defaultLocale: 'ja',
+  },
   images: {
     // Keep image optimization disabled for static exports
     unoptimized: true,
