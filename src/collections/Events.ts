@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
 import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
-import { anyone } from '../access/anyone'
+import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 
 const Events: CollectionConfig = {
   slug: 'events',
@@ -14,7 +14,7 @@ const Events: CollectionConfig = {
     admin: canAccessAdminPanel,
     create: isEditorOrAdmin,
     delete: isEditorOrAdmin,
-    read: anyone,
+    read: authenticatedOrPublished,
     update: isEditorOrAdmin,
   },
   admin: {
@@ -60,6 +60,15 @@ const Events: CollectionConfig = {
       label: 'サムネイル',
     },
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }
 
 export default Events 

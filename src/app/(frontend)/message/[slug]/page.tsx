@@ -10,6 +10,26 @@ import RichText from "@/components/RichText";
 import { Media } from "@/components/Media";
 import Image from "next/image";
 
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise });
+  const messages = await payload.find({
+    collection: "messages",
+    draft: false,
+    limit: 0,
+    overrideAccess: false,
+    pagination: false,
+    select: { slug: true },
+  });
+
+  return messages.docs
+    .filter((doc: any) => Boolean(doc?.slug))
+    .map((doc: any) => ({ slug: doc.slug as string }));
+}
+
+export const dynamic = "force-static";
+export const revalidate = 600;
+export const dynamicParams = false;
+
 interface Props {
   params: Promise<{
     slug: string;
@@ -23,6 +43,7 @@ export default async function MessageDetailPage({ params }: Props) {
   try {
     const messages = await payload.find({
       collection: "messages",
+      draft: false,
       where: {
         slug: {
           equals: slug,

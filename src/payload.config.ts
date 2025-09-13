@@ -16,16 +16,17 @@ import { Festival } from './globals/Festival/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { ja } from '@payloadcms/translations/languages/ja'
 import Messages from './collections/Messages'
 import Events from './collections/Events'
 import Clubs from './collections/Clubs'
+
+import { ja } from '@payloadcms/translations/languages/ja'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-    admin: {
+  admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
@@ -111,11 +112,6 @@ export default buildConfig({
           resetPasswordError: 'パスワードのリセットに失敗しました',
           invalidToken: '無効なトークンです',
           tokenExpired: 'トークンの有効期限が切れています',
-          forgotPasswordEmailInstructions: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
-          forgotPasswordDescription: 'パスワードの再設定が必要な場合は、管理者にお問い合わせください。',
-          forgotPasswordEmailLabel: '管理者にお問い合わせください',
-          forgotPasswordSubmitLabel: '管理者にお問い合わせください',
-          forgotPasswordBackToLogin: 'ログイン画面へ戻る',
         },
         operators: {
           contains: '次を含む',

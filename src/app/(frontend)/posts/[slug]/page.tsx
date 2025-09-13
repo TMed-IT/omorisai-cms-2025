@@ -24,7 +24,8 @@ export async function generateStaticParams() {
   const posts = await payload.find({
     collection: "posts",
     draft: false,
-    limit: 1000,
+    // Fetch all docs to generate every static route
+    limit: 0,
     overrideAccess: false,
     pagination: false,
     select: {
@@ -38,6 +39,10 @@ export async function generateStaticParams() {
 
   return params;
 }
+
+export const dynamic = "force-static";
+export const revalidate = 600;
+export const dynamicParams = false;
 
 type Args = {
   params: Promise<{

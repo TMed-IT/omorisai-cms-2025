@@ -20,6 +20,10 @@ export default async function MessagePage() {
   const payload = await getPayload({ config: configPromise });
   const messages = await payload.find({
     collection: "messages",
+    draft: false,
+    limit: 0,
+    overrideAccess: false,
+    pagination: false,
     sort: "order",
   });
 

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import type { Festival, Header } from "@/payload-types";
 
 import { Logo } from "@/components/Logo/Logo";
+import { isStaticExport } from "@/utilities/isStaticExport";
 
 interface HeaderClientProps {
   data: Header;
@@ -35,6 +36,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
 
   useEffect(() => {
     setIsVisible(true);
+  }, []);
+
+  useEffect(() => {
+    if (isStaticExport()) {
+      document.documentElement.style.setProperty("--admin-bar-height", "0px");
+    }
   }, []);
 
   useEffect(() => {
