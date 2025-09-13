@@ -26,6 +26,10 @@ cd "$TMP_DIR"
 echo '依存関係をインストール中...'
 pnpm install --prefer-frozen-lockfile || pnpm install
 
+# コンテンツ数が0の動的ルートを静的出力対象から除外
+echo 'コンテンツ数が0の動的ルートを検査し、必要なら除外します...'
+pnpm exec tsx scripts/prune-dynamic-routes.ts || echo '動的ルートの事前除外はスキップされました'
+
 # Exclude admin（(payload)配下）と API/preview などの動的ルートを静的出力から除外
 if [ -d "src/app/(payload)" ]; then
   echo '静的エクスポート対象から (payload) を除外します...'
@@ -59,6 +63,8 @@ node inject-export.cjs
 rm -f inject-export.cjs
 
 echo 'ビルドを実行中...'
+# 静的エクスポート判定用のフラグ（クライアント/サーバー双方のビルド時に展開）
+export NEXT_PUBLIC_STATIC_EXPORT=true
 pnpm build
 
 echo '静的サイトをエクスポート中...（build に内包）'

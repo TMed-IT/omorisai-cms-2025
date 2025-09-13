@@ -12,7 +12,13 @@ import type { Event } from "@/payload-types";
 
 export default async function EventsPage() {
   const payload = await getPayload({ config: configPromise });
-  const events = await payload.find({ collection: "events" });
+  const events = await payload.find({
+    collection: "events",
+    draft: false,
+    limit: 0,
+    overrideAccess: false,
+    pagination: false,
+  });
 
   const sortedEvents = events.docs.sort((a: Event, b: Event) => {
     const dateA = new Date(a.date).getTime() || 0;

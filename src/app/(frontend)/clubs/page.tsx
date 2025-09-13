@@ -9,7 +9,10 @@ import type { Club } from "@/payload-types";
 
 export default async function ClubPage() {
   const payload = await getPayload({ config: configPromise });
-  const clubs = await payload.find({ collection: "clubs" });
+  const clubs = await payload.find({
+    collection: "clubs",
+    draft: false,
+  });
 
   return (
     <div>

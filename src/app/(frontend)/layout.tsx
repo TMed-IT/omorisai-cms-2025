@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 
 import React from "react";
 
-import { AdminBar } from "@/components/AdminBar";
 import { Footer } from "@/Footer/Component";
 import { Header } from "@/Header/Component";
 import { Providers } from "@/providers";
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 import { draftMode } from "next/headers";
+import { isStaticExport } from "@/utilities/isStaticExport";
 
 import "./globals.css";
 import { getServerSideURL } from "@/utilities/getURL";
@@ -24,6 +24,12 @@ export default async function RootLayout(
   { children }: { children: React.ReactNode },
 ) {
   const { isEnabled } = await draftMode();
+  const showAdminBar = !isStaticExport();
+  let AdminBarComp: React.ComponentType<any> | null = null;
+  if (showAdminBar) {
+    const m = await import("@/components/AdminBar");
+    AdminBarComp = m.AdminBar;
+  }
 
   return (
     <html
@@ -39,11 +45,13 @@ export default async function RootLayout(
         className={"bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800"}
       >
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          {AdminBarComp && (
+            <AdminBarComp
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
+          )}
 
           <Header />
           <ClientMain>{children}</ClientMain>

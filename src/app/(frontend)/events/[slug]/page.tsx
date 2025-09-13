@@ -22,6 +22,7 @@ export default async function EventDetailPage({ params }: Props) {
   try {
     const events = await payload.find({
       collection: "events",
+      draft: false,
       where: {
         slug: {
           equals: slug,
@@ -111,22 +112,21 @@ export default async function EventDetailPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise });
   const events = await payload.find({
-    collection: 'events',
+    collection: "events",
     draft: false,
-    // Fetch all docs to generate every static route
     limit: 0,
     overrideAccess: false,
     pagination: false,
     select: { slug: true },
-  })
+  });
 
   return events.docs
     .filter((doc: any) => Boolean(doc?.slug))
-    .map((doc: any) => ({ slug: doc.slug as string }))
+    .map((doc: any) => ({ slug: doc.slug as string }));
 }
 
-export const dynamic = 'force-static'
-export const revalidate = 600
-export const dynamicParams = false
+export const dynamic = "force-static";
+export const revalidate = 600;
+export const dynamicParams = false;
