@@ -12,6 +12,7 @@ import { anyone } from '../access/anyone'
 import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
 import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
 import { MediaExtensionNotAllowedError } from '@/utilities/errors'
+import { isStaticExport } from '@/utilities/isStaticExport'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -111,12 +112,20 @@ export const Media: CollectionConfig = {
     ],
     afterRead: [
       async ({ doc }) => {
-        // Normalize any API media URLs to static /media for initial SSR/HTML
+        // 環境に応じてURLを適切に処理
         const normalize = (u: string | undefined | null) => {
           if (!u || typeof u !== 'string') return u
-          return u
-            .replace(/^\/api\/media\/file\//, '/media/')
-            .replace(/^\/api\/media\//, '/media/')
+          
+          if (isStaticExport()) {
+            // Static export時は /media/ をそのまま使用
+            return u
+              .replace(/^\/api\/media\/file\//, '/media/')
+              .replace(/^\/api\/media\//, '/media/')
+          } else {
+            // 本番環境ではAPI経由で取得（ファイル配信専用ルートにマップ）
+            return u
+              .replace(/^\/media\//, '/api/media/file/')
+          }
         }
 
         const anyDoc: any = doc

@@ -10,6 +10,7 @@ import type { Props as MediaProps } from "../types";
 
 import { cssVariables } from "@/cssVariables";
 import { getMediaUrl } from "@/utilities/getMediaUrl";
+import { isStaticExport } from "@/utilities/isStaticExport";
 
 const { breakpoints } = cssVariables;
 
@@ -70,6 +71,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}
+        unoptimized={isStaticExport()}
       />
     </picture>
   );

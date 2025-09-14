@@ -1,4 +1,5 @@
 import { getClientSideURL } from '@/utilities/getURL'
+import { isStaticExport } from '@/utilities/isStaticExport'
 
 // Safely append cache-busting parameter
 function addCacheParam(u: string, cacheTag?: string | null) {
@@ -18,11 +19,23 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
 
   const canonicalize = (u: string): string => {
     let out = u
-    // Normalize API media -> static /media
-    out = out.replace(/(^|https?:\/\/[^\s"'`]+)\/api\/media\/file\//g, (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/media/`)
-    out = out.replace(/(^|https?:\/\/[^\s"'`]+)\/api\/media\//g, (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/media/`)
-    // Drop cache-busting for static paths
-    out = out.replace(/(\/media\/[^\s"'`()?]+)\?v=[^\s"'`()]+/g, '$1')
+    
+    if (isStaticExport()) {
+      // Static export時は /media/ をそのまま使用
+      out = out.replace(/(^|https?:\/\/[^\s"'`]+)\/api\/media\/file\//g, (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/media/`)
+      out = out.replace(/(^|https?:\/\/[^\s"'`]+)\/api\/media\//g, (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/media/`)
+      // Static export時はキャッシュパラメータを削除
+      out = out.replace(/(\/media\/[^\s"'`()?]+)\?v=[^\s"'`()]+/g, '$1')
+    } else {
+      // 本番環境ではAPI経由で取得（既にAPI経由の場合はそのまま）
+      if (!/\/api\/media\//.test(out)) {
+        out = out.replace(
+          /(^|https?:\/\/[^\s"'`]+)\/media\//g,
+          (_m, p1) => `${p1 ? (p1 as string).replace(/\/$/, '') : ''}/api/media/file/`,
+        )
+      }
+    }
+    
     return out
   }
 
@@ -45,7 +58,7 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
   }
 
   // For same-origin resources, prefer relative path to avoid remote allowlist issues
-  // e.g. '/media/...'
+  // e.g. '/media/...' or '/api/media/...'
   if (url.startsWith('/')) {
     return addCacheParam(canonicalize(url), cacheTag)
   }

@@ -40,7 +40,7 @@ async function listFiles(dir, exts) {
 
 function rewriteContent(s) {
   let out = s
-  // Rewrite API media to static /media
+  // Static export時は /media/ をそのまま使用し、API経由のURLを変換
   // Absolute URLs
   out = out.replace(/https?:\/\/[^"'`()\s]+\/api\/media\/file\//g, '/media/')
   out = out.replace(/https?:\/\/[^"'`()\s]+\/api\/media\//g, '/media/')
@@ -52,7 +52,7 @@ function rewriteContent(s) {
   out = out.replace(/https?:\\\/[^"]+\\\/api\\\/media\\\//g, '/media/')
   out = out.replace(/\\\/api\\\/media\\\/file\\\//g, '/media/')
   out = out.replace(/\\\/api\\\/media\\\//g, '/media/')
-  // Drop cache param on media
+  // Static export時はキャッシュパラメータを削除
   out = out.replace(/(\/media\/[^\s"'`()?]+)\?v=[^\s"'`()]+/g, '$1')
   return out
 }
@@ -63,6 +63,23 @@ async function ensureDir(d) {
 
 async function pathExists(p) {
   try { await fs.access(p); return true } catch { return false }
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 5000) {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    })
+    clearTimeout(timeoutId)
+    return response
+  } catch (error) {
+    clearTimeout(timeoutId)
+    throw error
+  }
 }
 
 async function copyOrDownloadMedia(mediaPathRel, origin) {

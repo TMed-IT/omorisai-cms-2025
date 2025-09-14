@@ -1,6 +1,7 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || process.env.__NEXT_PRIVATE_ORIGIN
+const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,8 +14,8 @@ const nextConfig = {
     defaultLocale: 'ja',
   },
   images: {
-    // Keep image optimization disabled for static exports
-    unoptimized: true,
+    // Static export時のみ画像最適化を無効化
+    unoptimized: isStaticExport,
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
         const url = new URL(item)
