@@ -1416,6 +1416,33 @@ export interface Festival {
         id?: string | null;
       }[]
     | null;
+  pageMetadata?: {
+    events?: {
+      title?: string | null;
+      description?: string | null;
+      ogImage?: (string | null) | Media;
+    };
+    message?: {
+      title?: string | null;
+      description?: string | null;
+      ogImage?: (string | null) | Media;
+    };
+    posts?: {
+      title?: string | null;
+      description?: string | null;
+      ogImage?: (string | null) | Media;
+    };
+    socials?: {
+      title?: string | null;
+      description?: string | null;
+      ogImage?: (string | null) | Media;
+    };
+    clubs?: {
+      title?: string | null;
+      description?: string | null;
+      ogImage?: (string | null) | Media;
+    };
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1492,6 +1519,45 @@ export interface FestivalSelect<T extends boolean = true> {
         url?: T;
         icon?: T;
         id?: T;
+      };
+  pageMetadata?:
+    | T
+    | {
+        events?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              ogImage?: T;
+            };
+        message?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              ogImage?: T;
+            };
+        posts?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              ogImage?: T;
+            };
+        socials?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              ogImage?: T;
+            };
+        clubs?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              ogImage?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

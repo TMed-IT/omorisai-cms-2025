@@ -9,7 +9,7 @@ import { getMediaUrl } from './getMediaUrl'
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
 
-  let url = serverUrl + '/website-template-OG.webp'
+  let url = serverUrl + '/OG.webp'
 
   if (image && typeof image === 'object' && 'url' in image) {
     const raw = image.sizes?.og?.url || image.url
@@ -26,18 +26,25 @@ export const generateMeta = async (args: {
   doc?: Partial<Page> | Partial<Post> | null
   defaultTitle?: string
   defaultDescription?: string
+  staticPageMetadata?: {
+    title?: string
+    description?: string
+    ogImage?: any
+  }
 }): Promise<Metadata> => {
-  const { doc, defaultTitle, defaultDescription } = args
+  const { doc, defaultTitle, defaultDescription, staticPageMetadata } = args
 
-  const ogImage = getImageURL(doc?.meta?.image)
+  const ogImage = getImageURL(doc?.meta?.image || staticPageMetadata?.ogImage)
 
   const title = doc?.meta?.title
     ? doc.meta.title
-    : defaultTitle 
-      ? `${defaultTitle} - 大森祭公式ウェブサイト`
-      : '大森祭公式ウェブサイト'
+    : staticPageMetadata?.title
+      ? staticPageMetadata.title
+      : defaultTitle 
+        ? `${defaultTitle} - 大森祭公式ウェブサイト`
+        : '大森祭公式ウェブサイト'
 
-  const description = doc?.meta?.description || defaultDescription || ''
+  const description = doc?.meta?.description || staticPageMetadata?.description || defaultDescription || ''
 
   return {
     title,

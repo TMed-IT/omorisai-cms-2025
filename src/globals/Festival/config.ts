@@ -104,5 +104,132 @@ export const Festival: GlobalConfig = {
         },
       ],
     },
+    {
+      name: 'pageMetadata',
+      type: 'group',
+      label: 'ページメタデータ',
+      fields: [
+        {
+          name: 'events',
+          type: 'group',
+          label: 'イベント一覧ページ',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'ページタイトル',
+              defaultValue: 'Events - 大森祭',
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'ページ説明',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'OG画像',
+            },
+          ],
+        },
+        {
+          name: 'message',
+          type: 'group',
+          label: 'メッセージ一覧ページ',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'ページタイトル',
+              defaultValue: 'Message - 大森祭',
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'ページ説明',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'OG画像',
+            },
+          ],
+        },
+        {
+          name: 'posts',
+          type: 'group',
+          label: 'お知らせ一覧ページ',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'ページタイトル',
+              defaultValue: 'お知らせ一覧 - 大森祭',
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'ページ説明',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'OG画像',
+            },
+          ],
+        },
+        {
+          name: 'socials',
+          type: 'group',
+          label: 'SNSページ',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'ページタイトル',
+              defaultValue: 'SNS - 大森祭',
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'ページ説明',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'OG画像',
+            },
+          ],
+        },
+        {
+          name: 'clubs',
+          type: 'group',
+          label: 'クラブ一覧ページ',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'ページタイトル',
+              defaultValue: 'Clubs - 大森祭',
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              label: 'ページ説明',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'OG画像',
+            },
+          ],
+        },
+      ],
+    },
   ],
 } 

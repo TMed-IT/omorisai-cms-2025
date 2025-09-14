@@ -6,6 +6,22 @@ import { WaveText } from "@/components/ui/wave-text";
 import { Media } from "@/components/Media";
 import RichText from "@/components/RichText";
 import type { Club } from "@/payload-types";
+import type { Metadata } from "next";
+import { getCachedGlobal } from "@/utilities/getGlobals";
+import { generateMeta } from "@/utilities/generateMeta";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const festivalData = await getCachedGlobal("festival", 1)();
+  const pageMetadata = (festivalData as any)?.pageMetadata?.clubs;
+
+  return generateMeta({
+    staticPageMetadata: {
+      title: pageMetadata?.title,
+      description: pageMetadata?.description,
+      ogImage: pageMetadata?.ogImage,
+    },
+  });
+}
 
 export default async function ClubPage() {
   const payload = await getPayload({ config: configPromise });

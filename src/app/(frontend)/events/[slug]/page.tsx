@@ -8,6 +8,37 @@ import { FloatIn, RevealText } from "@/components/Animations/animations";
 import Link from "next/link";
 import { Media } from "@/components/Media";
 import { formatDateShortJP } from "@/utilities/formatDateTime";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const payload = await getPayload({ config: configPromise });
+
+  try {
+    const events = await payload.find({
+      collection: "events",
+      draft: false,
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+    });
+
+    const event = events.docs[0];
+    if (event) {
+      return {
+        title: `${event.title} - 大森祭`,
+      };
+    }
+  } catch (_error) {
+    // ignore
+  }
+
+  return {
+    title: "Event - 大森祭",
+  };
+}
 
 interface Props {
   params: Promise<{

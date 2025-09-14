@@ -15,6 +15,22 @@ import Link from "next/link";
 import type { Message } from "@/payload-types";
 import { Media } from "@/components/Media";
 import Image from "next/image";
+import { Metadata } from "next";
+import { getCachedGlobal } from "@/utilities/getGlobals";
+import { generateMeta } from "@/utilities/generateMeta";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const festivalData = await getCachedGlobal("festival", 1)();
+  const pageMetadata = (festivalData as any)?.pageMetadata?.message;
+
+  return generateMeta({
+    staticPageMetadata: {
+      title: pageMetadata?.title,
+      description: pageMetadata?.description,
+      ogImage: pageMetadata?.ogImage,
+    },
+  });
+}
 
 export default async function MessagePage() {
   const payload = await getPayload({ config: configPromise });

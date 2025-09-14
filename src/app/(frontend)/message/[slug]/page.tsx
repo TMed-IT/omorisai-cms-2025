@@ -9,6 +9,36 @@ import Link from "next/link";
 import RichText from "@/components/RichText";
 import { Media } from "@/components/Media";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const payload = await getPayload({ config: configPromise });
+
+  try {
+    const messages = await payload.find({
+      collection: "messages",
+      draft: false,
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+    });
+
+    const message = messages.docs[0];
+    if (message) {
+      return {
+        title: `${message.position} 挨拶 - 大森祭`,
+      };
+    }
+  } catch (_error) {
+  }
+
+  return {
+    title: "Message - 大森祭",
+  };
+}
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise });

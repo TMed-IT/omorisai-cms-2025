@@ -10,10 +10,21 @@ import Link from "next/link";
 import { formatDateShortJP } from "@/utilities/formatDateTime";
 import type { Event } from "@/payload-types";
 import type { Metadata } from "next";
+import { getCachedGlobal } from "@/utilities/getGlobals";
+import { generateMeta } from "@/utilities/generateMeta";
 
-export const metadata: Metadata = {
-  title: "Events - 大森祭公式ウェブサイト",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const festivalData = await getCachedGlobal("festival", 1)();
+  const pageMetadata = (festivalData as any)?.pageMetadata?.events;
+
+  return generateMeta({
+    staticPageMetadata: {
+      title: pageMetadata?.title,
+      description: pageMetadata?.description,
+      ogImage: pageMetadata?.ogImage,
+    },
+  });
+}
 
 export default async function EventsPage() {
   const payload = await getPayload({ config: configPromise });

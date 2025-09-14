@@ -7,6 +7,7 @@ import PageClient from "./page.client";
 import { generateMeta } from "@/utilities/generateMeta";
 import { PostCard } from "@/blocks/CollectionList/PostCard";
 import { WaveText } from "@/components/ui/wave-text";
+import { getCachedGlobal } from "@/utilities/getGlobals";
 
 export const dynamic = "force-static";
 export const revalidate = 600;
@@ -62,7 +63,14 @@ export default async function Page() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
+  const festivalData = await getCachedGlobal("festival", 1)();
+  const pageMetadata = (festivalData as any)?.pageMetadata?.posts;
+
   return generateMeta({
-    defaultTitle: "お知らせ一覧",
+    staticPageMetadata: {
+      title: pageMetadata?.title,
+      description: pageMetadata?.description,
+      ogImage: pageMetadata?.ogImage,
+    },
   });
 }
