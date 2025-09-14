@@ -3,7 +3,6 @@ import type { CollectionConfig } from 'payload'
 import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
-import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 
 import {
   MetaDescriptionField,
@@ -151,11 +150,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
     ...slugField(),
   ],
-  hooks: {
-    afterChange: [revalidatePost],
-    afterRead: [],
-    afterDelete: [revalidateDelete],
-  },
+  hooks: {},
   versions: {
     drafts: {
       autosave: {

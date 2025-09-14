@@ -71,5 +71,4 @@ export const metadata: Metadata = {
   },
 };
 
-// Ensure App Router statically renders frontend routes for export
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";

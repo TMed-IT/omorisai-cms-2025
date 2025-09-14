@@ -158,6 +158,5 @@ export async function generateStaticParams() {
     .map((doc: any) => ({ slug: doc.slug as string }));
 }
 
-export const dynamic = "force-static";
-export const revalidate = 600;
-export const dynamicParams = false;
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;

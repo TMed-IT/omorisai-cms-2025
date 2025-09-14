@@ -13,6 +13,13 @@ import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  
+  if (!slug) {
+    return {
+      title: "Message - 大森祭",
+    };
+  }
+
   const payload = await getPayload({ config: configPromise });
 
   try {
@@ -32,7 +39,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: `${message.position} 挨拶 - 大森祭`,
       };
     }
-  } catch (_error) {
+  } catch (error) {
+    console.error('Error generating metadata for message:', error);
   }
 
   return {
@@ -40,25 +48,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise });
-  const messages = await payload.find({
-    collection: "messages",
-    draft: false,
-    limit: 0,
-    overrideAccess: false,
-    pagination: false,
-    select: { slug: true },
-  });
 
-  return messages.docs
-    .filter((doc: any) => Boolean(doc?.slug))
-    .map((doc: any) => ({ slug: doc.slug as string }));
-}
-
-export const dynamic = "force-static";
-export const revalidate = 600;
-export const dynamicParams = false;
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 interface Props {
   params: Promise<{
@@ -68,6 +60,11 @@ interface Props {
 
 export default async function MessageDetailPage({ params }: Props) {
   const { slug } = await params;
+  
+  if (!slug) {
+    notFound();
+  }
+
   const payload = await getPayload({ config: configPromise });
 
   try {

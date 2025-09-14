@@ -9,8 +9,7 @@ import { PostCard } from "@/blocks/CollectionList/PostCard";
 import { WaveText } from "@/components/ui/wave-text";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 
-export const dynamic = "force-static";
-export const revalidate = 600;
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const payload = await getPayload({ config: configPromise });

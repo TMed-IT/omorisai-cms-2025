@@ -37,9 +37,8 @@ export async function generateStaticParams() {
   return params;
 }
 
-export const dynamic = "force-static";
-export const revalidate = 600;
-export const dynamicParams = false;
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 type Args = {
   params: Promise<{
