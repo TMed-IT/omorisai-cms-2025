@@ -171,6 +171,11 @@ export interface Page {
     | SloganBlock
     | SponsorBlock
   )[];
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (string | null) | Media;
+  };
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -933,6 +938,13 @@ export interface PagesSelect<T extends boolean = true> {
         countdown?: T | CountdownBlockSelect<T>;
         slogan?: T | SloganBlockSelect<T>;
         sponsorBlock?: T | SponsorBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
       };
   publishedAt?: T;
   slug?: T;
