@@ -13,23 +13,23 @@ export async function POST(req: NextRequest) {
   try {
     const token = getCloudflareJWTFromRequest(req)
     if (!token) {
-      return createErrorResponse('Cloudflare Accessトークンが見つかりません', 401)
+      return createErrorResponse('Cloudflare Access token not found', 401)
     }
 
     const cloudflarePayload = await verifyCloudflareJWT(token)
     if (!cloudflarePayload) {
-      return createErrorResponse('Cloudflare Accessトークンが無効です', 401)
+      return createErrorResponse('Cloudflare Access token is invalid', 401)
     }
 
     const email = cloudflarePayload.email
 
     return createSuccessResponse({
-      message: '認証成功',
+      message: 'Authentication successful',
       email,
     })
   } catch (error) {
-    console.error('Cloudflare認証エラー:', error)
-    return createErrorResponse('認証に失敗しました')
+    console.error('Cloudflare authentication error:', error)
+    return createErrorResponse('Authentication failed')
   }
 }
 
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
       email,
     })
   } catch (error) {
-    console.error('Cloudflare認証チェックエラー:', error)
+    console.error('Cloudflare authentication check error:', error)
     return createSuccessResponse({ authenticated: false })
   }
 }

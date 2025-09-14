@@ -72,10 +72,19 @@ export async function GET(request: NextRequest) {
     
     if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json(
-        { error: '管理者権限が必要です' },
+        { error: 'Admin privileges are required' },
         { status: 403 }
       )
     }
+  } catch (error) {
+    console.error('Authentication error:', error)
+    return NextResponse.json(
+      { error: 'Authentication failed' },
+      { status: 401 }
+    )
+  }
+
+  try {
 
     const apiToken = process.env.CLOUDFLARE_API_TOKEN
     const accountId = process.env.CLOUDFLARE_ACCOUNT_ID
@@ -83,7 +92,7 @@ export async function GET(request: NextRequest) {
 
     if (!apiToken || !accountId || !projectName) {
       return NextResponse.json(
-        { error: 'Cloudflare環境変数が設定されていません' },
+        { error: 'Cloudflare environment variables are not set' },
         { status: 500 }
       )
     }
@@ -101,7 +110,7 @@ export async function GET(request: NextRequest) {
       const errorText = await response.text()
       console.error('Cloudflare API error:', response.status, errorText)
       return NextResponse.json(
-        { error: 'Cloudflare APIからのデータ取得に失敗しました' },
+        { error: 'Failed to get data from Cloudflare API' },
         { status: response.status }
       )
     }
@@ -157,9 +166,9 @@ export async function GET(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('現在のデプロイメント取得エラー:', error)
+    console.error('Current deployment error:', error)
     return NextResponse.json(
-      { error: '現在のデプロイメントの取得に失敗しました' },
+      { error: 'Failed to get current deployment' },
       { status: 500 }
     )
   }

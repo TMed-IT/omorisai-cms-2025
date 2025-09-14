@@ -1,9 +1,10 @@
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { getPayload } from 'payload'
 
 import type { User } from '../payload-types'
-import { getClientSideURL } from './getURL'
 import { isStaticExport } from './isStaticExport'
+import config from '../payload.config'
 
 export const getMeUser = async (args?: {
   nullUserRedirect?: string
@@ -27,29 +28,32 @@ export const getMeUser = async (args?: {
   const cookieStore = await cookies()
   const token = cookieStore.get('payload-token')?.value
 
-  const meUserReq = await fetch(`${getClientSideURL()}/api/users/me`, {
-    headers: {
-      Authorization: `JWT ${token}`,
-    },
-  })
-
-  const {
-    user,
-  }: {
-    user: User
-  } = await meUserReq.json()
-
-  if (validUserRedirect && meUserReq.ok && user) {
-    redirect(validUserRedirect)
+  if (!token) {
+    if (nullUserRedirect) redirect(nullUserRedirect)
+    throw new Error('Authentication token not found')
   }
 
-  if (nullUserRedirect && (!meUserReq.ok || !user)) {
-    redirect(nullUserRedirect)
-  }
+  const payload = await getPayload({ config })
+  const requestHeaders = await headers()
+  
+  try {
+    const { user } = await payload.auth({ headers: requestHeaders })
 
-  // Token will exist here because if it doesn't the user will be redirected
-  return {
-    token: token!,
-    user,
+    if (!user) {
+      if (nullUserRedirect) redirect(nullUserRedirect)
+      throw new Error('User not found')
+    }
+
+    if (validUserRedirect && user) {
+      redirect(validUserRedirect)
+    }
+
+    return {
+      token: token,
+      user,
+    }
+  } catch (error) {
+    if (nullUserRedirect) redirect(nullUserRedirect)
+    throw error
   }
 }

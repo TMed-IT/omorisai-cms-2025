@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   const secret = process.env.USERS_API_SECRET
   const authHeader = req.headers.get('authorization')
   if (!secret || !authHeader || authHeader !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: '認証エラー' }, { status: 401 })
+    return NextResponse.json({ error: 'Authentication error' }, { status: 401 })
   }
 
   const payload = await getPayload({ config })
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       }
     }
     
-    const updated = await payload.update({
+    await payload.update({
       collection: 'users',
       id: existingUser.id,
       data: { name, nameRoman, role },

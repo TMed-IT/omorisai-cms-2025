@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     
     if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json(
-        { error: '管理者権限が必要です' },
+        { error: 'Admin privileges are required' },
         { status: 403 }
       )
     }
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     if (!deploymentId) {
       return NextResponse.json(
-        { error: 'デプロイメントIDが必要です' },
+        { error: 'Deployment ID is required' },
         { status: 400 }
       )
     }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     if (!apiToken || !accountId || !projectName) {
       return NextResponse.json(
-        { error: 'Cloudflare環境変数が設定されていません' },
+        { error: 'Cloudflare environment variables are not set' },
         { status: 500 }
       )
     }
@@ -55,13 +55,13 @@ export async function POST(request: NextRequest) {
       
       if (response.status === 400) {
         return NextResponse.json(
-          { error: 'このデプロイメントはロールバックできません' },
+          { error: 'This deployment cannot be rolled back' },
           { status: 400 }
         )
       }
       
       return NextResponse.json(
-        { error: 'ロールバックに失敗しました' },
+        { error: 'Rollback failed' },
         { status: response.status }
       )
     }
@@ -70,14 +70,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'ロールバックが開始されました',
+      message: 'Rollback started',
       newDeploymentId: data.result?.id,
     })
 
   } catch (error) {
-    console.error('ロールバックエラー:', error)
+    console.error('Rollback error:', error)
     return NextResponse.json(
-      { error: 'ロールバックの実行に失敗しました' },
+      { error: 'Rollback execution failed' },
       { status: 500 }
     )
   }

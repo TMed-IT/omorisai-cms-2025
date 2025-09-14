@@ -3,9 +3,14 @@ import { getMeUser } from '@/utilities/getMeUser'
 import { subscribeDeployLogs } from '@/lib/deployStore'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ deployId: string }> }) {
-  const { user } = await getMeUser()
-  if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
-    return new Response('forbidden', { status: 403 })
+  try {
+    const { user } = await getMeUser()
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
+      return new Response('forbidden', { status: 403 })
+    }
+  } catch (error) {
+    console.error('認証エラー:', error)
+    return new Response('認証に失敗しました', { status: 401 })
   }
 
   const { deployId } = await params

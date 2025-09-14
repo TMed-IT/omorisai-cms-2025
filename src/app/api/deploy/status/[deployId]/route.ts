@@ -11,7 +11,7 @@ export async function GET(
     
     if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json(
-        { error: '管理者権限が必要です' },
+        { error: 'Admin privileges are required' },
         { status: 403 }
       )
     }
@@ -21,7 +21,7 @@ export async function GET(
     
     if (!status) {
       return NextResponse.json(
-        { error: 'デプロイが見つかりません' },
+        { error: 'Deployment not found' },
         { status: 404 }
       )
     }
@@ -29,9 +29,9 @@ export async function GET(
     return NextResponse.json(status)
 
   } catch (error) {
-    console.error('ステータス取得エラー:', error)
+    console.error('Status get error:', error)
     return NextResponse.json(
-      { error: 'ステータスの取得に失敗しました' },
+      { error: 'Failed to get status' },
       { status: 500 }
     )
   }

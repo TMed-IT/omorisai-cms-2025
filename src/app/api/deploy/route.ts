@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     
     if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json(
-        { error: '管理者権限が必要です' },
+        { error: 'Admin privileges are required' },
         { status: 403 }
       )
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         const buildScript = path.join(process.cwd(), 'scripts', 'build-static.sh')
         
         const child = exec(`sh ${buildScript} ${deployId}`)
-        const logs: string[] = [`ビルド開始: ${timestamp}`]
+        const logs: string[] = [`Build started: ${timestamp}`]
         child.stdout?.on('data', (chunk) => {
           const line = chunk.toString()
           logs.push(line)
@@ -66,11 +66,11 @@ export async function POST(request: NextRequest) {
         await deployToCloudflare(deployId)
         
       } catch (error) {
-        console.error('ビルドエラー:', error)
+        console.error('Build error:', error)
         deployStatuses.set(deployId, { 
           ...deployStatus, 
           status: 'error',
-          error: error instanceof Error ? error.message : '不明なエラーが発生しました',
+          error: error instanceof Error ? error.message : 'An unknown error occurred',
           logs: [...(deployStatus.logs || []), `エラー: ${error}`]
         })
       }
@@ -80,13 +80,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       deployId,
-      message: 'デプロイプロセスを開始しました' 
+      message: 'Deployment process started' 
     })
 
   } catch (error) {
-    console.error('デプロイ開始エラー:', error)
+    console.error('Deployment start error:', error)
     return NextResponse.json(
-      { error: 'デプロイの開始に失敗しました' },
+      { error: 'Deployment start failed' },
       { status: 500 }
     )
   }
@@ -103,7 +103,7 @@ async function deployToCloudflare(deployId: string) {
     const projectName = process.env.CLOUDFLARE_PROJECT_NAME
 
     if (!apiToken || !accountId || !projectName) {
-      throw new Error('Cloudflare環境変数が不足しています (CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_PROJECT_NAME)')
+      throw new Error('Cloudflare environment variables are missing (CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_PROJECT_NAME)')
     }
 
     // sanity check: ensure some HTML files exist before deploying
@@ -120,7 +120,7 @@ async function deployToCloudflare(deployId: string) {
     }
 
     if (!(await hasHtmlFiles(outDir))) {
-      throw new Error('out ディレクトリに HTML が見つかりません。ビルド結果が空の可能性があります。')
+      throw new Error('HTML files not found in out directory. The build result may be empty.')
     }
 
     const wranglerCmd = `npx --yes wrangler@3 pages deploy ${outDir} --project-name ${projectName} --branch main --commit-hash ${deployId}`
@@ -145,16 +145,16 @@ async function deployToCloudflare(deployId: string) {
       status: 'success',
       buildUrl: deployStatus.buildUrl,
       duration: Math.floor((Date.now() - new Date(deployStatus.timestamp).getTime()) / 1000),
-      logs: [...(deployStatus.logs || []), `デプロイ完了`]
+      logs: [...(deployStatus.logs || []), `Deployment completed`]
     })
 
   } catch (error) {
-    console.error('Cloudflareデプロイエラー:', error)
+    console.error('Cloudflare deployment error:', error)
     deployStatuses.set(deployId, {
       ...deployStatuses.get(deployId)!,
       status: 'error',
-      error: error instanceof Error ? error.message : 'Cloudflareデプロイに失敗しました',
-      logs: [...(deployStatuses.get(deployId)?.logs || []), `デプロイエラー: ${error}`]
+      error: error instanceof Error ? error.message : 'Cloudflare deployment failed',
+      logs: [...(deployStatuses.get(deployId)?.logs || []), `Deployment error: ${error}`]
     })
   }
 }
