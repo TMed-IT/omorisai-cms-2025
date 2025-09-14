@@ -1,17 +1,17 @@
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { Media } from "@/components/Media";
 
-import type { Festival } from "@/payload-types";
+import type { SocialLink } from "@/payload-types";
 import { WaveText } from "@/components/ui/wave-text";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardTitle } from "@/components/ui/card";
 import { GridItem, StaggerGrid } from "@/components/Animations/animations";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { generateMeta } from "@/utilities/generateMeta";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const festivalData = await getCachedGlobal("festival", 1)();
-  const pageMetadata = (festivalData as any)?.pageMetadata?.socials;
+  const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
+  const pageMetadata = (pageMetadataData as any)?.socials;
 
   return generateMeta({
     staticPageMetadata: {
@@ -22,11 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-type SocialLink = NonNullable<Festival["socialLinks"]>[0];
+type SocialLinkItem = NonNullable<SocialLink["socialLinks"]>[0];
 
 export default async function SocialPage() {
-  const festivalData = await getCachedGlobal("festival", 1)() as Festival;
-  const socialLinks = festivalData?.socialLinks || [];
+  const socialLinksData = await getCachedGlobal(
+    "socialLinks",
+    1,
+  )() as SocialLink;
+  const socialLinks = socialLinksData?.socialLinks || [];
 
   return (
     <div>
@@ -39,7 +42,7 @@ export default async function SocialPage() {
           <StaggerGrid>
             <div className="flex flex-col gap-4 max-w-md mx-auto">
               {socialLinks.length > 0 && (
-                socialLinks.map((socialLink: SocialLink, index: number) => (
+                socialLinks.map((socialLink: SocialLinkItem, index: number) => (
                   <GridItem key={index} index={index}>
                     <Link
                       href={socialLink.url}

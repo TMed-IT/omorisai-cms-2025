@@ -62,8 +62,8 @@ export default async function Page() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const festivalData = await getCachedGlobal("festival", 1)();
-  const pageMetadata = (festivalData as any)?.pageMetadata?.posts;
+  const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
+  const pageMetadata = (pageMetadataData as any)?.posts;
 
   return generateMeta({
     staticPageMetadata: {

@@ -5,6 +5,8 @@ import path from 'path'
 
 import { home } from '../../../scripts/seed/home'
 import { festival as festivalData } from '../../../scripts/seed/festival'
+import { socialLinks as socialLinksData } from '../../../scripts/seed/socialLinks'
+import { pageMetadata as pageMetadataData } from '../../../scripts/seed/pageMetadata'
 import { messages } from '../../../scripts/seed/message'
 import { events } from '../../../scripts/seed/events'
 import { clubs } from '../../../scripts/seed/clubs'
@@ -19,7 +21,7 @@ const allCollections: CollectionSlug[] = [
   'events',
   'clubs',
 ]
-const globals: GlobalSlug[] = ['header', 'footer', 'festival']
+const globals: GlobalSlug[] = ['header', 'footer', 'festival', 'socialLinks', 'pageMetadata']
 
 export const seed = async ({
   payload,
@@ -43,7 +45,9 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: global === 'festival' ? festivalData : {},
+        data: global === 'festival' ? festivalData : 
+              global === 'socialLinks' ? socialLinksData :
+              global === 'pageMetadata' ? pageMetadataData : {},
         depth: 0,
         context: {
           disableRevalidate: true,

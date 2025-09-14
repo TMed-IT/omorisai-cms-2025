@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
-import { revalidateHeader } from './hooks/revalidateHeader'
 import { isEditorOrAdmin } from '@/access/isEditorOrAdmin'
 
 export const Header: GlobalConfig = {
@@ -34,7 +33,4 @@ export const Header: GlobalConfig = {
       label: 'ナビゲーション項目',
     },
   ],
-  hooks: {
-    afterChange: [revalidateHeader],
-  },
 }

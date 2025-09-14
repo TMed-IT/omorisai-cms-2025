@@ -12,6 +12,7 @@ import { CountdownBlock } from "@/blocks/Countdown/Component";
 import { SloganBlock } from "@/blocks/Slogan/Component";
 import { CollectionGrid } from "@/blocks/CollectionGrid/Component";
 import { CollectionList } from "@/blocks/CollectionList/Component";
+import { SponsorBlock } from "@/blocks/SponsorBlock/Component";
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -24,6 +25,7 @@ const blockComponents = {
   slogan: SloganBlock,
   collectionGrid: CollectionGrid,
   collectionList: CollectionList,
+  sponsorBlock: SponsorBlock,
 };
 
 export const RenderBlocks: React.FC<{

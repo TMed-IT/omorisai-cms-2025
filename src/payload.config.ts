@@ -13,6 +13,9 @@ import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { Festival } from './globals/Festival/config'
+import { Sponsors } from './globals/Sponsors/config'
+import { SocialLinks } from './globals/SocialLinks/config'
+import { PageMetadata } from './globals/PageMetadata/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -73,7 +76,7 @@ export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   collections: [Pages, Posts, Media, Users, Messages, Events, Clubs],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, Festival],
+  globals: [Header, Footer, Sponsors, SocialLinks, Festival, PageMetadata],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

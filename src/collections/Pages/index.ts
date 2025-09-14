@@ -12,18 +12,11 @@ import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { FestivalInfoBlock } from '@/blocks/FestivalInfo/config'
 import { CountdownBlock } from '@/blocks/Countdown/config'
 import { SloganBlock } from '@/blocks/Slogan/config'
+import { SponsorBlock } from '@/blocks/SponsorBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -85,7 +78,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, CollectionGrid, CollectionList, FestivalInfoBlock, CountdownBlock, SloganBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, CollectionGrid, CollectionList, FestivalInfoBlock, CountdownBlock, SloganBlock, SponsorBlock],
               required: true,
               admin: {
                 initCollapsed: true,
@@ -94,33 +87,6 @@ export const Pages: CollectionConfig<'pages'> = {
             },
           ],
           label: 'コンテンツ',
-        },
-        {
-          name: 'meta',
-          label: 'メタデータ',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
-            MetaDescriptionField({}),
-            PreviewField({
-              // if the `generateUrl` function is configured
-              hasGenerateFn: true,
-
-              // field paths to match the target field for data
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
         },
       ],
     },

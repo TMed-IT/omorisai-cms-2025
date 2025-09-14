@@ -101,12 +101,18 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    sponsors: Sponsor;
+    socialLinks: SocialLink;
     festival: Festival;
+    pageMetadata: PageMetadatum;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
+    socialLinks: SocialLinksSelect<false> | SocialLinksSelect<true>;
     festival: FestivalSelect<false> | FestivalSelect<true>;
+    pageMetadata: PageMetadataSelect<false> | PageMetadataSelect<true>;
   };
   locale: null;
   user: User & {
@@ -163,15 +169,8 @@ export interface Page {
     | FestivalInfoBlock
     | CountdownBlock
     | SloganBlock
+    | SponsorBlock
   )[];
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -632,6 +631,15 @@ export interface SloganBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SponsorBlock".
+ */
+export interface SponsorBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sponsorBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -924,13 +932,7 @@ export interface PagesSelect<T extends boolean = true> {
         festivalInfo?: T | FestivalInfoBlockSelect<T>;
         countdown?: T | CountdownBlockSelect<T>;
         slogan?: T | SloganBlockSelect<T>;
-      };
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
+        sponsorBlock?: T | SponsorBlockSelect<T>;
       };
   publishedAt?: T;
   slug?: T;
@@ -1073,6 +1075,14 @@ export interface SloganBlockSelect<T extends boolean = true> {
   showEnglish?: T;
   showJapanese?: T;
   showDescription?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SponsorBlock_select".
+ */
+export interface SponsorBlockSelect<T extends boolean = true> {
   id?: T;
   blockName?: T;
 }
@@ -1393,6 +1403,47 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors".
+ */
+export interface Sponsor {
+  id: string;
+  sponsors?:
+    | {
+        type: 'logoLarge' | 'logoSmall' | 'textOnly';
+        companyName: string;
+        /**
+         * 推奨: ロゴ（大）1200×400 PNG透過/SVG 200KB以内、ロゴ（小）600×200 PNG透過/SVG 120KB以内。枠内に中央配置・等比率でフィットします。
+         */
+        logo?: (string | null) | Media;
+        /**
+         * スポンサーのURL
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socialLinks".
+ */
+export interface SocialLink {
+  id: string;
+  socialLinks?:
+    | {
+        label: string;
+        url: string;
+        icon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "festival".
  */
 export interface Festival {
@@ -1408,40 +1459,39 @@ export interface Festival {
     japanese?: string | null;
     description?: string | null;
   };
-  socialLinks?:
-    | {
-        label: string;
-        url: string;
-        icon?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  pageMetadata?: {
-    events?: {
-      title?: string | null;
-      description?: string | null;
-      ogImage?: (string | null) | Media;
-    };
-    message?: {
-      title?: string | null;
-      description?: string | null;
-      ogImage?: (string | null) | Media;
-    };
-    posts?: {
-      title?: string | null;
-      description?: string | null;
-      ogImage?: (string | null) | Media;
-    };
-    socials?: {
-      title?: string | null;
-      description?: string | null;
-      ogImage?: (string | null) | Media;
-    };
-    clubs?: {
-      title?: string | null;
-      description?: string | null;
-      ogImage?: (string | null) | Media;
-    };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageMetadata".
+ */
+export interface PageMetadatum {
+  id: string;
+  events?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (string | null) | Media;
+  };
+  message?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (string | null) | Media;
+  };
+  posts?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (string | null) | Media;
+  };
+  socials?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (string | null) | Media;
+  };
+  clubs?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (string | null) | Media;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1494,6 +1544,41 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors_select".
+ */
+export interface SponsorsSelect<T extends boolean = true> {
+  sponsors?:
+    | T
+    | {
+        type?: T;
+        companyName?: T;
+        logo?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "socialLinks_select".
+ */
+export interface SocialLinksSelect<T extends boolean = true> {
+  socialLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        icon?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "festival_select".
  */
 export interface FestivalSelect<T extends boolean = true> {
@@ -1512,52 +1597,49 @@ export interface FestivalSelect<T extends boolean = true> {
         japanese?: T;
         description?: T;
       };
-  socialLinks?:
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pageMetadata_select".
+ */
+export interface PageMetadataSelect<T extends boolean = true> {
+  events?:
     | T
     | {
-        label?: T;
-        url?: T;
-        icon?: T;
-        id?: T;
+        title?: T;
+        description?: T;
+        ogImage?: T;
       };
-  pageMetadata?:
+  message?:
     | T
     | {
-        events?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ogImage?: T;
-            };
-        message?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ogImage?: T;
-            };
-        posts?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ogImage?: T;
-            };
-        socials?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ogImage?: T;
-            };
-        clubs?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ogImage?: T;
-            };
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  posts?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  socials?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  clubs?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
       };
   updatedAt?: T;
   createdAt?: T;

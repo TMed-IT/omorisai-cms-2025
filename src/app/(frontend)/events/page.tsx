@@ -14,8 +14,8 @@ import { getCachedGlobal } from "@/utilities/getGlobals";
 import { generateMeta } from "@/utilities/generateMeta";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const festivalData = await getCachedGlobal("festival", 1)();
-  const pageMetadata = (festivalData as any)?.pageMetadata?.events;
+  const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
+  const pageMetadata = (pageMetadataData as any)?.events;
 
   return generateMeta({
     staticPageMetadata: {
