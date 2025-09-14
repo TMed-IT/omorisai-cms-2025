@@ -143,7 +143,7 @@ export const seed = async ({
             link: {
               type: 'custom',
               label: 'SNS',
-              url: '/social',
+              url: '/socials',
             },
           },
         ],

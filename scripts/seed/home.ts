@@ -72,7 +72,7 @@ export const home: () => RequiredDataFromCollectionSlug<'pages'> = () => {
       },
     ],
     meta: {
-      title: 'ホーム',
+      title: 'ホーム - 大森祭公式ウェブサイト',
     },
     title: 'ホーム',
   }

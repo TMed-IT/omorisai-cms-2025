@@ -110,6 +110,10 @@ du -sh "$APP_DIR/out" | awk '{print "容量:", $1}'
 echo 'メディアのURLを書き換え、out/media に同梱します...'
 (cd "$APP_DIR" && node scripts/staticize-media.mjs) || echo 'post-export メディア同梱に失敗しました（スキップ）'
 
+# Generate redirect files for static export
+echo 'リダイレクトファイルを生成中...'
+(cd "$APP_DIR" && pnpm exec tsx scripts/generate-redirects.ts) || echo 'リダイレクトファイル生成に失敗しました（スキップ）'
+
 # restore original next.config.js in temp workspace (best-effort)
 mv -f next.config.backup.js next.config.js 2>/dev/null || true
 

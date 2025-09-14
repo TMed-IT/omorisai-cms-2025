@@ -1,7 +1,5 @@
 import type { Metadata } from "next/types";
 
-import { PageRange } from "@/components/PageRange";
-import { Pagination } from "@/components/Pagination";
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 import React from "react";
@@ -20,7 +18,7 @@ export default async function Page() {
     collection: "posts",
     draft: false,
     depth: 1,
-    limit: 12,
+    limit: 0,
     overrideAccess: false,
     select: {
       title: true,
@@ -39,15 +37,6 @@ export default async function Page() {
 
       <section className="py-16 px-4">
         <div className="container mx-auto">
-          <div className="mb-8">
-            <PageRange
-              collection="posts"
-              currentPage={posts.page}
-              limit={12}
-              totalDocs={posts.totalDocs}
-            />
-          </div>
-
           <div className="max-w-4xl mx-auto">
             <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden">
               <div className="flex flex-col divide-y divide-blue-900/50">
@@ -66,12 +55,6 @@ export default async function Page() {
               </div>
             </div>
           </div>
-
-          {posts.totalPages > 1 && posts.page && (
-            <div className="mt-8">
-              <Pagination page={posts.page} totalPages={posts.totalPages} />
-            </div>
-          )}
         </div>
       </section>
     </div>

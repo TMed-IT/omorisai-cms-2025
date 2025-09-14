@@ -77,8 +77,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
       style={{ top: "var(--admin-bar-height, 0px)" }}
       {...(theme ? { "data-theme": theme } : {})}
     >
-      <div className="container mx-auto px-4 py-4 min-h-[64px] flex items-center">
-        <div className="flex items-center justify-between w-full">
+      <div className="container mx-auto px-4 py-4 min-h-[64px]">
+        <div className="flex items-center w-full relative">
           <div className="hover:scale-105 active:scale-95 transition-transform duration-200">
             <Link href="/" className="flex items-center space-x-2">
               <Logo
@@ -91,7 +91,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6 absolute left-1/2 transform -translate-x-1/2">
             {navItems.map(({ link }, index) => (
               <div
                 key={index}
@@ -109,12 +109,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
             ))}
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ml-auto">
             <div className="hover:scale-110 active:scale-90 transition-transform duration-200">
               <Button
                 variant="ghost"
                 size="sm"
-                className="md:hidden"
+                className="md:hidden hover:bg-transparent"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <div className="relative w-5 h-5">
@@ -139,36 +139,34 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
         </div>
 
         <div
-          className={`md:hidden absolute top-full left-0 right-0 bg-black/20 backdrop-blur-md border-b border-white/10 z-50 overflow-hidden transition-all duration-300 ease-out ${
+          className={`md:hidden w-full overflow-hidden transition-all duration-300 ease-out ${
             isOpen
-              ? "max-h-96 opacity-100 translate-y-0"
+              ? "max-h-96 opacity-100 translate-y-0 mt-4"
               : "max-h-0 opacity-0 -translate-y-2"
           }`}
         >
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex flex-col space-y-2">
-              {navItems.map(({ link }, index) => (
-                <div
-                  key={index}
-                  className={`transform transition-all duration-300 ease-out hover:translate-x-2 active:scale-95 ${
-                    isOpen
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-4"
-                  }`}
-                  style={{
-                    transitionDelay: isOpen ? `${index * 100 + 100}ms` : "0ms",
-                  }}
+          <div className="flex flex-col space-y-2">
+            {navItems.map(({ link }, index) => (
+              <div
+                key={index}
+                className={`transform transition-all duration-300 ease-out hover:translate-x-2 active:scale-95 ${
+                  isOpen
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-4"
+                }`}
+                style={{
+                  transitionDelay: isOpen ? `${index * 100 + 100}ms` : "0ms",
+                }}
+              >
+                <Link
+                  href={link.url || "#"}
+                  className="text-white/80 hover:text-white transition-colors duration-200 py-2 block"
+                  onClick={() => setIsOpen(false)}
                 >
-                  <Link
-                    href={link.url || "#"}
-                    className="text-white/80 hover:text-white transition-colors duration-200 py-2 block"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </div>
-              ))}
-            </div>
+                  {link.label}
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -207,7 +207,7 @@ const availableGlobals = {
             link: {
               type: 'custom',
               label: 'SNS',
-              url: '/social',
+              url: '/socials',
             },
           },
         ],

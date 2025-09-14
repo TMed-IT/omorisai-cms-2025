@@ -6,6 +6,7 @@ import type { Footer } from "@/payload-types";
 
 import { CMSLink } from "@/components/Link";
 import { Logo } from "@/components/Logo/Logo";
+import { isStaticExport } from "@/utilities/isStaticExport";
 
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal("footer", 1)();
@@ -23,7 +24,10 @@ export async function Footer() {
       }}
     >
       <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
-        <Link className="flex items-center" href="/">
+        <Link
+          className="flex items-center"
+          href={isStaticExport() ? "/" : "/admin"}
+        >
           <Logo />
         </Link>
 
