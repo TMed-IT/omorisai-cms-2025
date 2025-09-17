@@ -157,6 +157,7 @@ export default buildConfig({
           forgotPasswordButtonText: 'ログイン画面へ戻る',
           submit: '管理者にお問い合わせください',
           backToLogin: 'ログイン画面へ戻る',
+          editedSince: '編集開始日時',
         },
         version:{
           draft: '下書き',

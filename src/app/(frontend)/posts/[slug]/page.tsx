@@ -18,6 +18,7 @@ import type { Post } from "@/payload-types";
 import { generateMeta } from "@/utilities/generateMeta";
 import PageClient from "./page.client";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
+import { WaveText } from "@/components/ui/wave-text";
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise });
@@ -70,6 +71,10 @@ export default async function Post({ params: paramsPromise }: Args) {
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
+
+      <div className="container mx-auto text-center">
+        <WaveText text="お知らせ" />
+      </div>
 
       <section className="relative pt-24 pb-20 px-4">
         <div className="container mx-auto max-w-4xl">
