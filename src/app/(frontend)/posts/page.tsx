@@ -6,7 +6,7 @@ import React from "react";
 import PageClient from "./page.client";
 import { generateMeta } from "@/utilities/generateMeta";
 import { PostCard } from "@/blocks/CollectionList/PostCard";
-import { WaveText } from "@/components/ui/wave-text";
+import PageTitle from "@/components/PageTitle";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 
 export const dynamic = "force-dynamic";
@@ -31,9 +31,7 @@ export default async function Page() {
   return (
     <div>
       <PageClient />
-      <div className="container mx-auto text-center">
-        <WaveText text="お知らせ" />
-      </div>
+      <PageTitle path="/posts" fallback="お知らせ" />
 
       <section className="py-16 px-4">
         <div className="container mx-auto">

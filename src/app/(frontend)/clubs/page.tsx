@@ -1,6 +1,6 @@
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
-import { WaveText } from "@/components/ui/wave-text";
+import PageTitle from "@/components/PageTitle";
 import type { Club } from "@/payload-types";
 import type { Metadata } from "next";
 import { getCachedGlobal } from "@/utilities/getGlobals";
@@ -31,9 +31,7 @@ export default async function ClubPage() {
 
   return (
     <div>
-      <div className="container mx-auto text-center">
-        <WaveText text="CLUBS" />
-      </div>
+      <PageTitle path="/clubs" fallback="CLUBS" />
 
       <section className="py-16 px-4">
         <div className="container mx-auto">

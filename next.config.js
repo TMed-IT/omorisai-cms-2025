@@ -5,16 +5,17 @@ const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // trailingSlash helps produce directory-style static paths when exporting
   trailingSlash: true,
-  // Produce a self-contained server build for Docker deployments
   output: 'standalone',
-  i18n: {
-    locales: ['ja'],
-    defaultLocale: 'ja',
-  },
+  ...(isStaticExport
+    ? {}
+    : {
+        i18n: {
+          locales: ['ja'],
+          defaultLocale: 'ja',
+        },
+      }),
   images: {
-    // Static export時のみ画像最適化を無効化
     unoptimized: isStaticExport,
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL].map((item) => {

@@ -29,3 +29,9 @@ export class MediaExtensionNotAllowedError extends APIError {
     super(message, 400, undefined, true)
   }
 }
+
+export class MediaFilenameInvalidError extends APIError {
+  constructor(message: string) {
+    super(message, 400, undefined, true)
+  }
+}

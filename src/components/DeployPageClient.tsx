@@ -47,7 +47,16 @@ export default function DeployPageClient() {
         const newDeploy: DeployStatus = {
             id: Date.now().toString(),
             status: "pending",
-            timestamp: new Date().toLocaleString("ja-JP"),
+            timestamp: new Intl.DateTimeFormat("ja-JP", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+                timeZone: "Asia/Tokyo",
+            }).format(new Date()),
         };
         setDeployStatus(newDeploy);
 

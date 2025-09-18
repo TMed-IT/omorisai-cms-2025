@@ -113,13 +113,15 @@ export default function DeploymentHistory() {
     }, []);
 
     const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleString("ja-JP", {
+        return new Intl.DateTimeFormat("ja-JP", {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
             hour: "2-digit",
             minute: "2-digit",
-        });
+            hour12: false,
+            timeZone: "Asia/Tokyo",
+        }).format(new Date(dateString));
     };
 
     const getStatusColor = (status: string) => {

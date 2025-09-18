@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { GridItem, StaggerGrid } from "@/components/Animations/animations";
-import { WaveText } from "@/components/ui/wave-text";
+import PageTitle from "@/components/PageTitle";
 import { Media } from "@/components/Media";
 import Link from "next/link";
 import { formatDateShortJP } from "@/utilities/formatDateTime";
@@ -44,9 +44,7 @@ export default async function EventsPage() {
 
   return (
     <div>
-      <div className="container mx-auto text-center">
-        <WaveText text="EVENTS" />
-      </div>
+      <PageTitle path="/events" fallback="EVENTS" />
 
       <section className="py-16 px-4">
         <div className="container mx-auto">

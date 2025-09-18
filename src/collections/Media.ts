@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url'
 import { anyone } from '../access/anyone'
 import { isEditorOrAdmin } from '../access/isEditorOrAdmin'
 import { canAccessAdminPanel } from '../access/canAccessAdminPanel'
-import { MediaExtensionNotAllowedError } from '@/utilities/errors'
+import { MediaExtensionNotAllowedError, MediaFilenameInvalidError } from '@/utilities/errors'
 import { isStaticExport } from '@/utilities/isStaticExport'
 
 const filename = fileURLToPath(import.meta.url)
@@ -105,6 +105,14 @@ export const Media: CollectionConfig = {
           const allowedExts = new Set(['jpg','jpeg','png','webp','gif','svg'])
           if (!ext || !allowedExts.has(ext)) {
             throw new MediaExtensionNotAllowedError('対応していない拡張子です')
+          }
+        }
+        if (filename) {
+          const lastDotIndex = filename.lastIndexOf('.')
+          const baseName = lastDotIndex > 0 ? filename.substring(0, lastDotIndex) : filename
+          const allowedChars = /^[A-Za-z0-9-]+$/
+          if (!allowedChars.test(baseName)) {
+            throw new MediaFilenameInvalidError('ファイル名は英数字とハイフン(-)のみ使用できます')
           }
         }
         return data

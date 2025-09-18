@@ -1,27 +1,20 @@
 export const formatDateTime = (timestamp: string): string => {
-  const now = new Date()
-  let date = now
-  if (timestamp) date = new Date(timestamp)
-  const months = date.getMonth()
-  const days = date.getDate()
-  // const hours = date.getHours();
-  // const minutes = date.getMinutes();
-  // const seconds = date.getSeconds();
-
-  const MM = months + 1 < 10 ? `0${months + 1}` : months + 1
-  const DD = days < 10 ? `0${days}` : days
-  const YYYY = date.getFullYear()
-  // const AMPM = hours < 12 ? 'AM' : 'PM';
-  // const HH = hours > 12 ? hours - 12 : hours;
-  // const MinMin = (minutes < 10) ? `0${minutes}` : minutes;
-  // const SS = (seconds < 10) ? `0${seconds}` : seconds;
-
-  return `${MM}/${DD}/${YYYY}`
+  const date = timestamp ? new Date(timestamp) : new Date()
+  return new Intl.DateTimeFormat('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Tokyo',
+  }).format(date)
 }
 
 export const formatDateByPattern = (date: Date, pattern: string): string => {
   if (!pattern) {
-    return date.toLocaleDateString('ja-JP')
+    return new Intl.DateTimeFormat('ja-JP', { timeZone: 'Asia/Tokyo' }).format(date)
   }
 
   const year = date.getFullYear()
@@ -43,9 +36,10 @@ export const formatDateByLocale = (date: Date, locale: string = 'ja-JP', options
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
+    timeZone: 'Asia/Tokyo',
   }
-  
-  return date.toLocaleDateString(locale, options || defaultOptions)
+  const fmt = new Intl.DateTimeFormat(locale, options ? { timeZone: 'Asia/Tokyo', ...options } : defaultOptions)
+  return fmt.format(date)
 }
 
 export const formatDateByISOFormat = (date: Date, format: string): string => {
@@ -70,9 +64,13 @@ export const formatDateByISOFormat = (date: Date, format: string): string => {
 }
 
 export const formatDateShortJP = (date: Date): string => {
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  return `${month}/${day} ${hour}:${minute.toString().padStart(2, '0')}`
+  const dtf = new Intl.DateTimeFormat('ja-JP', {
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Tokyo',
+  })
+  return dtf.format(date)
 }

@@ -2,7 +2,7 @@ import { getCachedGlobal } from "@/utilities/getGlobals";
 import { Media } from "@/components/Media";
 
 import type { SocialLink } from "@/payload-types";
-import { WaveText } from "@/components/ui/wave-text";
+import PageTitle from "@/components/PageTitle";
 import { CardTitle } from "@/components/ui/card";
 import { GridItem, StaggerGrid } from "@/components/Animations/animations";
 import Link from "next/link";
@@ -33,9 +33,7 @@ export default async function SocialPage() {
 
   return (
     <div>
-      <div className="container mx-auto text-center">
-        <WaveText text="SNS" />
-      </div>
+      <PageTitle path="/socials" fallback="SNS" />
 
       <section className="py-16 px-4">
         <div className="container mx-auto">

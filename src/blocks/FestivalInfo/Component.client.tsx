@@ -57,6 +57,7 @@ export const FestivalInfoBlockClient: React.FC<Props> = ({
                 year: "numeric",
                 month: "long",
                 day: "numeric",
+                timeZone: "Asia/Tokyo",
             });
         }
 
@@ -67,6 +68,7 @@ export const FestivalInfoBlockClient: React.FC<Props> = ({
                 year: "numeric",
                 month: "long",
                 day: "numeric",
+                timeZone: "Asia/Tokyo",
             });
         }
 

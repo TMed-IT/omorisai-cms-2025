@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { GridItem, StaggerGrid } from "@/components/Animations/animations";
-import { WaveText } from "@/components/ui/wave-text";
+import PageTitle from "@/components/PageTitle";
 import Link from "next/link";
 import type { Message } from "@/payload-types";
 import { Media } from "@/components/Media";
@@ -66,9 +66,7 @@ export default async function MessagePage() {
 
   return (
     <div>
-      <div className="container mx-auto text-center">
-        <WaveText text="MESSAGES" />
-      </div>
+      <PageTitle path="/message" fallback="MESSAGES" />
 
       <section className="py-16 px-4">
         <div className="container mx-auto">
