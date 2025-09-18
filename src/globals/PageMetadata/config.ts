@@ -14,7 +14,7 @@ export const PageMetadata: GlobalConfig = {
     read: () => true,
     update: isEditorOrAdmin,
   },
-  label: 'ページメタデータ',
+  label: 'メタデータ',
   admin: {
     group: 'サイト設定',
   },
@@ -27,12 +27,6 @@ export const PageMetadata: GlobalConfig = {
       type: 'group',
       label: 'イベント一覧ページ',
       fields: [
-        {
-          name: 'title',
-          type: 'text',
-          label: 'ページタイトル',
-          defaultValue: 'Events - 大森祭',
-        },
         {
           name: 'description',
           type: 'textarea',
@@ -52,12 +46,6 @@ export const PageMetadata: GlobalConfig = {
       label: 'メッセージ一覧ページ',
       fields: [
         {
-          name: 'title',
-          type: 'text',
-          label: 'ページタイトル',
-          defaultValue: 'Message - 大森祭',
-        },
-        {
           name: 'description',
           type: 'textarea',
           label: 'ページ説明',
@@ -75,12 +63,6 @@ export const PageMetadata: GlobalConfig = {
       type: 'group',
       label: 'お知らせ一覧ページ',
       fields: [
-        {
-          name: 'title',
-          type: 'text',
-          label: 'ページタイトル',
-          defaultValue: 'お知らせ一覧 - 大森祭',
-        },
         {
           name: 'description',
           type: 'textarea',
@@ -100,12 +82,6 @@ export const PageMetadata: GlobalConfig = {
       label: 'SNSページ',
       fields: [
         {
-          name: 'title',
-          type: 'text',
-          label: 'ページタイトル',
-          defaultValue: 'SNS - 大森祭',
-        },
-        {
           name: 'description',
           type: 'textarea',
           label: 'ページ説明',
@@ -123,12 +99,6 @@ export const PageMetadata: GlobalConfig = {
       type: 'group',
       label: 'クラブ一覧ページ',
       fields: [
-        {
-          name: 'title',
-          type: 'text',
-          label: 'ページタイトル',
-          defaultValue: 'Clubs - 大森祭',
-        },
         {
           name: 'description',
           type: 'textarea',

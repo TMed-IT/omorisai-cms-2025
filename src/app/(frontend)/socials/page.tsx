@@ -8,17 +8,24 @@ import { GridItem, StaggerGrid } from "@/components/Animations/animations";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { generateMeta } from "@/utilities/generateMeta";
+import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
   const pageMetadata = (pageMetadataData as any)?.socials;
+  const headerData = await getCachedGlobal("header", 1)();
+  const computedTitle = getHeaderTitleForPath({
+    header: headerData as any,
+    path: "/socials",
+    fallback: "SNS",
+  });
 
   return generateMeta({
     staticPageMetadata: {
-      title: pageMetadata?.title,
       description: pageMetadata?.description,
       ogImage: pageMetadata?.ogImage,
     },
+    computedTitle,
   });
 }
 

@@ -18,17 +18,24 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { generateMeta } from "@/utilities/generateMeta";
+import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
   const pageMetadata = (pageMetadataData as any)?.message;
+  const headerData = await getCachedGlobal("header", 1)();
+  const computedTitle = getHeaderTitleForPath({
+    header: headerData as any,
+    path: "/message",
+    fallback: "MESSAGES",
+  });
 
   return generateMeta({
     staticPageMetadata: {
-      title: pageMetadata?.title,
       description: pageMetadata?.description,
       ogImage: pageMetadata?.ogImage,
     },
+    computedTitle,
   });
 }
 
@@ -76,7 +83,13 @@ export default async function MessagePage() {
                 <GridItem key={message.id} index={index}>
                   <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative">
                     <div className="p-6 pb-0">
-                      <div className="w-24 h-24 rounded-full overflow-hidden mx-auto ring-1 ring-slate-700 relative bg-slate-700 flex items-center justify-center">
+                      <div
+                        className={`w-24 h-24 rounded-full overflow-hidden mx-auto relative bg-slate-700 flex items-center justify-center ${
+                          ((message as any).avatar)
+                            ? ""
+                            : "ring-1 ring-slate-700"
+                        }`}
+                      >
                         {((message as any).avatar)
                           ? (
                             <Media

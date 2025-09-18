@@ -235,7 +235,6 @@ async function main() {
     await seed({ payload, req: mockReq })
     
     console.log('✅ データベース初期化が完了しました！')
-    console.log('🌐 ウェブサイトを確認するには: http://localhost:3000')
     
     process.exit(0)
   } catch (error) {

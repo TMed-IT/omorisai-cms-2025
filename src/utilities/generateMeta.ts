@@ -31,14 +31,17 @@ export const generateMeta = async (args: {
     description?: string
     ogImage?: any
   }
+  computedTitle?: string
 }): Promise<Metadata> => {
-  const { doc, defaultTitle, defaultDescription, staticPageMetadata } = args
+  const { doc, defaultTitle, defaultDescription, staticPageMetadata, computedTitle } = args
 
   const ogImage = getImageURL(doc?.meta?.image || staticPageMetadata?.ogImage)
 
   const title = doc?.meta?.title
     ? doc.meta.title
-    : staticPageMetadata?.title
+    : computedTitle
+      ? computedTitle
+      : staticPageMetadata?.title
       ? staticPageMetadata.title
       : defaultTitle 
         ? `${defaultTitle} - 大森祭公式ウェブサイト`

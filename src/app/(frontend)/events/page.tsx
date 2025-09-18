@@ -12,17 +12,24 @@ import type { Event } from "@/payload-types";
 import type { Metadata } from "next";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { generateMeta } from "@/utilities/generateMeta";
+import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
   const pageMetadata = (pageMetadataData as any)?.events;
+  const headerData = await getCachedGlobal("header", 1)();
+  const computedTitle = getHeaderTitleForPath({
+    header: headerData as any,
+    path: "/events",
+    fallback: "EVENTS",
+  });
 
   return generateMeta({
     staticPageMetadata: {
-      title: pageMetadata?.title,
       description: pageMetadata?.description,
       ogImage: pageMetadata?.ogImage,
     },
+    computedTitle,
   });
 }
 

@@ -12,14 +12,14 @@ type Props = {
 };
 
 const normalizePath = (input: string): string => {
-  try {
-    const url = new URL(input, "http://localhost");
+  const isAbsolute = /^https?:\/\//i.test(input);
+  if (isAbsolute) {
+    const url = new URL(input);
     const pathname = url.pathname.replace(/\/+$/, "");
     return pathname === "" ? "/" : pathname;
-  } catch {
-    const pathname = input.replace(/\/+$/, "");
-    return pathname === "" ? "/" : pathname;
   }
+  const pathname = (`/${input}`).replace(/\/+$/, "").replace(/^\/+/, "/");
+  return pathname === "" ? "/" : pathname;
 };
 
 export default async function PageTitle({ path, fallback, className }: Props) {
@@ -47,4 +47,3 @@ export default async function PageTitle({ path, fallback, className }: Props) {
     </div>
   );
 }
-

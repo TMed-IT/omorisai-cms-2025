@@ -311,6 +311,18 @@ export interface CallToActionBlock {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'messages';
+                value: string | Message;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: string | Event;
+              } | null)
+            | ({
+                relationTo: 'clubs';
+                value: string | Club;
               } | null);
           url?: string | null;
           label: string;
@@ -366,6 +378,81 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: string;
+  avatar?: (string | null) | Media;
+  slug: string;
+  slugLock?: boolean | null;
+  position: string;
+  name: string;
+  /**
+   * 小さいほど上に表示されます
+   */
+  order?: number | null;
+  message: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: string;
+  title: string;
+  slug: string;
+  date: string;
+  location: string;
+  thumbnail: string | Media;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clubs".
+ */
+export interface Club {
+  id: string;
+  name: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image: string | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
@@ -399,6 +486,18 @@ export interface ContentBlock {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'messages';
+                value: string | Message;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: string | Event;
+              } | null)
+            | ({
+                relationTo: 'clubs';
+                value: string | Club;
               } | null);
           url?: string | null;
           label: string;
@@ -466,47 +565,6 @@ export interface ArchiveBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
- */
-export interface Event {
-  id: string;
-  title: string;
-  slug: string;
-  date: string;
-  location: string;
-  thumbnail: string | Media;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "clubs".
- */
-export interface Club {
-  id: string;
-  name: string;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  image: string | Media;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -677,40 +735,6 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "messages".
- */
-export interface Message {
-  id: string;
-  avatar?: (string | null) | Media;
-  slug: string;
-  slugLock?: boolean | null;
-  position: string;
-  name: string;
-  /**
-   * 小さいほど上に表示されます
-   */
-  order?: number | null;
-  message: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1377,6 +1401,18 @@ export interface Header {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'messages';
+                value: string | Message;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: string | Event;
+              } | null)
+            | ({
+                relationTo: 'clubs';
+                value: string | Club;
               } | null);
           url?: string | null;
           label: string;
@@ -1406,6 +1442,18 @@ export interface Footer {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'messages';
+                value: string | Message;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: string | Event;
+              } | null)
+            | ({
+                relationTo: 'clubs';
+                value: string | Club;
               } | null);
           url?: string | null;
           label: string;
@@ -1484,27 +1532,22 @@ export interface Festival {
 export interface PageMetadatum {
   id: string;
   events?: {
-    title?: string | null;
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
   message?: {
-    title?: string | null;
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
   posts?: {
-    title?: string | null;
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
   socials?: {
-    title?: string | null;
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
   clubs?: {
-    title?: string | null;
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
@@ -1624,35 +1667,30 @@ export interface PageMetadataSelect<T extends boolean = true> {
   events?:
     | T
     | {
-        title?: T;
         description?: T;
         ogImage?: T;
       };
   message?:
     | T
     | {
-        title?: T;
         description?: T;
         ogImage?: T;
       };
   posts?:
     | T
     | {
-        title?: T;
         description?: T;
         ogImage?: T;
       };
   socials?:
     | T
     | {
-        title?: T;
         description?: T;
         ogImage?: T;
       };
   clubs?:
     | T
     | {
-        title?: T;
         description?: T;
         ogImage?: T;
       };

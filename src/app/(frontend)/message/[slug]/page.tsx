@@ -13,10 +13,10 @@ import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  
+
   if (!slug) {
     return {
-      title: "Message - 大森祭",
+      title: "ご挨拶 - 大森祭",
     };
   }
 
@@ -36,18 +36,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const message = messages.docs[0];
     if (message) {
       return {
-        title: `${message.position} 挨拶 - 大森祭`,
+        title: `${message.position} ご挨拶 - 大森祭`,
       };
     }
   } catch (error) {
-    console.error('Error generating metadata for message:', error);
+    console.error("Error generating metadata for message:", error);
   }
 
   return {
-    title: "Message - 大森祭",
+    title: "ご挨拶 - 大森祭",
   };
 }
-
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -60,7 +59,7 @@ interface Props {
 
 export default async function MessageDetailPage({ params }: Props) {
   const { slug } = await params;
-  
+
   if (!slug) {
     notFound();
   }
@@ -103,7 +102,11 @@ export default async function MessageDetailPage({ params }: Props) {
 
           <Card className="bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden relative shadow-xl">
             <div className="relative flex items-center justify-center pt-12 pb-2">
-              <div className="w-32 h-32 rounded-full overflow-hidden ring-2 ring-blue-500/20 relative bg-slate-700 flex items-center justify-center shadow-md">
+              <div
+                className={`w-32 h-32 rounded-full overflow-hidden relative bg-slate-700 flex items-center justify-center shadow-md ${
+                  ((message as any).avatar) ? "" : "ring-2 ring-blue-500/20"
+                }`}
+              >
                 {((message as any).avatar)
                   ? (
                     <Media

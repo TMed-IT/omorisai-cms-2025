@@ -49,6 +49,17 @@ export const Media: CollectionConfig = {
       }),
       label: 'キャプション',
     },
+    {
+      type: 'ui',
+      name: 'downloadOriginal',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/Custom/MediaDownload',
+        },
+      },
+      label: 'ダウンロード',
+    },
   ],
   upload: {
     // Upload to Next.js public/media so files are available for static export without env config

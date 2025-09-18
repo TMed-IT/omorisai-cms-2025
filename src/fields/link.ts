@@ -75,7 +75,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
       label: 'リンク先のドキュメント',
-      relationTo: ['pages', 'posts'],
+      relationTo: ['pages', 'posts', 'messages', 'events', 'clubs'],
       required: true,
     },
     {

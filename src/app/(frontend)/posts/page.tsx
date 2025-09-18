@@ -5,6 +5,7 @@ import { getPayload } from "payload";
 import React from "react";
 import PageClient from "./page.client";
 import { generateMeta } from "@/utilities/generateMeta";
+import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
 import { PostCard } from "@/blocks/CollectionList/PostCard";
 import PageTitle from "@/components/PageTitle";
 import { getCachedGlobal } from "@/utilities/getGlobals";
@@ -62,12 +63,18 @@ export default async function Page() {
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
   const pageMetadata = (pageMetadataData as any)?.posts;
+  const headerData = await getCachedGlobal("header", 1)();
+  const computedTitle = getHeaderTitleForPath({
+    header: headerData as any,
+    path: "/posts",
+    fallback: "お知らせ",
+  });
 
   return generateMeta({
     staticPageMetadata: {
-      title: pageMetadata?.title,
       description: pageMetadata?.description,
       ogImage: pageMetadata?.ogImage,
     },
+    computedTitle,
   });
 }
