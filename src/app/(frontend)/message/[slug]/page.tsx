@@ -48,8 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 interface Props {
   params: Promise<{
@@ -181,4 +180,20 @@ export default async function MessageDetailPage({ params }: Props) {
   } catch (_error) {
     notFound();
   }
+}
+
+export async function generateStaticParams() {
+  const payload = await getPayload({ config: configPromise });
+  const messages = await payload.find({
+    collection: "messages",
+    draft: false,
+    limit: 0,
+    overrideAccess: false,
+    pagination: false,
+    select: { slug: true },
+  });
+
+  return messages.docs
+    .filter((doc: any) => Boolean(doc?.slug))
+    .map((doc: any) => ({ slug: doc.slug as string }));
 }

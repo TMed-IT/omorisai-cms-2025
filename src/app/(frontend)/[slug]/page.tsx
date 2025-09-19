@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { PayloadRedirects } from "@/components/PayloadRedirects";
 import configPromise from "@payload-config";
 import { getPayload, type RequiredDataFromCollectionSlug } from "payload";
-import { draftMode } from "next/headers";
+import { isStaticExport } from "@/utilities/isStaticExport";
 import React, { cache } from "react";
 
 import { RenderBlocks } from "@/blocks/RenderBlocks";
@@ -37,8 +37,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 type Args = {
   params: Promise<{
@@ -47,7 +46,11 @@ type Args = {
 };
 
 export default async function Page({ params: paramsPromise }: Args) {
-  const { isEnabled: draft } = await draftMode();
+  let draft = false;
+  if (!isStaticExport()) {
+    const { draftMode } = await import("next/headers");
+    draft = (await draftMode()).isEnabled;
+  }
   const { slug = "home" } = await paramsPromise;
   const url = "/" + slug;
 
@@ -87,7 +90,11 @@ export async function generateMetadata(
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode();
+  let draft = false;
+  if (!isStaticExport()) {
+    const { draftMode } = await import("next/headers");
+    draft = (await draftMode()).isEnabled;
+  }
 
   const payload = await getPayload({ config: configPromise });
 

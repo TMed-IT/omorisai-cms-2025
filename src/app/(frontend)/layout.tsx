@@ -6,7 +6,6 @@ import { Footer } from "@/Footer/Component";
 import { Header } from "@/Header/Component";
 import { Providers } from "@/providers";
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
-import { draftMode } from "next/headers";
 import { isStaticExport } from "@/utilities/isStaticExport";
 
 import "./globals.css";
@@ -23,8 +22,12 @@ import {
 export default async function RootLayout(
   { children }: { children: React.ReactNode },
 ) {
-  const { isEnabled } = await draftMode();
+  let isEnabled = false;
   const showAdminBar = !isStaticExport();
+  if (showAdminBar) {
+    const { draftMode } = await import("next/headers");
+    isEnabled = (await draftMode()).isEnabled;
+  }
   let AdminBarComp: React.ComponentType<any> | null = null;
   if (showAdminBar) {
     const m = await import("@/components/AdminBar");
@@ -70,5 +73,3 @@ export const metadata: Metadata = {
     creator: "@omorisai",
   },
 };
-
-export const dynamic = "force-dynamic";

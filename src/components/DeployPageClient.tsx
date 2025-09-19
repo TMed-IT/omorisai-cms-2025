@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DeploymentHistory from "@/components/DeploymentHistory";
 
 interface DeployStatus {
@@ -16,6 +16,60 @@ export default function DeployPageClient() {
     const [isDeploying, setIsDeploying] = useState(false);
     const [deployStatus, setDeployStatus] = useState<DeployStatus | null>(null);
     const [logs, setLogs] = useState<string[]>([]);
+    const sourceRef = useRef<EventSource | null>(null);
+    const pollTimerRef = useRef<any>(null);
+
+    const stopLogsStream = () => {
+        try { sourceRef.current?.close(); } catch {}
+        sourceRef.current = null;
+    };
+
+    const startLogsStream = () => {
+        stopLogsStream();
+        try {
+            const s = new EventSource(`/api/deploy/logs`);
+            s.onmessage = (ev) => setLogs((prev) => [...prev, ev.data]);
+            s.addEventListener("error", () => {
+                try { s.close(); } catch {}
+            });
+            sourceRef.current = s;
+        } catch {}
+    };
+
+    const stopPolling = () => {
+        if (pollTimerRef.current) {
+            clearTimeout(pollTimerRef.current);
+            pollTimerRef.current = null;
+        }
+    };
+
+    const pollStatus = async () => {
+        try {
+            const res = await fetch(`/api/deploy/status`, { headers: { Accept: "application/json" }, cache: "no-store" });
+            if (!res.ok) {
+                stopPolling();
+                setIsDeploying(false);
+                return;
+            }
+            const s = await res.json();
+            setDeployStatus((prev) => prev ? { ...prev, status: s.status } : { id: 'shared', status: s.status, timestamp: new Date().toISOString() });
+            if (s.status === "pending" || s.status === "building" || s.status === "deploying") {
+                pollTimerRef.current = setTimeout(pollStatus, 1500);
+            } else {
+                // finished (success/error)
+                setIsDeploying(false);
+                stopPolling();
+                stopLogsStream();
+                if (s.status === 'idle' || s.status === 'error' || s.status === 'success') {
+                    // Ensure UI can start a new deploy; clear old logs view
+                    setLogs([]);
+                }
+            }
+        } catch {
+            stopPolling();
+            setIsDeploying(false);
+        }
+    };
 
     useEffect(() => {
         const html = document.documentElement;
@@ -39,13 +93,39 @@ export default function DeployPageClient() {
             console.error("unhandledrejection:", e.reason);
         };
         window.addEventListener("unhandledrejection", onUR);
-        return () => window.removeEventListener("unhandledrejection", onUR);
+        // try resume if running
+        (async () => {
+            try {
+                const res = await fetch('/api/deploy/status', { cache: 'no-store' });
+                if (res.ok) {
+                    const s = await res.json();
+                    if (s && (s.status === 'pending' || s.status === 'building' || s.status === 'deploying')) {
+                        setDeployStatus({ id: 'shared', status: s.status, timestamp: new Date().toISOString() });
+                        setIsDeploying(true);
+                        setLogs([]);
+                        startLogsStream();
+                        stopPolling();
+                        pollStatus();
+                    } else {
+                        // not running
+                        setIsDeploying(false);
+                        stopLogsStream();
+                        stopPolling();
+                    }
+                }
+            } catch {}
+        })();
+        return () => {
+            window.removeEventListener("unhandledrejection", onUR);
+            stopPolling();
+            stopLogsStream();
+        };
     }, []);
 
     const handleDeploy = async () => {
         setIsDeploying(true);
         const newDeploy: DeployStatus = {
-            id: Date.now().toString(),
+            id: 'shared',
             status: "pending",
             timestamp: new Intl.DateTimeFormat("ja-JP", {
                 year: "numeric",
@@ -70,64 +150,25 @@ export default function DeployPageClient() {
             });
 
             const ct = response.headers.get("content-type") || "";
-            if (!response.ok || !ct.includes("application/json")) {
+            if (!response.ok && response.status !== 202 && response.status !== 409) {
                 const text = await response.text().catch(() => "");
                 throw new Error("デプロイの開始に失敗しました");
             }
-
-            const data = await response.json();
-
-            setDeployStatus((
-                prev,
-            ) => (prev ? { ...prev, status: "building" } : null));
-
-            const checkStatus = async () => {
-                try {
-                    const statusResponse = await fetch(
-                        `/api/deploy/status/${data.deployId}`,
-                        {
-                            headers: { Accept: "application/json" },
-                            cache: "no-store",
-                        },
-                    );
-                    let statusData: any;
-                    try {
-                        statusData = await statusResponse.json();
-                    } catch (_) {
-                        setTimeout(checkStatus, 1500);
-                        return;
-                    }
-
-                    setDeployStatus((prev) =>
-                        prev ? { ...prev, ...statusData } : null
-                    );
-
-                    if (
-                        statusData.status === "building" ||
-                        statusData.status === "deploying"
-                    ) {
-                        setTimeout(checkStatus, 2000);
+            // after start or if already running, fetch status and start polling/streaming accordingly
+            try {
+                const statusResponse = await fetch(`/api/deploy/status`, { headers: { Accept: "application/json" }, cache: "no-store" });
+                if (statusResponse.ok) {
+                    const s = await statusResponse.json();
+                    setDeployStatus({ id: 'shared', status: s.status, timestamp: new Date().toISOString() });
+                    if (s.status === 'pending' || s.status === 'building' || s.status === 'deploying') {
+                        startLogsStream();
+                        stopPolling();
+                        pollStatus();
                     } else {
                         setIsDeploying(false);
+                        stopLogsStream();
                     }
-                } catch (error) {
-                    console.error("ステータス確認エラー:", error);
-                    setIsDeploying(false);
                 }
-            };
-
-            setTimeout(checkStatus, 1000);
-
-            try {
-                const source = new EventSource(
-                    `/api/deploy/logs/${data.deployId}`,
-                );
-                source.onmessage = (ev) =>
-                    setLogs((prev) => [...prev, ev.data]);
-                source.addEventListener("error", (ev) => {
-                    console.warn("SSE error", ev);
-                    source.close();
-                });
             } catch {}
         } catch (error) {
             console.error("デプロイエラー:", error);
@@ -271,7 +312,8 @@ export default function DeployPageClient() {
                         >
                             開始時刻: {deployStatus.timestamp}
                         </div>
-                        {(deployStatus.status === "building" ||
+                        {(deployStatus.status === "pending" ||
+                            deployStatus.status === "building" ||
                             deployStatus.status === "deploying") && (
                             <div
                                 style={{
@@ -283,10 +325,11 @@ export default function DeployPageClient() {
                             >
                                 <div
                                     style={{
-                                        width:
-                                            deployStatus.status === "building"
-                                                ? "50%"
-                                                : "80%",
+                                        width: deployStatus.status === "pending"
+                                            ? "30%"
+                                            : deployStatus.status === "building"
+                                                ? "60%"
+                                                : "90%",
                                         height: 8,
                                         background: "#60a5fa",
                                         borderRadius: 999,

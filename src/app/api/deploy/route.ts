@@ -1,160 +1,99 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getMeUser } from '@/utilities/getMeUser'
-import { exec } from 'child_process'
-import { v4 as uuidv4 } from 'uuid'
-import fs from 'fs/promises'
+import { spawn } from 'child_process'
 import path from 'path'
-import { deployStatuses, type DeployStatus, publishDeployLog } from '@/lib/deployStore'
+import {
+  appendLog,
+  clearLog,
+  createLock,
+  isLockActive,
+  purgeStaleLock,
+  readStatus,
+  removeLock,
+  writeStatus,
+} from '@/lib/deployFs'
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   try {
     const { user } = await getMeUser()
-    
     if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
-      return NextResponse.json(
-        { error: 'Admin privileges are required' },
-        { status: 403 }
-      )
+      return NextResponse.json({ error: 'Admin privileges are required' }, { status: 403 })
     }
 
-    const deployId = uuidv4()
-    const timestamp = new Date().toISOString()
-    
-    const deployStatus: DeployStatus = {
-      id: deployId,
-      status: 'pending',
-      timestamp,
-      logs: []
+    // prevent duplicate run; purge stale lock first
+    await purgeStaleLock().catch(() => {})
+    if (await isLockActive()) {
+      const status = await readStatus()
+      return NextResponse.json({ message: 'Deployment already running', status }, { status: 409 })
     }
-    
-    deployStatuses.set(deployId, deployStatus)
 
-    const buildAndDeploy = async () => {
+    const locked = await createLock()
+    if (!locked) {
+      const status = await readStatus()
+      return NextResponse.json({ message: 'Deployment already running', status }, { status: 409 })
+    }
+
+    await clearLog()
+    await writeStatus({ status: 'pending', error: undefined })
+    await appendLog(`[start] ${new Date().toISOString()}\n`)
+
+    const run = async () => {
       try {
-        deployStatuses.set(deployId, { ...deployStatus, status: 'building' })
-        
+        await writeStatus({ status: 'building' })
         const buildScript = path.join(process.cwd(), 'scripts', 'build-static.sh')
-        
-        const child = exec(`sh ${buildScript} ${deployId}`)
-        const logs: string[] = [`Build started: ${timestamp}`]
-        child.stdout?.on('data', (chunk) => {
-          const line = chunk.toString()
-          logs.push(line)
-          publishDeployLog(deployId, line)
+        const child1 = spawn('sh', [buildScript, 'shared'], { stdio: ['ignore', 'pipe', 'pipe'] })
+        child1.stdout.on('data', (buf) => appendLog(buf.toString()))
+        child1.stderr.on('data', (buf) => appendLog(buf.toString()))
+        const code1: number = await new Promise((resolve, reject) => {
+          child1.on('error', reject)
+          child1.on('close', (code) => resolve(typeof code === 'number' ? code : 1))
         })
-        child.stderr?.on('data', (chunk) => {
-          const line = chunk.toString()
-          logs.push(line)
-          publishDeployLog(deployId, line)
-        })
-        await new Promise<void>((resolve, reject) => {
-          child.on('error', reject)
-          child.on('close', (code) => {
-            if (typeof code === 'number' && code !== 0) {
-              return reject(new Error(`build failed with exit code ${code}`))
-            }
-            resolve()
-          })
-        })
-        
-        deployStatuses.set(deployId, { 
-          ...deployStatus, 
-          status: 'deploying',
-          logs
-        })
+        if (code1 !== 0) throw new Error(`build failed with exit code ${code1}`)
 
-        await deployToCloudflare(deployId)
-        
-      } catch (error) {
-        console.error('Build error:', error)
-        deployStatuses.set(deployId, { 
-          ...deployStatus, 
-          status: 'error',
-          error: error instanceof Error ? error.message : 'An unknown error occurred',
-          logs: [...(deployStatus.logs || []), `エラー: ${error}`]
+        await writeStatus({ status: 'deploying' })
+        const outDir = path.join(process.cwd(), 'out')
+        const apiToken = process.env.CLOUDFLARE_API_TOKEN
+        const accountId = process.env.CLOUDFLARE_ACCOUNT_ID
+        const projectName = process.env.CLOUDFLARE_PROJECT_NAME
+        if (!apiToken || !accountId || !projectName) {
+          throw new Error('Cloudflare env missing (CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_PROJECT_NAME)')
+        }
+        const wranglerCmd = `npx --yes wrangler@3 pages deploy ${outDir} --project-name ${projectName}`
+        await appendLog(`[wrangler] ${wranglerCmd}\n`)
+        const child2 = spawn('sh', ['-lc', wranglerCmd], {
+          stdio: ['ignore', 'pipe', 'pipe'],
+          env: {
+            ...process.env,
+            CLOUDFLARE_API_TOKEN: apiToken,
+            CLOUDFLARE_ACCOUNT_ID: accountId,
+          },
         })
+        child2.stdout.on('data', (buf) => appendLog(buf.toString()))
+        child2.stderr.on('data', (buf) => appendLog(buf.toString()))
+        const code2: number = await new Promise((resolve, reject) => {
+          child2.on('error', reject)
+          child2.on('close', (code) => resolve(typeof code === 'number' ? code : 1))
+        })
+        if (code2 !== 0) throw new Error(`wrangler failed with exit code ${code2}`)
+
+        await writeStatus({ status: 'success' })
+        await appendLog(`[done] ${new Date().toISOString()}\n`)
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        console.error('deploy pipeline error:', err)
+        await writeStatus({ status: 'error', error: msg })
+        await appendLog(`[error] ${msg}\n`)
+      } finally {
+        await removeLock()
       }
     }
 
-    buildAndDeploy()
+    // fire and forget
+    run().catch(() => {})
 
-    return NextResponse.json({ 
-      deployId,
-      message: 'Deployment process started' 
-    })
-
+    return NextResponse.json({ message: 'Deployment started' }, { status: 202 })
   } catch (error) {
     console.error('Deployment start error:', error)
-    return NextResponse.json(
-      { error: 'Deployment start failed' },
-      { status: 500 }
-    )
-  }
-}
-
-async function deployToCloudflare(deployId: string) {
-  try {
-    const deployStatus = deployStatuses.get(deployId)
-    if (!deployStatus) return
-
-    const outDir = path.join(process.cwd(), 'out')
-    const apiToken = process.env.CLOUDFLARE_API_TOKEN
-    const accountId = process.env.CLOUDFLARE_ACCOUNT_ID
-    const projectName = process.env.CLOUDFLARE_PROJECT_NAME
-
-    if (!apiToken || !accountId || !projectName) {
-      throw new Error('Cloudflare environment variables are missing (CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_PROJECT_NAME)')
-    }
-
-    // sanity check: ensure some HTML files exist before deploying
-    async function hasHtmlFiles(dir: string): Promise<boolean> {
-      const entries = await fs.readdir(dir, { withFileTypes: true })
-      for (const e of entries) {
-        const full = path.join(dir, e.name)
-        if (e.isFile() && e.name.endsWith('.html')) return true
-        if (e.isDirectory()) {
-          if (await hasHtmlFiles(full)) return true
-        }
-      }
-      return false
-    }
-
-    if (!(await hasHtmlFiles(outDir))) {
-      throw new Error('HTML files not found in out directory. The build result may be empty.')
-    }
-
-    const wranglerCmd = `npx --yes wrangler@3 pages deploy ${outDir} --project-name ${projectName} --branch main --commit-hash ${deployId}`
-
-    publishDeployLog(deployId, `[wrangler] ${wranglerCmd}`)
-    await new Promise<void>((resolve, reject) => {
-      const child = exec(wranglerCmd, {
-        env: {
-          ...process.env,
-          CLOUDFLARE_API_TOKEN: apiToken,
-          CLOUDFLARE_ACCOUNT_ID: accountId,
-        },
-      })
-      child.stdout?.on('data', (chunk) => publishDeployLog(deployId, chunk.toString()))
-      child.stderr?.on('data', (chunk) => publishDeployLog(deployId, chunk.toString()))
-      child.on('error', reject)
-      child.on('close', () => resolve())
-    })
-    
-    deployStatuses.set(deployId, {
-      ...deployStatus,
-      status: 'success',
-      buildUrl: deployStatus.buildUrl,
-      duration: Math.floor((Date.now() - new Date(deployStatus.timestamp).getTime()) / 1000),
-      logs: [...(deployStatus.logs || []), `Deployment completed`]
-    })
-
-  } catch (error) {
-    console.error('Cloudflare deployment error:', error)
-    deployStatuses.set(deployId, {
-      ...deployStatuses.get(deployId)!,
-      status: 'error',
-      error: error instanceof Error ? error.message : 'Cloudflare deployment failed',
-      logs: [...(deployStatuses.get(deployId)?.logs || []), `Deployment error: ${error}`]
-    })
+    return NextResponse.json({ error: 'Deployment start failed' }, { status: 500 })
   }
 }

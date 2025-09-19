@@ -16,3 +16,4 @@ src/collections/@/public/media/
 /out
 *.log
 /scripts/seed/dist
+/deploy

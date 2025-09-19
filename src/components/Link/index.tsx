@@ -5,16 +5,26 @@ import React from 'react'
 
 import type { Page, Post, Message, Event, Club } from '@/payload-types'
 
+type RelationMap = {
+  pages: Page
+  posts: Post
+  messages: Message
+  events: Event
+  clubs: Club
+}
+
+type CMSLinkReference = ({
+  [K in keyof RelationMap]: { relationTo: K; value: string | RelationMap[K] }
+}[keyof RelationMap]) | null
+
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string
   label?: string | null
   newTab?: boolean | null
-  reference?: {
-    relationTo: 'pages' | 'posts' | 'messages' | 'events' | 'clubs'
-    value: Page | Post | Message | Event | Club | string | number
-  } | null
+  // Match Payload's generated link types exactly for all relations used in content
+  reference?: CMSLinkReference
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
   url?: string | null

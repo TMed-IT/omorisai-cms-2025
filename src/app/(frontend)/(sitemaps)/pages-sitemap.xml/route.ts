@@ -1,5 +1,5 @@
 import { getServerSideSitemap } from 'next-sitemap'
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-static'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'

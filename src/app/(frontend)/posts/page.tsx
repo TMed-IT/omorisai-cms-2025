@@ -1,5 +1,4 @@
 import type { Metadata } from "next/types";
-
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
 import React from "react";
@@ -9,8 +8,6 @@ import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
 import { PostCard } from "@/blocks/CollectionList/PostCard";
 import PageTitle from "@/components/PageTitle";
 import { getCachedGlobal } from "@/utilities/getGlobals";
-
-export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const payload = await getPayload({ config: configPromise });
