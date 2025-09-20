@@ -74,7 +74,7 @@ export default async function EventDetailPage({ params }: Props) {
     return (
       <section className="relative pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-4xl">
-          <Link href="/events">
+          <Link href="/events/">
             <Button
               variant="outline"
               className="mb-8 border-slate-600 bg-transparent hover:bg-transparent transition-all duration-300 hover:scale-105"

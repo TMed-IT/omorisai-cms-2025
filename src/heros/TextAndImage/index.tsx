@@ -13,7 +13,7 @@ export const TextAndImageHero: React.FC<Page["hero"]> = ({ media, text }) => {
       role="banner"
       aria-label="ヒーローセクション"
     >
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         {media && typeof media === "object" && (
           <Media
             fill
@@ -23,7 +23,7 @@ export const TextAndImageHero: React.FC<Page["hero"]> = ({ media, text }) => {
             size="100vw"
           />
         )}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">

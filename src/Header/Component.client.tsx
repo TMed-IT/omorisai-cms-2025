@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CMSLink } from "@/components/Link";
 
 import type { Festival, Header } from "@/payload-types";
 
@@ -71,7 +72,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
   return (
     <header
       ref={headerRef}
-      className={`fixed left-0 right-0 z-40 bg-black/20 backdrop-blur-md border-b border-white/10 transition-all duration-600 ${
+      className={`fixed left-0 right-0 z-50 pointer-events-auto bg-black/20 backdrop-blur-md border-b border-white/10 transition-all duration-600 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
       }`}
       style={{ top: "var(--admin-bar-height, 0px)" }}
@@ -98,13 +99,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
                 className="opacity-0 animate-fade-in-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <Link
-                  href={link.url || "#"}
+                <CMSLink
+                  type={link.type}
+                  reference={link.reference as any}
+                  url={link.url}
+                  label={link.label}
                   className="text-white/80 hover:text-white transition-colors relative group hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  {link.label}
                   <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300" />
-                </Link>
+                </CMSLink>
               </div>
             ))}
           </div>
@@ -157,14 +160,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = (
                 style={{
                   transitionDelay: isOpen ? `${index * 100 + 100}ms` : "0ms",
                 }}
+                onClick={() => setIsOpen(false)}
               >
-                <Link
-                  href={link.url || "#"}
+                <CMSLink
+                  type={link.type}
+                  reference={link.reference as any}
+                  url={link.url}
+                  label={link.label}
                   className="text-white/80 hover:text-white transition-colors duration-200 py-2 block"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </Link>
+                />
               </div>
             ))}
           </div>

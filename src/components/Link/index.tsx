@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import type { Page, Post, Message, Event, Club } from '@/payload-types'
+import { isStaticExport } from '@/utilities/isStaticExport'
 
 type RelationMap = {
   pages: Page
@@ -47,14 +48,18 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     if (type !== 'reference' || !reference) return url
     const rel = reference.relationTo
     const val = reference.value
-    if (rel === 'clubs') return '/clubs'
+    if (rel === 'clubs') return '/clubs/'
     if (typeof val === 'object' && val) {
       if ('slug' in val && val.slug) {
-        return rel !== 'pages' ? `/${rel}/${val.slug}` : `/${val.slug}`
+        if (rel === 'pages') {
+          return val.slug === 'home' ? '/' : `/${val.slug}/`
+        }
+        return `/${rel}/${val.slug}/`
       }
       if (rel === 'pages') return '/'
     }
-    return rel !== 'pages' ? `/${rel}` : url
+    if (rel === 'pages') return '/'
+    return `/${rel}/`
   })()
 
   if (!href) return null
@@ -64,6 +69,14 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
+    if (isStaticExport()) {
+      return (
+        <a className={cn(className)} href={href || url || ''} {...newTabProps}>
+          {label && label}
+          {children && children}
+        </a>
+      )
+    }
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
@@ -74,10 +87,17 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
-        {children && children}
-      </Link>
+      {isStaticExport() ? (
+        <a className={cn(className)} href={href || url || ''} {...newTabProps}>
+          {label && label}
+          {children && children}
+        </a>
+      ) : (
+        <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+          {label && label}
+          {children && children}
+        </Link>
+      )}
     </Button>
   )
 }

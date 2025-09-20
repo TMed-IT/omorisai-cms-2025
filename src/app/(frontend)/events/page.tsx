@@ -80,7 +80,7 @@ export default async function EventsPage() {
                       <p className="text-white/80 mb-6 leading-relaxed flex-1 transition-all duration-300 group-hover:text-white/90">
                         {formatDateShortJP(new Date(event.date))}
                       </p>
-                      <Link href={`/events/${event.slug}`} className="mt-auto">
+                      <Link href={`/events/${event.slug}/`} className="mt-auto">
                         <Button className="w-full bg-gradient-to-r text-white/90 from-blue-600 to-indigo-600">
                           詳細を見る
                           <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />

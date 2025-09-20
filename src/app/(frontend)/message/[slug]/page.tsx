@@ -89,7 +89,7 @@ export default async function MessageDetailPage({ params }: Props) {
     return (
       <section className="relative pt-24 pb-20 px-4">
         <div className="container mx-auto max-w-4xl">
-          <Link href="/message">
+          <Link href="/message/">
             <Button
               variant="outline"
               className="mb-8 border-slate-600 bg-transparent hover:bg-transparent transition-all duration-300 hover:scale-105"
@@ -161,7 +161,7 @@ export default async function MessageDetailPage({ params }: Props) {
             <div className="px-6 pb-8">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-6" />
               <div className="flex justify-center">
-                <Link href="/message">
+                <Link href="/message/">
                   <Button
                     variant="secondary"
                     className="border border-slate-600 bg-slate-700 hover:bg-slate-600"
