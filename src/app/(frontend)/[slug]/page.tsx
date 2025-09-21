@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PayloadRedirects } from "@/components/PayloadRedirects";
 import configPromise from "@payload-config";
 import { getPayload, type RequiredDataFromCollectionSlug } from "payload";
-import { isStaticExport } from "@/utilities/isStaticExport";
 import React, { cache } from "react";
 
 import { RenderBlocks } from "@/blocks/RenderBlocks";
@@ -13,6 +12,10 @@ import PageClient from "./page.client";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
 
 export async function generateStaticParams() {
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
+    return [];
+  }
+
   const payload = await getPayload({ config: configPromise });
   const pages = await payload.find({
     collection: "pages",
@@ -37,7 +40,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export const dynamicParams = false;
+export const revalidate = 0;
 
 type Args = {
   params: Promise<{
@@ -47,7 +50,7 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   let draft = false;
-  if (!isStaticExport()) {
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
     const { draftMode } = await import("next/headers");
     draft = (await draftMode()).isEnabled;
   }
@@ -91,7 +94,7 @@ export async function generateMetadata(
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   let draft = false;
-  if (!isStaticExport()) {
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
     const { draftMode } = await import("next/headers");
     draft = (await draftMode()).isEnabled;
   }

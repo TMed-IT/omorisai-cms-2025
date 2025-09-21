@@ -142,7 +142,13 @@ export default async function EventDetailPage({ params }: Props) {
   }
 }
 
+export const revalidate = 0;
+
 export async function generateStaticParams() {
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
+    return [];
+  }
+
   const payload = await getPayload({ config: configPromise });
   const events = await payload.find({
     collection: "events",
@@ -157,5 +163,3 @@ export async function generateStaticParams() {
     .filter((doc: any) => Boolean(doc?.slug))
     .map((doc: any) => ({ slug: doc.slug as string }));
 }
-
-export const dynamicParams = false;

@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const dynamicParams = false;
+export const revalidate = 0;
 
 interface Props {
   params: Promise<{
@@ -183,6 +183,10 @@ export default async function MessageDetailPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
+    return [];
+  }
+
   const payload = await getPayload({ config: configPromise });
   const messages = await payload.find({
     collection: "messages",

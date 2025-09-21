@@ -3,8 +3,9 @@ import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Page, Post, Message, Event, Club } from '@/payload-types'
 import { isStaticExport } from '@/utilities/isStaticExport'
+
+import type { Page, Post, Message, Event, Club } from '@/payload-types'
 
 type RelationMap = {
   pages: Page
@@ -77,6 +78,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
         </a>
       )
     }
+
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}

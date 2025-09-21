@@ -21,6 +21,10 @@ import { LivePreviewListener } from "@/components/LivePreviewListener";
 import PageTitle from "@/components/PageTitle";
 
 export async function generateStaticParams() {
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
+    return [];
+  }
+
   const payload = await getPayload({ config: configPromise });
   const posts = await payload.find({
     collection: "posts",
@@ -41,9 +45,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export const dynamic = "force-static";
-export const revalidate = 600;
-export const dynamicParams = false;
+export const revalidate = 0;
 
 type Args = {
   params: Promise<{
