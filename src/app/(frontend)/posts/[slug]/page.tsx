@@ -45,7 +45,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export const revalidate = 0;
+export const revalidate = 1;
 
 type Args = {
   params: Promise<{
