@@ -11,10 +11,23 @@ type Props = {
     className?: string;
 };
 
+type SponsorEntry = NonNullable<SponsorsProps["sponsors"]>[0];
+
+const normalizeType = (type: SponsorEntry["type"]) => {
+    const value = (type || "").toString().toLowerCase().replace(/[-_\s]/g, "");
+
+    if (value === "logolarge") return "logoLarge" as const;
+    if (value === "logosmall") return "logoSmall" as const;
+    if (value === "textonly" || value === "text") return "textOnly" as const;
+
+    return "textOnly" as const;
+};
+
 const SponsorItem: React.FC<{
-    sponsor: NonNullable<SponsorsProps["sponsors"]>[0];
+    sponsor: SponsorEntry;
 }> = ({ sponsor }) => {
-    const { type, companyName, logo, url } = sponsor;
+    const type = normalizeType(sponsor.type);
+    const { companyName, logo, url } = sponsor;
 
     const content = (
         <div
@@ -80,7 +93,7 @@ const SponsorItem: React.FC<{
 };
 
 const SponsorSection: React.FC<{
-    sponsors: NonNullable<SponsorsProps["sponsors"]>;
+    sponsors: SponsorEntry[];
     gridCols: string;
 }> = ({ sponsors, gridCols }) => {
     if (!sponsors || sponsors.length === 0) {
@@ -106,40 +119,60 @@ const SponsorsDisplay: React.FC<{
         return null;
     }
 
-    const logoLargeSponsors = sponsors.filter((sponsor) =>
-        sponsor.type === "logoLarge"
-    );
-    const logoSmallSponsors = sponsors.filter((sponsor) =>
-        sponsor.type === "logoSmall"
-    );
-    const textOnlySponsors = sponsors.filter((sponsor) =>
-        sponsor.type === "textOnly"
-    );
+    const normalizedSponsors: SponsorEntry[] = sponsors.filter((sponsor): sponsor is SponsorEntry => Boolean(sponsor));
+
+    const buckets: Array<{
+        type: ReturnType<typeof normalizeType>;
+        sponsors: SponsorEntry[];
+        gridCols: string;
+    }> = [
+        {
+            type: "logoLarge",
+            sponsors: [],
+            gridCols: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center justify-items-stretch",
+        },
+        {
+            type: "logoSmall",
+            sponsors: [],
+            gridCols: "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-center justify-items-stretch",
+        },
+        {
+            type: "textOnly",
+            sponsors: [],
+            gridCols: "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-stretch",
+        },
+    ];
+
+    const unknownBucket: SponsorEntry[] = [];
+
+    normalizedSponsors.forEach((sponsor) => {
+        const bucket = buckets.find(({ type }) => type === normalizeType(sponsor.type));
+
+        if (bucket) {
+            bucket.sponsors.push(sponsor);
+        } else {
+            unknownBucket.push(sponsor);
+        }
+    });
 
     return (
         <div className={cn("container mx-auto my-8", className)}>
             <h2 className="text-3xl font-bold mb-8 text-center">スポンサー</h2>
 
-            {logoLargeSponsors.length > 0 && (
-                <SponsorSection
-                    sponsors={logoLargeSponsors}
-                    // Larger boxes, fewer columns; stretch items horizontally
-                    gridCols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center justify-items-stretch"
-                />
+            {buckets.map(({ sponsors: bucketSponsors, gridCols }, index) =>
+                bucketSponsors.length > 0 ? (
+                    <SponsorSection
+                        key={index}
+                        sponsors={bucketSponsors}
+                        gridCols={gridCols}
+                    />
+                ) : null,
             )}
 
-            {logoSmallSponsors.length > 0 && (
+            {unknownBucket.length > 0 && (
                 <SponsorSection
-                    sponsors={logoSmallSponsors}
-                    // Smaller boxes, more columns; stretch items horizontally
-                    gridCols="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-center justify-items-stretch"
-                />
-            )}
-
-            {textOnlySponsors.length > 0 && (
-                <SponsorSection
-                    sponsors={textOnlySponsors}
-                    gridCols="grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 items-center justify-items-stretch"
+                    sponsors={unknownBucket}
+                    gridCols="grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 items-center justify-items-stretch"
                 />
             )}
         </div>

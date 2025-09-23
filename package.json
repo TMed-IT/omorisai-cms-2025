@@ -7,8 +7,7 @@
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "build:compile": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
-    "build:generate": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode generate",
-    "build:ci": "pnpm build:compile && pnpm build:generate",
+    "build:ci": "pnpm build",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "export:static": "cross-env NODE_OPTIONS=--no-deprecation NEXT_PUBLIC_STATIC_EXPORT=true pnpm build && next export",
     "postexport:media": "node scripts/staticize-media.mjs",

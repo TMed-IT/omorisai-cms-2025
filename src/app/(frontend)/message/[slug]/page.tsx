@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 0;
+export const revalidate = 1;
 
 interface Props {
   params: Promise<{
@@ -187,17 +187,23 @@ export async function generateStaticParams() {
     return [];
   }
 
-  const payload = await getPayload({ config: configPromise });
-  const messages = await payload.find({
-    collection: "messages",
-    draft: false,
-    limit: 0,
-    overrideAccess: false,
-    pagination: false,
-    select: { slug: true },
-  });
+  try {
+    const payload = await getPayload({ config: configPromise });
+    const messages = await payload.find({
+      collection: "messages",
+      draft: false,
+      limit: 0,
+      overrideAccess: false,
+      pagination: false,
+      select: { slug: true },
+      sort: "order",
+    });
 
-  return messages.docs
-    .filter((doc: any) => Boolean(doc?.slug))
-    .map((doc: any) => ({ slug: doc.slug as string }));
+    return messages.docs
+      .filter((doc: { slug?: string | null }) => Boolean(doc?.slug))
+      .map((doc) => ({ slug: doc.slug as string }));
+  } catch (error) {
+    console.error("Failed to generate static params for messages:", error);
+    throw error;
+  }
 }

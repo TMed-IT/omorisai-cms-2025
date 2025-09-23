@@ -13,6 +13,7 @@ import { events } from './events'
 import { clubs } from './clubs'
 import { posts } from './posts'
 import { privacyPolicy } from './privacy-policy'
+import { sponsorsPage } from './sponsors-page'
 
 const allCollections: CollectionSlug[] = [
   'media',
@@ -118,6 +119,14 @@ export const seed = async ({
       collection: 'pages',
       depth: 0,
       data: privacyPolicy(),
+      context: {
+        disableRevalidate: true,
+      },
+    }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: sponsorsPage(),
       context: {
         disableRevalidate: true,
       },
