@@ -38,7 +38,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0, 0%, 15%, 0.8;
+    --border: 0 0% 15%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
@@ -75,7 +75,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0, 0%, 15%, 0.8;
+    --border: 0 0% 15%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
@@ -92,6 +92,25 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
+  a {
+    @apply text-sky-400 hover:text-sky-300 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400;
+  }
+  .prose a {
+    @apply text-sky-400 underline underline-offset-2 hover:text-sky-300;
+  }
+}
+
+header a,
+header a:link,
+header a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+footer a,
+footer a:link,
+footer a:visited {
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Countdown Component Styles */

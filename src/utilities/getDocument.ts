@@ -9,8 +9,16 @@ type Collection = keyof Config['collections']
 async function getDocument(collection: Collection, slug: string, depth = 0) {
   const payload = await getPayload({ config: configPromise })
 
+  let draft = false
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== 'true') {
+    const { draftMode } = await import('next/headers')
+    draft = (await draftMode()).isEnabled
+  }
+
   const page = await payload.find({
     collection,
+    draft,
+    overrideAccess: draft,
     depth,
     where: {
       slug: {

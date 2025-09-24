@@ -34,14 +34,12 @@ export default function EventGrid({ events }: Props) {
     const vh = Math.floor(window.innerHeight * 0.9);
 
     const thumbnail = selected.thumbnail;
-    const imgW =
-      typeof thumbnail === "object"
-        ? (thumbnail?.width as number | undefined) || vw
-        : vw;
-    const imgH =
-      typeof thumbnail === "object"
-        ? (thumbnail?.height as number | undefined) || vh
-        : vh;
+    const imgW = typeof thumbnail === "object"
+      ? (thumbnail?.width as number | undefined) || vw
+      : vw;
+    const imgH = typeof thumbnail === "object"
+      ? (thumbnail?.height as number | undefined) || vh
+      : vh;
 
     const scale = Math.min(1, Math.min(vw / imgW, vh / imgH));
 
@@ -54,13 +52,14 @@ export default function EventGrid({ events }: Props) {
   return (
     <>
       <StaggerGrid>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
           {events.map((event, index) => (
-            <GridItem key={event.id} index={index}>
+            <GridItem key={event.id} index={index} className="h-full">
               <button
                 type="button"
-                className="text-left w-full"
-                onClick={() => setOpenId(event.id as string)}
+                className="text-left w-full h-full"
+                onClick={() =>
+                  setOpenId(event.id as string)}
               >
                 <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative">
                   <div className="relative overflow-hidden aspect-[4/3]">
@@ -96,8 +95,15 @@ export default function EventGrid({ events }: Props) {
       </StaggerGrid>
 
       {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" aria-modal="true" role="dialog">
-          <div className="absolute inset-0 bg-black/70" onClick={() => setOpenId(null)} />
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          aria-modal="true"
+          role="dialog"
+        >
+          <div
+            className="absolute inset-0 bg-black/70"
+            onClick={() => setOpenId(null)}
+          />
           <div className="relative z-10 max-w-[90vw] max-h-[90vh] w-full h-full flex items-center justify-center p-2 sm:p-4">
             <div
               className="relative shadow-2xl"
@@ -120,7 +126,12 @@ export default function EventGrid({ events }: Props) {
                 onClick={() => setOpenId(null)}
                 aria-label="閉じる"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-6 w-6"
+                >
                   <path
                     fillRule="evenodd"
                     d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 0 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 0 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
@@ -135,4 +146,3 @@ export default function EventGrid({ events }: Props) {
     </>
   );
 }
-

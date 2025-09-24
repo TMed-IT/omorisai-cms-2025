@@ -8,17 +8,13 @@ import { draftMode } from "next/headers";
 import React, { cache } from "react";
 import RichText from "@/components/RichText";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
 import { FloatIn, RevealText } from "@/components/Animations/animations";
 import Link from "next/link";
 
 import type { Post } from "@/payload-types";
 
 import { generateMeta } from "@/utilities/generateMeta";
-import PageClient from "./page.client";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
-import PageTitle from "@/components/PageTitle";
 
 export async function generateStaticParams() {
   if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
@@ -70,75 +66,54 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   return (
     <article>
-      <PageClient />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
-
-      <PageTitle path="/posts" fallback="お知らせ" />
-
-      <section className="relative pt-24 pb-20 px-4">
+      <section className="relative p-4">
         <div className="container mx-auto max-w-4xl">
-          <Link href="/posts/">
-            <Button
-              variant="outline"
-              className="mb-8 border-slate-600 bg-transparent hover:bg-transparent transition-all duration-300 hover:scale-105"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:-translate-x-1" />
-              お知らせ一覧
-            </Button>
-          </Link>
+          <header className="py-6 space-y-4">
+            <RevealText>
+              <h1 className="text-3xl md:text-4xl text-center font-bold">
+                {post.title}
+              </h1>
+            </RevealText>
 
-          <Card className="bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden relative shadow-xl">
-            <CardHeader className="pb-6">
-              <RevealText>
-                <CardTitle className="text-3xl md:text-4xl mb-2 text-center">
-                  {post.title}
-                </CardTitle>
-              </RevealText>
-
-              <FloatIn>
-                <div className="flex items-center justify-center gap-2">
-                  {dateStr && (
-                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-600/20 text-blue-200 border border-blue-500/30">
-                      {dateStr}
-                    </span>
-                  )}
-                </div>
-              </FloatIn>
-            </CardHeader>
-
-            <div className="px-6">
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent" />
-            </div>
-
-            <CardContent className="space-y-8 pt-6">
-              <FloatIn>
-                <div>
-                  <div className="text-white/80 leading-relaxed w-full prose prose-invert max-w-none">
-                    <div className="transition-all duration-300 hover:text-white/90">
-                      <RichText data={post.content} />
-                    </div>
-                  </div>
-                </div>
-              </FloatIn>
-            </CardContent>
-
-            <div className="px-6 pb-8">
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-6" />
-              <div className="flex justify-center">
-                <Link href="/posts/">
-                  <Button
-                    variant="secondary"
-                    className="border border-slate-600 bg-slate-700 hover:bg-slate-600"
-                  >
-                    お知らせ一覧に戻る
-                  </Button>
-                </Link>
+            <FloatIn>
+              <div className="flex items-center justify-center">
+                {dateStr && (
+                  <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-600/20 text-blue-200 border border-blue-500/30">
+                    {dateStr}
+                  </span>
+                )}
               </div>
-            </div>
+            </FloatIn>
+          </header>
 
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 hover:from-blue-500/3 hover:to-purple-500/3 transition-all duration-500 pointer-events-none" />
-          </Card>
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent" />
+
+          <main className="space-y-8 py-6">
+            <FloatIn>
+              <div>
+                <div className="text-white max-w-none">
+                  <RichText data={post.content} />
+                </div>
+              </div>
+            </FloatIn>
+          </main>
+
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent" />
+
+          <div className="flex justify-center py-6">
+            <Link href="/posts/">
+              <Button
+                variant="secondary"
+                className="border border-slate-600 bg-slate-700 hover:bg-slate-600"
+              >
+                お知らせ一覧に戻る
+              </Button>
+            </Link>
+          </div>
+
+          {/* <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/0 via-transparent to-purple-500/0 hover:from-blue-500/3 hover:to-purple-500/3 transition-all duration-500 pointer-events-none" /> */}
 
           {post.relatedPosts && post.relatedPosts.length > 0 && (
             <RelatedPosts

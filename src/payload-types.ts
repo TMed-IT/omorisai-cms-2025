@@ -210,6 +210,7 @@ export interface Media {
   } | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -450,6 +451,7 @@ export interface Club {
   image: string | Media;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1156,6 +1158,7 @@ export interface MediaSelect<T extends boolean = true> {
   caption?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
@@ -1299,6 +1302,7 @@ export interface ClubsSelect<T extends boolean = true> {
   image?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1485,6 +1489,7 @@ export interface Sponsor {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1502,6 +1507,7 @@ export interface SocialLink {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1522,6 +1528,7 @@ export interface Festival {
     japanese?: string | null;
     description?: string | null;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1551,6 +1558,7 @@ export interface PageMetadatum {
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1614,6 +1622,7 @@ export interface SponsorsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1631,6 +1640,7 @@ export interface SocialLinksSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1655,6 +1665,7 @@ export interface FestivalSelect<T extends boolean = true> {
         japanese?: T;
         description?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1694,6 +1705,7 @@ export interface PageMetadataSelect<T extends boolean = true> {
         description?: T;
         ogImage?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1718,6 +1730,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'events';
           value: string | Event;
+        } | null)
+      | ({
+          relationTo: 'clubs';
+          value: string | Club;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

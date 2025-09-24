@@ -9,8 +9,16 @@ type Global = keyof Config['globals']
 async function getGlobal(slug: Global, depth = 0) {
   const payload = await getPayload({ config: configPromise })
 
+  let draft = false
+  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== 'true') {
+    const { draftMode } = await import('next/headers')
+    draft = (await draftMode()).isEnabled
+  }
+
   const global = await payload.findGlobal({
     slug,
+    draft,
+    overrideAccess: draft,
     depth,
   })
 

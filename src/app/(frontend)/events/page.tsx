@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { generateMeta } from "@/utilities/generateMeta";
 import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
-import EventGrid from "@/components/EventGrid";
+import EventGrid from "./EventGrid";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();

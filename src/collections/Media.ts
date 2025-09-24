@@ -161,4 +161,13 @@ export const Media: CollectionConfig = {
       },
     ],
   },
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: false,
+    },
+    maxPerDoc: 50,
+  },
 }

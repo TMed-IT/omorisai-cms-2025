@@ -4,6 +4,8 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  OrderedListFeature,
+  UnorderedListFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
@@ -12,23 +14,24 @@ import { link } from '@/fields/link'
 const columnFields: Field[] = [
   {
     name: 'size',
+    label: '幅サイズ',
     type: 'select',
-    defaultValue: 'oneThird',
+    defaultValue: 'full',
     options: [
       {
-        label: '3分の1',
+        label: '1/3',
         value: 'oneThird',
       },
       {
-        label: '半分',
+        label: '1/2',
         value: 'half',
       },
       {
-        label: '3分の2',
+        label: '2/3',
         value: 'twoThirds',
       },
       {
-        label: '全体',
+        label: 'フル',
         value: 'full',
       },
     ],
@@ -43,6 +46,8 @@ const columnFields: Field[] = [
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
+          UnorderedListFeature(),
+          OrderedListFeature(),
         ]
       },
     }),

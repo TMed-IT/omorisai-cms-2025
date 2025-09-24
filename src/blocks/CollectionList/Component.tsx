@@ -32,6 +32,8 @@ export const CollectionList: React.FC<CollectionListProps> = async (props) => {
 
         const fetchedPosts = await payload.find({
             collection: (relationTo || "posts") as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+            draft: false,
+            overrideAccess: false,
             depth: 1,
             limit,
         });

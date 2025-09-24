@@ -97,7 +97,7 @@ function ParallaxJourney(
                 {japanese && (
                     <h1
                         style={{
-                            fontSize: "clamp(4rem, 8vw, 8rem)",
+                            fontSize: "96px",
                             fontWeight: 700,
                             lineHeight: 1,
                             letterSpacing: "0.05em",
@@ -121,7 +121,7 @@ function ParallaxJourney(
                 {english && (
                     <h2
                         style={{
-                            fontSize: "clamp(2rem, 5vw, 3rem)",
+                            fontSize: "40px",
                             fontWeight: 400,
                             lineHeight: 1.2,
                             color: "#7dd3fc",
@@ -150,8 +150,9 @@ function ParallaxJourney(
                         top: "150vh",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        maxWidth: "min(1000px, 90vw)",
-                        fontSize: "clamp(18px, 2.5vw, 28px)",
+                        width: "100%",
+                        maxWidth: "min(1000px, 92vw)",
+                        fontSize: "22px",
                         lineHeight: 1.8,
                         color: "#f8fafc",
                         opacity: 1,

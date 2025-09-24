@@ -42,6 +42,15 @@ const Clubs: CollectionConfig = {
       label: '画像',
     },
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+      schedulePublish: true,
+    },
+    maxPerDoc: 50,
+  },
 }
 
 export default Clubs 

@@ -79,4 +79,11 @@ export const Festival: GlobalConfig = {
       ],
     },
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+    },
+  },
 } 

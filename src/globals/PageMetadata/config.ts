@@ -113,4 +113,11 @@ export const PageMetadata: GlobalConfig = {
       ],
     },
   ],
+  versions: {
+    drafts: {
+      autosave: {
+        interval: 100,
+      },
+    },
+  },
 }

@@ -81,6 +81,7 @@ export const seed = async ({
     payload.create({
       collection: 'media',
       data: {
+        _status: 'published',
         alt: 'Placeholder light image with colorful abstract elements',
       },
       file: {
@@ -93,6 +94,7 @@ export const seed = async ({
     payload.create({
       collection: 'media',
       data: {
+        _status: 'published',
         alt: 'Placeholder dark image with white abstract shapes',
       },
       file: {
@@ -110,7 +112,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: home(),
+      data: { ...home(), _status: 'published' },
       context: {
         disableRevalidate: true,
       },
@@ -118,7 +120,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: privacyPolicy(),
+      data: { ...privacyPolicy(), _status: 'published' },
       context: {
         disableRevalidate: true,
       },
@@ -126,7 +128,7 @@ export const seed = async ({
     payload.create({
       collection: 'pages',
       depth: 0,
-      data: sponsorsPage(),
+      data: { ...sponsorsPage(), _status: 'published' },
       context: {
         disableRevalidate: true,
       },
@@ -197,7 +199,7 @@ export const seed = async ({
   for (const msg of messages) {
     await payload.create({
       collection: 'messages',
-      data: msg,
+      data: { ...(msg as any), _status: 'published' },
       context: {
         disableRevalidate: true,
       },
@@ -211,6 +213,7 @@ export const seed = async ({
     await payload.create({
       collection: 'events',
       data: {
+        _status: 'published',
         ...event,
         thumbnail: mediaId,
       },
@@ -227,6 +230,7 @@ export const seed = async ({
     await payload.create({
       collection: 'clubs',
       data: {
+        _status: 'published',
         ...club,
         image: mediaId,
       },
@@ -240,7 +244,7 @@ export const seed = async ({
   for (const post of posts) {
     await payload.create({
       collection: 'posts',
-      data: post as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      data: { ...(post as any), _status: 'published' }, // eslint-disable-line @typescript-eslint/no-explicit-any
       context: {
         disableRevalidate: true,
       },

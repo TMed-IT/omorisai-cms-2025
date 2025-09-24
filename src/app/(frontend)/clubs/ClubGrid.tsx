@@ -44,14 +44,17 @@ export default function ClubGrid({ clubs }: Props) {
     return (
         <>
             <StaggerGrid>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                     {clubs.map((club, index) => (
-                        <GridItem key={club.id} index={index}>
+                        <GridItem
+                            key={club.id}
+                            index={index}
+                            className="h-full"
+                        >
                             <button
                                 type="button"
-                                className="text-left w-full"
-                                onClick={() =>
-                                    setOpenId(club.id as string)}
+                                className="text-left w-full h-full"
+                                onClick={() => setOpenId(club.id as string)}
                             >
                                 <Card className="flex flex-col bg-slate-800/90 border-slate-700 backdrop-blur-sm overflow-hidden group transition-all duration-500 ease-in-out hover:border-blue-400 h-full relative">
                                     <div className="relative overflow-hidden aspect-[4/3]">

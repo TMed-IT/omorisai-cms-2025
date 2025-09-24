@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { generateMeta } from "@/utilities/generateMeta";
 import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
-import ClubGrid from "@/components/ClubGrid";
+import ClubGrid from "./ClubGrid";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
