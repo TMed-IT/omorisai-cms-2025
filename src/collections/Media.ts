@@ -121,9 +121,9 @@ export const Media: CollectionConfig = {
         if (filename) {
           const lastDotIndex = filename.lastIndexOf('.')
           const baseName = lastDotIndex > 0 ? filename.substring(0, lastDotIndex) : filename
-          const allowedChars = /^[A-Za-z0-9-]+$/
+          const allowedChars = /^[A-Za-z0-9-_]+$/
           if (!allowedChars.test(baseName)) {
-            throw new MediaFilenameInvalidError('ファイル名は英数字とハイフン(-)のみ使用できます')
+            throw new MediaFilenameInvalidError('ファイル名は英数字、ハイフン(-)、アンダースコア(_)のみ使用できます')
           }
         }
         return data
