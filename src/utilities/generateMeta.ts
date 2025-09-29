@@ -44,8 +44,8 @@ export const generateMeta = async (args: {
       : staticPageMetadata?.title
       ? staticPageMetadata.title
       : defaultTitle 
-        ? `${defaultTitle} - 大森祭公式ウェブサイト`
-        : '大森祭公式ウェブサイト'
+        ? `${defaultTitle} - 大森祭ウェブサイト`
+        : '大森祭ウェブサイト'
 
   const description = doc?.meta?.description || staticPageMetadata?.description || defaultDescription || ''
 

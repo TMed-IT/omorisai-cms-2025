@@ -3,7 +3,7 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: '大森祭の公式ウェブサイトです。イベント情報、お知らせなどを掲載しています。',
+  description: '大森祭のウェブサイトです。イベント情報、お知らせなどを掲載しています。',
   images: [
     {
       url: `${getServerSideURL()}/OG.webp`,

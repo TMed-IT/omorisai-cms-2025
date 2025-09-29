@@ -22,7 +22,7 @@ export async function generateStaticParams() {
     draft: false,
     // Fetch all docs to generate every static route
     limit: 0,
-    overrideAccess: false,
+    overrideAccess: true,
     pagination: false,
     select: {
       slug: true,
@@ -94,7 +94,9 @@ export async function generateMetadata(
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   let draft = false;
-  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== "true") {
+  const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
+  
+  if (!isStaticExport) {
     const { draftMode } = await import("next/headers");
     draft = (await draftMode()).isEnabled;
   }
@@ -106,7 +108,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     draft,
     limit: 1,
     pagination: false,
-    overrideAccess: draft,
+    overrideAccess: draft || isStaticExport,
     where: {
       slug: {
         equals: slug,

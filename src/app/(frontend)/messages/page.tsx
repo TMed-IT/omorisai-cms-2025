@@ -22,11 +22,11 @@ import { getHeaderTitleForPath } from "@/utilities/getPageTitle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageMetadataData = await getCachedGlobal("pageMetadata", 1)();
-  const pageMetadata = (pageMetadataData as any)?.message;
+  const pageMetadata = (pageMetadataData as any)?.messages;
   const headerData = await getCachedGlobal("header", 1)();
   const computedTitle = getHeaderTitleForPath({
     header: headerData as any,
-    path: "/message",
+    path: "/messages",
     fallback: "MESSAGES",
   });
 
@@ -41,11 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function MessagePage() {
   const payload = await getPayload({ config: configPromise });
+  const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
   const messages = await payload.find({
     collection: "messages",
     draft: false,
     limit: 0,
-    overrideAccess: false,
+    overrideAccess: isStaticExport,
     pagination: false,
     sort: "order",
   });
@@ -73,7 +74,7 @@ export default async function MessagePage() {
 
   return (
     <div>
-      <PageTitle path="/message" fallback="MESSAGES" />
+      <PageTitle path="/messages" fallback="MESSAGES" />
 
       <section className="py-16 px-4">
         <div className="container mx-auto">
@@ -133,7 +134,7 @@ export default async function MessagePage() {
                       </Button>
                     </CardFooter>
                     <Link
-                      href={`/message/${message.slug}`}
+                      href={`/messages/${message.slug}`}
                       className="absolute inset-0 z-10"
                       aria-label="メッセージ詳細へ"
                     />
@@ -149,3 +150,5 @@ export default async function MessagePage() {
     </div>
   );
 }
+
+

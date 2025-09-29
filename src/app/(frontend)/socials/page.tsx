@@ -73,7 +73,7 @@ export default async function SocialPage() {
                           )}
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-lg group-hover:text-blue-300 transition-all duration-300">
+                        <CardTitle className="text-lg text-white group-hover:text-blue-300 transition-all duration-300">
                           {socialLink.label}
                         </CardTitle>
                       </div>

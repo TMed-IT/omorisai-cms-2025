@@ -29,12 +29,6 @@ const Events: CollectionConfig = {
       label: 'イベント名',
     },
     {
-      name: 'slug',
-      type: 'text',
-      required: true,
-      label: 'スラッグ',
-    },
-    {
       name: 'date',
       type: 'date',
       admin: {

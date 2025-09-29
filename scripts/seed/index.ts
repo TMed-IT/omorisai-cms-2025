@@ -8,7 +8,7 @@ import { festival as festivalData } from './festival'
 import { socialLinks as socialLinksData } from './socialLinks'
 import { pageMetadata as pageMetadataData } from './pageMetadata'
 import { sponsors as sponsorsData } from './sponsors'
-import { messages } from './message'
+import { messages } from './messages'
 import { events } from './events'
 import { clubs } from './clubs'
 import { posts } from './posts'
@@ -146,7 +146,7 @@ export const seed = async ({
             link: {
               type: 'custom',
               label: 'Message',
-              url: '/message',
+              url: '/messages',
             },
           },
           {

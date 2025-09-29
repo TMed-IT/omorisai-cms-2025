@@ -10,7 +10,9 @@ async function getDocument(collection: Collection, slug: string, depth = 0) {
   const payload = await getPayload({ config: configPromise })
 
   let draft = false
-  if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== 'true') {
+  const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true'
+  
+  if (!isStaticExport) {
     const { draftMode } = await import('next/headers')
     draft = (await draftMode()).isEnabled
   }
@@ -18,7 +20,7 @@ async function getDocument(collection: Collection, slug: string, depth = 0) {
   const page = await payload.find({
     collection,
     draft,
-    overrideAccess: draft,
+    overrideAccess: draft || isStaticExport,
     depth,
     where: {
       slug: {

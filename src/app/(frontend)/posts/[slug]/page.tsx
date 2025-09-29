@@ -27,7 +27,7 @@ export async function generateStaticParams() {
     draft: false,
     // Fetch all docs to generate every static route
     limit: 0,
-    overrideAccess: false,
+    overrideAccess: true,
     pagination: false,
     select: {
       slug: true,
@@ -137,7 +137,13 @@ export async function generateMetadata(
 }
 
 const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode();
+  let draft = false;
+  const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
+  
+  if (!isStaticExport) {
+    const { draftMode } = await import("next/headers");
+    draft = (await draftMode()).isEnabled;
+  }
 
   const payload = await getPayload({ config: configPromise });
 
@@ -145,7 +151,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: "posts",
     draft,
     limit: 1,
-    overrideAccess: draft,
+    overrideAccess: draft || isStaticExport,
     pagination: false,
     where: {
       slug: {

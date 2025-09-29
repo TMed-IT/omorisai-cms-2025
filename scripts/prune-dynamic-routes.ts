@@ -43,24 +43,11 @@ async function main() {
   const targets: PruneTarget[] = [
     {
       collection: 'messages',
-      routeDir: path.join(appDir, 'message/[slug]'),
+      routeDir: path.join(appDir, 'messages/[slug]'),
       count: async (p) => {
         // messages has drafts enabled
         const { totalDocs } = await p.count({
           collection: 'messages',
-          where: { _status: { equals: 'published' } },
-          overrideAccess: true,
-        })
-        return totalDocs
-      },
-    },
-    {
-      collection: 'events',
-      routeDir: path.join(appDir, 'events/[slug]'),
-      count: async (p) => {
-        // events: treat same as others (only published)
-        const { totalDocs } = await p.count({
-          collection: 'events',
           where: { _status: { equals: 'published' } },
           overrideAccess: true,
         })

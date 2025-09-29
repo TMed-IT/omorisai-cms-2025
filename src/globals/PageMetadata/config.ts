@@ -41,7 +41,7 @@ export const PageMetadata: GlobalConfig = {
       ],
     },
     {
-      name: 'message',
+      name: 'messages',
       type: 'group',
       label: 'メッセージ一覧ページ',
       fields: [

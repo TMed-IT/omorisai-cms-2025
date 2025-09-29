@@ -7,7 +7,7 @@ import { home } from '../../../scripts/seed/home'
 import { festival as festivalData } from '../../../scripts/seed/festival'
 import { socialLinks as socialLinksData } from '../../../scripts/seed/socialLinks'
 import { pageMetadata as pageMetadataData } from '../../../scripts/seed/pageMetadata'
-import { messages } from '../../../scripts/seed/message'
+import { messages } from '../../../scripts/seed/messages'
 import { events } from '../../../scripts/seed/events'
 import { clubs } from '../../../scripts/seed/clubs'
 import { posts } from '../../../scripts/seed/posts'
@@ -129,7 +129,7 @@ export const seed = async ({
             link: {
               type: 'custom',
               label: 'Message',
-              url: '/message',
+              url: '/messages',
             },
           },
           {

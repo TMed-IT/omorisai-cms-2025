@@ -157,8 +157,6 @@ const SponsorsDisplay: React.FC<{
 
     return (
         <div className={cn("container mx-auto my-8", className)}>
-            <h2 className="text-3xl font-bold mb-8 text-center">スポンサー</h2>
-
             {buckets.map(({ sponsors: bucketSponsors, gridCols }, index) =>
                 bucketSponsors.length > 0 ? (
                     <SponsorSection

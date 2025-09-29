@@ -21,9 +21,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const payload = await getPayload({ config: configPromise });
 
   try {
+    const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
     const messages = await payload.find({
       collection: "messages",
       draft: false,
+      overrideAccess: isStaticExport,
       where: {
         slug: {
           equals: slug,
@@ -64,9 +66,11 @@ export default async function MessageDetailPage({ params }: Props) {
   const payload = await getPayload({ config: configPromise });
 
   try {
+    const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true";
     const messages = await payload.find({
       collection: "messages",
       draft: false,
+      overrideAccess: isStaticExport,
       where: {
         slug: {
           equals: slug,
@@ -143,7 +147,7 @@ export default async function MessageDetailPage({ params }: Props) {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent" />
 
           <div className="flex justify-center py-6">
-            <Link href="/message/">
+            <Link href="/messages/">
               <Button
                 variant="secondary"
                 className="border border-slate-600 bg-slate-700 hover:bg-slate-600"
@@ -171,7 +175,7 @@ export async function generateStaticParams() {
       collection: "messages",
       draft: false,
       limit: 0,
-      overrideAccess: false,
+      overrideAccess: true,
       pagination: false,
       select: { slug: true },
       sort: "order",
@@ -185,3 +189,5 @@ export async function generateStaticParams() {
     throw error;
   }
 }
+
+

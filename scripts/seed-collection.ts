@@ -4,7 +4,7 @@ import path from 'path'
 
 import { home } from './seed/home'
 import { festival as festivalData } from './seed/festival'
-import { messages } from './seed/message'
+import { messages } from './seed/messages'
 import { events } from './seed/events'
 import { clubs } from './seed/clubs'
 import { posts } from './seed/posts'
@@ -193,7 +193,7 @@ const availableGlobals = {
             link: {
               type: 'custom',
               label: 'Message',
-              url: '/message',
+              url: '/messages',
             },
           },
           {
