@@ -418,9 +418,27 @@ export interface Message {
 export interface Event {
   id: string;
   title: string;
-  slug: string;
-  date: string;
+  dates: {
+    start: string;
+    end?: string | null;
+    id?: string | null;
+  }[];
   location: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   thumbnail: string | Media;
   updatedAt: string;
   createdAt: string;
@@ -1284,9 +1302,15 @@ export interface MessagesSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
-  date?: T;
+  dates?:
+    | T
+    | {
+        start?: T;
+        end?: T;
+        id?: T;
+      };
   location?: T;
+  content?: T;
   thumbnail?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1542,7 +1566,7 @@ export interface PageMetadatum {
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
-  message?: {
+  messages?: {
     description?: string | null;
     ogImage?: (string | null) | Media;
   };
@@ -1681,7 +1705,7 @@ export interface PageMetadataSelect<T extends boolean = true> {
         description?: T;
         ogImage?: T;
       };
-  message?:
+  messages?:
     | T
     | {
         description?: T;

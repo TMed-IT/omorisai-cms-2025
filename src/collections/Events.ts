@@ -18,7 +18,7 @@ const Events: CollectionConfig = {
     update: isEditorOrAdmin,
   },
   admin: {
-    defaultColumns: ['title', 'date', 'location'],
+    defaultColumns: ['title', 'dates', 'location'],
     group: 'コンテンツ管理',
   },
   fields: [
@@ -29,22 +29,47 @@ const Events: CollectionConfig = {
       label: 'イベント名',
     },
     {
-      name: 'date',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayAndTime',
-          timeIntervals: 5,
-        },
-      },
+      name: 'dates',
+      type: 'array',
       required: true,
       label: '日時',
+      fields: [
+        {
+          name: 'start',
+          type: 'date',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+              timeIntervals: 5,
+            },
+          },
+          required: true,
+          label: '開始日時',
+        },
+        {
+          name: 'end',
+          type: 'date',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+              timeIntervals: 5,
+            },
+          },
+          required: false,
+          label: '終了日時',
+        },
+      ],
     },
     {
       name: 'location',
       type: 'text',
       required: true,
       label: '場所',
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      label: '詳細',
     },
     {
       name: 'thumbnail',

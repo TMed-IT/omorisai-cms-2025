@@ -37,9 +37,13 @@ export default async function EventsPage() {
     pagination: false,
   });
 
-  const sortedEvents = events.docs.sort((a: Event, b: Event) => {
-    const dateA = new Date(a.date).getTime() || 0;
-    const dateB = new Date(b.date).getTime() || 0;
+  const sortedEvents = events.docs.sort((a: Event, b) => {
+    const dateA = a.dates && a.dates.length > 0 && a.dates[0]?.start
+      ? new Date(a.dates[0].start).getTime()
+      : 0;
+    const dateB = b.dates && b.dates.length > 0 && b.dates[0]?.start
+      ? new Date(b.dates[0].start).getTime()
+      : 0;
     return dateA - dateB;
   });
 
