@@ -6,7 +6,7 @@ export const pageMetadata: PageMetadataSeedData = {
   events: {
     description: '大森祭のイベント一覧ページです。',
   },
-  message: {
+  messages: {
     description: '大森祭のメッセージ一覧ページです。',
   },
   posts: {
