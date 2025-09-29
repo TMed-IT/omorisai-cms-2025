@@ -51,12 +51,12 @@ const Events: CollectionConfig = {
           type: 'date',
           admin: {
             date: {
-              pickerAppearance: 'dayAndTime',
+              pickerAppearance: 'timeOnly',
               timeIntervals: 5,
             },
           },
           required: false,
-          label: '終了日時',
+          label: '終了時刻',
         },
       ],
     },

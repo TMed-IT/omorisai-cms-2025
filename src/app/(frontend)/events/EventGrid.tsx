@@ -90,9 +90,24 @@ export default function EventGrid({ events }: Props) {
                           <Calendar className="h-4 w-4 flex-shrink-0" />
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {event.dates.map((dateItem, index) => {
-                              const startDate = formatDateShortJP(new Date(dateItem.start));
-                              const endDate = dateItem.end ? formatDateShortJP(new Date(dateItem.end)) : null;
-                              const dateText = endDate ? `${startDate} 〜 ${endDate}` : startDate;
+                              const startDateTime = new Date(dateItem.start);
+                              const startDate = formatDateShortJP(startDateTime);
+                              
+                              let endTimeString = null;
+                              if (dateItem.end) {
+                                const endTime = new Date(dateItem.end);
+                                
+                                const startDateStr = startDateTime.toISOString().split('T')[0];
+                                const endTimeStr = endTime.toISOString().split('T')[1];
+                                const endDateTime = new Date(`${startDateStr}T${endTimeStr}`);
+                                
+                                endTimeString = endDateTime.toLocaleTimeString('ja-JP', {
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                });
+                              }
+                              
+                              const dateText = endTimeString ? `${startDate} 〜 ${endTimeString}` : startDate;
                               return (
                                 <p key={index} className="text-sm">{dateText}</p>
                               );
